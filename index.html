@@ -91,13 +91,18 @@
         input[type="text"],
         input[type="tel"],
         input[type="date"],
-        select {
+        select,
+        textarea {
             width: 100%;
             padding: 6px 8px;
             border-radius: 6px;
             border: 1px solid #ddd;
             font-size: 14px;
             box-sizing: border-box;
+        }
+
+        textarea {
+            resize: vertical;
         }
 
         .menu-table {
@@ -196,13 +201,10 @@
     <div class="section">
         <h2>Menu Posters</h2>
         <div class="poster-grid">
-            <!-- 这里的文件名要和你上传的一致 -->
+            <!-- 文件名与你仓库中的图片一致 -->
             <img src="menu-dessert.png.jpg" alt="Putra Bites Menu">
             <img src="menu-stick.png.jpg" alt="Stick & Bite Menu">
             <img src="menu-drink.png.jpg" alt="Putra Bites Drinks">
-        </div>
-        <div class="note">
-            上面是你们设计的 Canva 菜单海报，已经展示在网页中。如果图片没有显示，请确认图片文件名和上面的 <code>src="..."</code> 一致。
         </div>
     </div>
 
@@ -246,152 +248,203 @@
 
         <!-- 点餐区域 -->
         <h3>Order Items</h3>
-        <p class="note">价格请以实际活动为准，下面只是根据海报填写，你可以在代码里修改 RM 数字。</p>
 
-        <div class="category">Putra Bites (Desserts)</div>
+        <div class="category">Putra Bites (Dessert Cups)</div>
+        <p class="note">
+            Chocolate / Mango / Grape / Pudding：1 个 RM3 · 任意 3 个 RM8（系统自动套用优惠，四种口味的总数量一起计算）。
+        </p>
         <table class="menu-table">
             <thead>
-                <tr>
-                    <th>Item</th>
-                    <th>Price (RM)</th>
-                    <th>Qty</th>
-                </tr>
+            <tr>
+                <th>Item</th>
+                <th>Std Price</th>
+                <th>Qty</th>
+            </tr>
             </thead>
             <tbody>
-                <!-- 根据海报：Mango / Chocolate / Grape RM3 -->
-                <tr>
-                    <td class="menu-name">
-                        <label>
-                            <input type="checkbox" class="item-checkbox" data-price="3" data-name="Mango Dessert Cup">
-                            Mango Dessert Cup
-                        </label>
-                    </td>
-                    <td class="price-cell">3.00</td>
-                    <td>
-                        <input type="number" class="qty-input item-qty" min="1" value="1" disabled>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="menu-name">
-                        <label>
-                            <input type="checkbox" class="item-checkbox" data-price="3" data-name="Chocolate Dessert Cup">
-                            Chocolate Dessert Cup
-                        </label>
-                    </td>
-                    <td class="price-cell">3.00</td>
-                    <td>
-                        <input type="number" class="qty-input item-qty" min="1" value="1" disabled>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="menu-name">
-                        <label>
-                            <input type="checkbox" class="item-checkbox" data-price="3" data-name="Grape Dessert Cup">
-                            Grape Dessert Cup
-                        </label>
-                    </td>
-                    <td class="price-cell">3.00</td>
-                    <td>
-                        <input type="number" class="qty-input item-qty" min="1" value="1" disabled>
-                    </td>
-                </tr>
-                <!-- Coconut Jelly / Taufufa 价格我先写 RM5，你可以改 -->
-                <tr>
-                    <td class="menu-name">
-                        <label>
-                            <input type="checkbox" class="item-checkbox" data-price="5" data-name="Coconut Jelly">
-                            Coconut Jelly
-                        </label>
-                        <div class="note">Toppings: Watermelon / Mango / Boba / Grass Jelly / Bursting Beads / Oreo (+RM1 each, optional)</div>
-                    </td>
-                    <td class="price-cell">5.00</td>
-                    <td>
-                        <input type="number" class="qty-input item-qty" min="1" value="1" disabled>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="menu-name">
-                        <label>
-                            <input type="checkbox" class="item-checkbox" data-price="5" data-name="Taufufa">
-                            Taufufa
-                        </label>
-                        <div class="note">Toppings: Watermelon / Mango / Boba / Grass Jelly / Bursting Beads / Oreo (+RM1 each, optional)</div>
-                    </td>
-                    <td class="price-cell">5.00</td>
-                    <td>
-                        <input type="number" class="qty-input item-qty" min="1" value="1" disabled>
-                    </td>
-                </tr>
+            <tr>
+                <td class="menu-name">
+                    <label>
+                        <input type="checkbox" class="item-checkbox" data-name="Mango Cup" data-group="dessert">
+                        Mango Cup
+                    </label>
+                </td>
+                <td class="price-cell">RM 3.00</td>
+                <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
+            </tr>
+            <tr>
+                <td class="menu-name">
+                    <label>
+                        <input type="checkbox" class="item-checkbox" data-name="Chocolate Cup" data-group="dessert">
+                        Chocolate Cup
+                    </label>
+                </td>
+                <td class="price-cell">RM 3.00</td>
+                <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
+            </tr>
+            <tr>
+                <td class="menu-name">
+                    <label>
+                        <input type="checkbox" class="item-checkbox" data-name="Grape Cup" data-group="dessert">
+                        Grape Cup
+                    </label>
+                </td>
+                <td class="price-cell">RM 3.00</td>
+                <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
+            </tr>
+            <tr>
+                <td class="menu-name">
+                    <label>
+                        <input type="checkbox" class="item-checkbox" data-name="Pudding Cup" data-group="dessert">
+                        Pudding Cup
+                    </label>
+                </td>
+                <td class="price-cell">RM 3.00</td>
+                <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="category">Coconut Jelly</div>
+        <p class="note">Coconut Jelly：1 个 RM5 · 2 个 RM8（系统自动套用优惠）。Toppings 请在备注里写。</p>
+        <table class="menu-table">
+            <tbody>
+            <tr>
+                <td class="menu-name">
+                    <label>
+                        <input type="checkbox" class="item-checkbox" data-name="Coconut Jelly" data-group="coconut">
+                        Coconut Jelly
+                    </label>
+                    <div class="note">可选 toppings：Watermelon / Mango / Boba / Grass Jelly / Popping Boba / Oreo（请在备注写清楚）。</div>
+                </td>
+                <td class="price-cell">RM 5.00</td>
+                <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="category">Taufufa</div>
+        <p class="note">
+            Option 1：Original（RM4）<br>
+            Option 2：Fruit + 2 toppings（我先设为 RM5，可在代码中改）<br>
+            · Fruit：Watermelon 或 Mango（二选一）<br>
+            · Toppings：Boba / Grass Jelly / Popping Boba / Oreo 中任选 2 个（顾客在备注写）<br>
+            Option 3：All in（我先设为 RM6，可在代码中改）
+        </p>
+        <table class="menu-table">
+            <tbody>
+            <tr>
+                <td class="menu-name">
+                    <label>
+                        <input type="checkbox" class="item-checkbox" data-name="Taufufa Original" data-price="4">
+                        Taufufa Original
+                    </label>
+                </td>
+                <td class="price-cell">RM 4.00</td>
+                <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
+            </tr>
+            <tr>
+                <td class="menu-name">
+                    <label>
+                        <input type="checkbox" class="item-checkbox" data-name="Taufufa (Fruit + 2 toppings)" data-price="5">
+                        Taufufa (Fruit + 2 toppings)
+                    </label>
+                    <div class="note">
+                        Fruit：Watermelon / Mango（二选一）；Toppings：Boba / Grass Jelly / Popping Boba / Oreo 四选二。<br>
+                        👉 请顾客在备注写「Fruit + 两个 toppings」。
+                    </div>
+                </td>
+                <td class="price-cell">RM 5.00</td>
+                <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
+            </tr>
+            <tr>
+                <td class="menu-name">
+                    <label>
+                        <input type="checkbox" class="item-checkbox" data-name="Taufufa All In" data-price="6">
+                        Taufufa All In
+                    </label>
+                    <div class="note">所有配料 all in（价格我先设为 RM6，如果不是可以修改 data-price 的数字）。</div>
+                </td>
+                <td class="price-cell">RM 6.00</td>
+                <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
+            </tr>
             </tbody>
         </table>
 
         <div class="category">Stick & Bite Menu</div>
         <table class="menu-table">
             <tbody>
-                <tr>
-                    <td class="menu-name">
-                        <label>
-                            <input type="checkbox" class="item-checkbox" data-price="3" data-name="Lego Ice Cream">
-                            Lego Ice Cream
-                        </label>
-                    </td>
-                    <td class="price-cell">3.00</td>
-                    <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
-                </tr>
-                <tr>
-                    <td class="menu-name">
-                        <label>
-                            <input type="checkbox" class="item-checkbox" data-price="5" data-name="Fruit Stick">
-                            Fruit Stick
-                        </label>
-                    </td>
-                    <td class="price-cell">5.00</td>
-                    <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
-                </tr>
-                <tr>
-                    <td class="menu-name">
-                        <label>
-                            <input type="checkbox" class="item-checkbox" data-price="5" data-name="Spiral Potato">
-                            Spiral Potato
-                        </label>
-                    </td>
-                    <td class="price-cell">5.00</td>
-                    <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
-                </tr>
+            <tr>
+                <td class="menu-name">
+                    <label>
+                        <input type="checkbox" class="item-checkbox" data-name="Lego Ice Cream" data-price="3">
+                        Lego Ice Cream
+                    </label>
+                </td>
+                <td class="price-cell">RM 3.00</td>
+                <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
+            </tr>
+            <tr>
+                <td class="menu-name">
+                    <label>
+                        <input type="checkbox" class="item-checkbox" data-name="Fruit Stick" data-price="5">
+                        Fruit Stick
+                    </label>
+                </td>
+                <td class="price-cell">RM 5.00</td>
+                <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
+            </tr>
+            <tr>
+                <td class="menu-name">
+                    <label>
+                        <input type="checkbox" class="item-checkbox" data-name="Spiral Potato" data-price="5">
+                        Spiral Potato
+                    </label>
+                </td>
+                <td class="price-cell">RM 5.00</td>
+                <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
+            </tr>
             </tbody>
         </table>
 
         <div class="category">Putra Bites Drinks</div>
         <table class="menu-table">
             <tbody>
-                <tr>
-                    <td class="menu-name">
-                        <label>
-                            <input type="checkbox" class="item-checkbox" data-price="7" data-name="Melon Breeze">
-                            Melon Breeze
-                        </label>
-                    </td>
-                    <td class="price-cell">7.00</td>
-                    <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
-                </tr>
-                <tr>
-                    <td class="menu-name">
-                        <label>
-                            <input type="checkbox" class="item-checkbox" data-price="7" data-name="Twilight Sparkle">
-                            Twilight Sparkle
-                        </label>
-                    </td>
-                    <td class="price-cell">7.00</td>
-                    <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
-                </tr>
+            <tr>
+                <td class="menu-name">
+                    <label>
+                        <input type="checkbox" class="item-checkbox" data-name="Melon Breeze" data-price="7">
+                        Melon Breeze
+                    </label>
+                </td>
+                <td class="price-cell">RM 7.00</td>
+                <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
+            </tr>
+            <tr>
+                <td class="menu-name">
+                    <label>
+                        <input type="checkbox" class="item-checkbox" data-name="Twilight Sparkle" data-price="7">
+                        Twilight Sparkle
+                    </label>
+                </td>
+                <td class="price-cell">RM 7.00</td>
+                <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
+            </tr>
             </tbody>
         </table>
+
+        <div class="form-row">
+            <div class="form-group" style="flex-basis: 100%;">
+                <label for="remark">Remarks / 备注</label>
+                <textarea id="remark" rows="3" placeholder="例如：Melon Breeze 少冰；Taufufa Fruit 选 Mango，toppings 选 Boba + Oreo；Coconut Jelly 加 Watermelon + Popping Boba"></textarea>
+            </div>
+        </div>
 
         <div class="total">
             Total: RM <span id="totalPrice">0.00</span>
         </div>
 
-        <button id="submitBtn" class="submit-btn" disabled>Submit Order（仅示范）</button>
+        <button id="submitBtn" class="submit-btn" disabled>Submit Order（示范用）</button>
 
         <p class="note">
             现在点「Submit Order」只是会在网页上弹出你的订单摘要，并不会真正发送。<br>
@@ -409,20 +462,95 @@
         const totalPriceSpan = document.getElementById('totalPrice');
         const submitBtn = document.getElementById('submitBtn');
 
-        function updateTotal() {
+        // 计算整张订单（含优惠）
+        function computeOrder() {
             let total = 0;
             let hasItem = false;
 
+            const dessertEntries = []; // 小杯 4 种
+            const otherEntries = [];   // 其他按单价
+            let coconutQty = 0;        // coconut jelly 总数量
+
             checkboxes.forEach((checkbox, index) => {
+                if (!checkbox.checked) return;
+
                 const qtyInput = qtyInputs[index];
-                if (checkbox.checked) {
-                    hasItem = true;
-                    const price = Number(checkbox.dataset.price);
-                    const qty = Number(qtyInput.value) || 1;
-                    total += price * qty;
+                const qty = Number(qtyInput.value) || 1;
+                const name = checkbox.dataset.name;
+                const group = checkbox.dataset.group || "";
+                const price = Number(checkbox.dataset.price || 0);
+
+                if (group === "dessert") {
+                    dessertEntries.push({ name, qty });
+                } else if (group === "coconut") {
+                    coconutQty += qty;
+                } else {
+                    otherEntries.push({ name, qty, price });
                 }
             });
 
+            // Dessert Cups：1 个 RM3，3 个 RM8
+            let dessertLines = [];
+            let dessertTotalQty = dessertEntries.reduce((sum, item) => sum + item.qty, 0);
+            if (dessertTotalQty > 0) {
+                hasItem = true;
+                const unitPrice = 3;
+                const bundleQty = 3;
+                const bundlePrice = 8;
+
+                const bundles = Math.floor(dessertTotalQty / bundleQty);
+                const remainder = dessertTotalQty % bundleQty;
+                const dessertTotalPrice = bundles * bundlePrice + remainder * unitPrice;
+
+                total += dessertTotalPrice;
+
+                const detail = dessertEntries
+                    .map(item => `${item.name} x ${item.qty}`)
+                    .join(", ");
+
+                dessertLines.push(
+                    `Dessert Cups (3 for RM8 promo) - Total ${dessertTotalQty} pcs [${detail}] : RM ${dessertTotalPrice.toFixed(2)}`
+                );
+            }
+
+            // Coconut Jelly：1 个 RM5，2 个 RM8
+            let coconutLine = "";
+            if (coconutQty > 0) {
+                hasItem = true;
+                const unitPrice = 5;
+                const bundleQty = 2;
+                const bundlePrice = 8;
+
+                const bundles = Math.floor(coconutQty / bundleQty);
+                const remainder = coconutQty % bundleQty;
+                const coconutTotalPrice = bundles * bundlePrice + remainder * unitPrice;
+
+                total += coconutTotalPrice;
+                coconutLine = `Coconut Jelly (2 for RM8 promo) - ${coconutQty} pcs : RM ${coconutTotalPrice.toFixed(2)}`;
+            }
+
+            // 其他商品：单价 × 数量
+            const otherLines = otherEntries.map(item => {
+                if (!item.price) return `${item.name} x ${item.qty} : RM 0.00`;
+                hasItem = true;
+                const lineTotal = item.price * item.qty;
+                total += lineTotal;
+                return `${item.name} x ${item.qty} : RM ${lineTotal.toFixed(2)}`;
+            });
+
+            const allLines = [...dessertLines];
+            if (coconutLine) allLines.push(coconutLine);
+            allLines.push(...otherLines);
+
+            return {
+                total,
+                hasItem,
+                lines: allLines
+            };
+        }
+
+        function updateTotal() {
+            const { total, hasItem } = computeOrder();
             totalPriceSpan.textContent = total.toFixed(2);
             submitBtn.disabled = !hasItem;
         }
@@ -451,30 +579,27 @@
 
         // 提交订单（当前只是弹出信息）
         submitBtn.addEventListener('click', () => {
+            const { total, hasItem, lines } = computeOrder();
+            if (!hasItem) return;
+
             const name = document.getElementById('name').value.trim();
             const whatsapp = document.getElementById('whatsapp').value.trim();
             const kolej = document.getElementById('kolej').value.trim();
             const deliveryDate = document.getElementById('deliveryDate').value;
             const timeSlot = document.getElementById('timeSlot').value;
+            const remark = document.getElementById('remark').value.trim();
 
-            let items = [];
-            checkboxes.forEach((checkbox, index) => {
-                if (checkbox.checked) {
-                    const qtyInput = qtyInputs[index];
-                    const itemName = checkbox.dataset.name;
-                    const price = Number(checkbox.dataset.price);
-                    const qty = Number(qtyInput.value);
-                    items.push(`${itemName} x ${qty} (RM ${(price * qty).toFixed(2)})`);
-                }
-            });
-
-            if (items.length === 0) return;
-
-            const totalText = totalPriceSpan.textContent;
-
-            let info = `Name: ${name || '-'}\nWhatsApp: ${whatsapp || '-'}\nKolej: ${kolej || '-'}\nDelivery Date: ${deliveryDate || '-'}\nTime Slot: ${timeSlot || '-'}\n\nOrder:\n` +
-                items.join('\n') +
-                `\n\nTotal: RM ${totalText}\n\n(This is a demo page – order is not actually submitted yet.)`;
+            let info =
+                `Name: ${name || '-'}\n` +
+                `WhatsApp: ${whatsapp || '-'}\n` +
+                `Kolej: ${kolej || '-'}\n` +
+                `Delivery Date: ${deliveryDate || '-'}\n` +
+                `Time Slot: ${timeSlot || '-'}\n\n` +
+                `Order:\n` +
+                lines.join('\n') +
+                `\n\nTotal: RM ${total.toFixed(2)}\n\n` +
+                `Remarks: ${remark || '-'}\n\n` +
+                `(This is a demo page – order is not actually submitted yet.)`;
 
             alert(info);
         });
