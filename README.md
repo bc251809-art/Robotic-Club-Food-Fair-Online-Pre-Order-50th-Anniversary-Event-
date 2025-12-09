@@ -1,0 +1,2 @@
+# Robotic-Club-Food-Fair-Online-Pre-Order-50th-Anniversary-Event-
+Thank you for supporting UPM Robotic Club! ❤️ Celebrate the Engineering Faculty 50th Anniversary with our limited-edition desserts, drinks &amp; snacks — delivered FREE to your kolej!  🕌 HALAL ingredients used for all items.  📅 17–20 December 🚚 Delivery Times: 12pm • 5pm. After submitting, you’ll get a link to join our WhatsApp Pre-Order Group. 
