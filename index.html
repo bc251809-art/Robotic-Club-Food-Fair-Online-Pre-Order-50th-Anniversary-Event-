@@ -187,7 +187,7 @@
 
         .top-logo img {
             max-width: 280px;
-            width: 80%;
+            width: 100%;
             height: auto;
         }
 
@@ -268,9 +268,6 @@
                 <select id="timeSlot">
                     <option value="">Please select</option>
                     <option value="12:00–1:00pm">12:00–1:00pm</option>
-                    <option value="1:00–2:00pm">1:00–2:00pm</option>
-                    <option value="2:00–3:00pm">2:00–3:00pm</option>
-                    <option value="3:00–4:00pm">3:00–4:00pm</option>
                     <option value="4:00–5:00pm">4:00–5:00pm</option>
                 </select>
             </div>
@@ -279,9 +276,9 @@
         <!-- 点餐区域 -->
         <h3>Order Items</h3>
 
-        <div class="category">Putra Bites (Dessert Cups)</div>
+        <div class="category">Pudding Cup</div>
         <p class="note">
-            Chocolate / Mango / Grape / Pudding：1 个 RM3 · 任意 3 个 RM8（系统自动套用优惠，四种口味的总数量一起计算）。
+            Chocolate / Mango / Grape : 1 for RM3 | 3 for RM8
         </p>
         <table class="menu-table">
             <thead>
@@ -326,17 +323,11 @@
                 <td class="menu-name">
                     <label>
                         <input type="checkbox" class="item-checkbox" data-name="Pudding Cup" data-group="dessert">
-                        Pudding Cup
-                    </label>
-                </td>
-                <td class="price-cell">RM 3.00</td>
-                <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
-            </tr>
             </tbody>
         </table>
 
         <div class="category">Coconut Jelly</div>
-        <p class="note">Coconut Jelly：1 个 RM5 · 2 个 RM8（系统自动套用优惠）。Toppings 请在备注里写。</p>
+        <p class="note">Coconut Jelly：1 for RM5 · 2 for RM8</p>
         <table class="menu-table">
             <tbody>
             <tr>
@@ -345,7 +336,7 @@
                         <input type="checkbox" class="item-checkbox" data-name="Coconut Jelly" data-group="coconut">
                         Coconut Jelly
                     </label>
-                    <div class="note">可选 toppings：Watermelon / Mango / Boba / Grass Jelly / Popping Boba / Oreo（请在备注写清楚）。</div>
+                    <div class="note"></div>
                 </td>
                 <td class="price-cell">RM 5.00</td>
                 <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
@@ -355,7 +346,7 @@
 
         <div class="category">Taufufa</div>
         <p class="note">
-            Option 1：Original（RM4） · Option 2：Fruit + 2 toppings（RM5） · Option 3：All in（RM6）
+            Option 1：Original（RM4） · Option 2：Fruit + 2 toppings（RM6.9） · Option 3：All in（RM9.9）
         </p>
         <table class="menu-table">
             <tbody>
@@ -379,16 +370,16 @@
                         Taufufa (Fruit + 2 toppings)
                     </label>
 
-                    <!-- Fruit 二选一 -->
+                    <!-- Fruit choose 1 -->
                     <div style="margin-left:20px; margin-top:6px;">
-                        <strong>Fruit（选择 1）：</strong><br>
+                        <strong>Fruit（choose 1）：</strong><br>
                         <label><input type="radio" name="taufufa-fruit" value="Watermelon" disabled> Watermelon</label><br>
                         <label><input type="radio" name="taufufa-fruit" value="Mango" disabled> Mango</label>
                     </div>
 
-                    <!-- Toppings 四选二 -->
+                    <!-- Toppings choose 2 -->
                     <div style="margin-left:20px; margin-top:8px;">
-                        <strong>Toppings（选择 2）：</strong><br>
+                        <strong>Toppings（choose 2）：</strong><br>
                         <label><input type="checkbox" class="topping" value="Boba" disabled> Boba</label><br>
                         <label><input type="checkbox" class="topping" value="Grass Jelly" disabled> Grass Jelly</label><br>
                         <label><input type="checkbox" class="topping" value="Popping Boba" disabled> Popping Boba</label><br>
@@ -396,11 +387,11 @@
                     </div>
 
                     <div class="note" style="margin-left:20px; margin-top:5px;">
-                        系统会自动限制只允许选择 1 个水果 + 2 个 toppings。
+                   
                     </div>
                 </td>
 
-                <td class="price-cell">RM 5.00</td>
+                <td class="price-cell">RM 6.9</td>
                 <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
             </tr>
 
@@ -411,9 +402,9 @@
                         <input type="checkbox" class="item-checkbox" data-name="Taufufa All In" data-price="6">
                         Taufufa All In
                     </label>
-                    <div class="note">所有配料 all in。</div>
+                    <div class="note">all in。</div>
                 </td>
-                <td class="price-cell">RM 6.00</td>
+                <td class="price-cell">RM 9.90</td>
                 <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
             </tr>
             </tbody>
@@ -426,7 +417,7 @@
                 <td class="menu-name">
                     <label>
                         <input type="checkbox" class="item-checkbox" data-name="Lego Ice Cream" data-price="3">
-                        Lego Ice Cream
+                        Milky Cheese Stick
                     </label>
                 </td>
                 <td class="price-cell">RM 3.00</td>
