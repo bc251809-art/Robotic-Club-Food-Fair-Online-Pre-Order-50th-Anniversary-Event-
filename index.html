@@ -187,7 +187,7 @@
 
         .top-logo img {
             max-width: 280px;
-            width: 100%;
+            width: 80%;
             height: auto;
         }
 
@@ -278,7 +278,7 @@
 
         <div class="category">Pudding Cup</div>
         <p class="note">
-            Chocolate / Mango / Grape : 1 for RM3 | 3 for RM8
+            Chocolate / Mango / Grape：1 for RM3 ·  3 for RM8
         </p>
         <table class="menu-table">
             <thead>
@@ -320,9 +320,6 @@
                 <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
             </tr>
             <tr>
-                <td class="menu-name">
-                    <label>
-                        <input type="checkbox" class="item-checkbox" data-name="Pudding Cup" data-group="dessert">
             </tbody>
         </table>
 
@@ -372,22 +369,22 @@
 
                     <!-- Fruit choose 1 -->
                     <div style="margin-left:20px; margin-top:6px;">
-                        <strong>Fruit（choose 1）：</strong><br>
-                        <label><input type="radio" name="taufufa-fruit" value="Watermelon" disabled> Watermelon</label><br>
-                        <label><input type="radio" name="taufufa-fruit" value="Mango" disabled> Mango</label>
+                        <strong>Fruit (choose 1) :</strong><br>
+                        <label><input type="radio" name="taufufa-fruit" value="Watermelon"> Watermelon</label><br>
+                        <label><input type="radio" name="taufufa-fruit" value="Mango"> Mango</label>
                     </div>
 
                     <!-- Toppings choose 2 -->
                     <div style="margin-left:20px; margin-top:8px;">
-                        <strong>Toppings（choose 2）：</strong><br>
-                        <label><input type="checkbox" class="topping" value="Boba" disabled> Boba</label><br>
-                        <label><input type="checkbox" class="topping" value="Grass Jelly" disabled> Grass Jelly</label><br>
-                        <label><input type="checkbox" class="topping" value="Popping Boba" disabled> Popping Boba</label><br>
-                        <label><input type="checkbox" class="topping" value="Oreo" disabled> Oreo</label>
+                        <strong>Toppings (choose 2) :</strong><br>
+                        <label><input type="checkbox" class="topping" value="Boba"> Boba</label><br>
+                        <label><input type="checkbox" class="topping" value="Grass Jelly"> Grass Jelly</label><br>
+                        <label><input type="checkbox" class="topping" value="Popping Boba"> Popping Boba</label><br>
+                        <label><input type="checkbox" class="topping" value="Oreo"> Oreo</label>
                     </div>
 
                     <div class="note" style="margin-left:20px; margin-top:5px;">
-                   
+                        可以直接勾选 1 个水果 + 2 个 toppings，多选会有提示。
                     </div>
                 </td>
 
@@ -402,7 +399,7 @@
                         <input type="checkbox" class="item-checkbox" data-name="Taufufa All In" data-price="6">
                         Taufufa All In
                     </label>
-                    <div class="note">all in。</div>
+                    <div class="note">所有配料 all in。</div>
                 </td>
                 <td class="price-cell">RM 9.90</td>
                 <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
@@ -623,34 +620,17 @@
             });
         });
 
-        // --- Taufufa Fruit + 2 toppings 子选项逻辑 ---
-        const taufufaCheckbox = document.querySelector('.taufufa-fruit2');
-        const fruitRadios = document.querySelectorAll('input[name="taufufa-fruit"]');
+        // Toppings 最多只能选 2 个
         const toppingCheckboxes = document.querySelectorAll('.topping');
-
-        if (taufufaCheckbox) {
-            taufufaCheckbox.addEventListener('change', () => {
-                const enabled = taufufaCheckbox.checked;
-                fruitRadios.forEach(r => {
-                    r.disabled = !enabled;
-                    if (!enabled) r.checked = false;
-                });
-                toppingCheckboxes.forEach(c => {
-                    c.disabled = !enabled;
-                    if (!enabled) c.checked = false;
-                });
+        toppingCheckboxes.forEach(box => {
+            box.addEventListener('change', () => {
+                const selected = Array.from(toppingCheckboxes).filter(b => b.checked);
+                if (selected.length > 2) {
+                    box.checked = false;
+                    alert("You can select only 2 toppings.");
+                }
             });
-
-            toppingCheckboxes.forEach(box => {
-                box.addEventListener('change', () => {
-                    const selected = Array.from(toppingCheckboxes).filter(b => b.checked);
-                    if (selected.length > 2) {
-                        box.checked = false;
-                        alert("You can select only 2 toppings.");
-                    }
-                });
-            });
-        }
+        });
 
         // 提交订单（当前只是弹出信息）
         submitBtn.addEventListener('click', () => {
@@ -681,4 +661,3 @@
     </script>
 </body>
 </html>
-
