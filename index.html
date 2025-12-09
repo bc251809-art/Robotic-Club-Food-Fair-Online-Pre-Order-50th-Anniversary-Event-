@@ -319,7 +319,6 @@
                 <td class="price-cell">RM 3.00</td>
                 <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
             </tr>
-            <tr>
             </tbody>
         </table>
 
@@ -333,7 +332,6 @@
                         <input type="checkbox" class="item-checkbox" data-name="Coconut Jelly" data-group="coconut">
                         Coconut Jelly
                     </label>
-                    <div class="note"></div>
                 </td>
                 <td class="price-cell">RM 5.00</td>
                 <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
@@ -363,7 +361,7 @@
             <tr>
                 <td class="menu-name">
                     <label>
-                        <input type="checkbox" class="item-checkbox taufufa-fruit2" data-name="Taufufa (Fruit + 2 toppings)" data-price="5">
+                        <input type="checkbox" class="item-checkbox taufufa-fruit2" data-name="Taufufa (Fruit + 2 toppings)" data-price="6.9">
                         Taufufa (Fruit + 2 toppings)
                     </label>
 
@@ -388,7 +386,7 @@
                     </div>
                 </td>
 
-                <td class="price-cell">RM 6.9</td>
+                <td class="price-cell">RM 6.90</td>
                 <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
             </tr>
 
@@ -396,7 +394,7 @@
             <tr>
                 <td class="menu-name">
                     <label>
-                        <input type="checkbox" class="item-checkbox" data-name="Taufufa All In" data-price="6">
+                        <input type="checkbox" class="item-checkbox" data-name="Taufufa All In" data-price="9.9">
                         Taufufa All In
                     </label>
                     <div class="note">所有配料 all in。</div>
@@ -413,7 +411,7 @@
             <tr>
                 <td class="menu-name">
                     <label>
-                        <input type="checkbox" class="item-checkbox" data-name="Lego Ice Cream" data-price="3">
+                        <input type="checkbox" class="item-checkbox" data-name="Milky Cheese Stick" data-price="3">
                         Milky Cheese Stick
                     </label>
                 </td>
@@ -548,11 +546,11 @@
                 total += dessertTotalPrice;
 
                 const detail = dessertEntries
-                    .map(item => ${item.name} x ${item.qty})
+                    .map(item => `${item.name} x ${item.qty}`)
                     .join(", ");
 
                 dessertLines.push(
-                    Dessert Cups (3 for RM8 promo) - Total ${dessertTotalQty} pcs [${detail}] : RM ${dessertTotalPrice.toFixed(2)}
+                    `Dessert Cups (3 for RM8 promo) - Total ${dessertTotalQty} pcs [${detail}] : RM ${dessertTotalPrice.toFixed(2)}`
                 );
             }
 
@@ -569,16 +567,16 @@
                 const coconutTotalPrice = bundles * bundlePrice + remainder * unitPrice;
 
                 total += coconutTotalPrice;
-                coconutLine = Coconut Jelly (2 for RM8 promo) - ${coconutQty} pcs : RM ${coconutTotalPrice.toFixed(2)};
+                coconutLine = `Coconut Jelly (2 for RM8 promo) - ${coconutQty} pcs : RM ${coconutTotalPrice.toFixed(2)}`;
             }
 
             // 其他商品
             const otherLines = otherEntries.map(item => {
-                if (!item.price) return ${item.name} x ${item.qty} : RM 0.00;
+                if (!item.price) return `${item.name} x ${item.qty} : RM 0.00`;
                 hasItem = true;
                 const lineTotal = item.price * item.qty;
                 total += lineTotal;
-                return ${item.name} x ${item.qty} : RM ${lineTotal.toFixed(2)};
+                return `${item.name} x ${item.qty} : RM ${lineTotal.toFixed(2)}`;
             });
 
             const allLines = [...dessertLines];
@@ -645,16 +643,16 @@
             const remark = document.getElementById('remark').value.trim();
 
             let info =
-                Name: ${name || '-'}\n +
-                WhatsApp: ${whatsapp || '-'}\n +
-                Kolej: ${kolej || '-'}\n +
-                Delivery Date: ${deliveryDate || '-'}\n +
-                Time Slot: ${timeSlot || '-'}\n\n +
-                Order:\n +
+                `Name: ${name || '-'}\n` +
+                `WhatsApp: ${whatsapp || '-'}\n` +
+                `Kolej: ${kolej || '-'}\n` +
+                `Delivery Date: ${deliveryDate || '-'}\n` +
+                `Time Slot: ${timeSlot || '-'}\n\n` +
+                `Order:\n` +
                 lines.join('\n') +
-                \n\nTotal: RM ${total.toFixed(2)}\n\n +
-                Remarks: ${remark || '-'}\n\n +
-                (This is a demo page – order is not actually submitted yet.);
+                `\n\nTotal: RM ${total.toFixed(2)}\n\n` +
+                `Remarks: ${remark || '-'}\n\n` +
+                `(This is a demo page – order is not actually submitted yet.)`;
 
             alert(info);
         });
