@@ -1,0 +1,208 @@
+index.html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>线上点餐系统</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 0 15px 40px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+        .menu-name {
+            font-weight: 500;
+        }
+        .price {
+            margin-left: 10px;
+            opacity: 0.7;
+        }
+        input[type="number"] {
+            width: 60px;
+        }
+        .total {
+            margin-top: 20px;
+            font-size: 18px;
+            text-align: right;
+            font-weight: 600;
+        }
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 10px 0;
+            margin-top: 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .submit-btn {
+            background: #000;
+            color: #fff;
+        }
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .note {
+            margin-top: 10px;
+            font-size: 13px;
+            color: #666;
+        }
+        label {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>线上点餐</h1>
+
+    <p>请选择你要点的菜品：</p >
+
+    <div id="menu">
+        <!-- 每个菜品一个 .menu-item -->
+        <div class="menu-item">
+            <div>
+                <label>
+                    <input type="checkbox" class="item-checkbox" data-price="18" data-name="招牌炒饭">
+                    <span class="menu-name">招牌炒饭</span>
+                    <span class="price">¥18</span>
+                </label>
+            </div>
+            <div>
+                数量：
+                <input type="number" class="item-qty" min="1" value="1" disabled>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div>
+                <label>
+                    <input type="checkbox" class="item-checkbox" data-price="22" data-name="宫保鸡丁">
+                    <span class="menu-name">宫保鸡丁</span>
+                    <span class="price">¥22</span>
+                </label>
+            </div>
+            <div>
+                数量：
+                <input type="number" class="item-qty" min="1" value="1" disabled>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div>
+                <label>
+                    <input type="checkbox" class="item-checkbox" data-price="10" data-name="酸辣汤">
+                    <span class="menu-name">酸辣汤</span>
+                    <span class="price">¥10</span>
+                </label>
+            </div>
+            <div>
+                数量：
+                <input type="number" class="item-qty" min="1" value="1" disabled>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div>
+                <label>
+                    <input type="checkbox" class="item-checkbox" data-price="5" data-name="可乐">
+                    <span class="menu-name">可乐</span>
+                    <span class="price">¥5</span>
+                </label>
+            </div>
+            <div>
+                数量：
+                <input type="number" class="item-qty" min="1" value="1" disabled>
+            </div>
+        </div>
+    </div>
+
+    <div class="total">
+        总价：<span id="totalPrice">¥0</span>
+    </div>
+
+    <button id="submitBtn" class="submit-btn" disabled>提交订单</button>
+
+    <p class="note">说明：目前只是演示页面，点击“提交订单”只会在页面弹出提示，还没有真正连接到后台。</p >
+
+    <script>
+        const checkboxes = document.querySelectorAll('.item-checkbox');
+        const qtyInputs = document.querySelectorAll('.item-qty');
+        const totalPriceSpan = document.getElementById('totalPrice');
+        const submitBtn = document.getElementById('submitBtn');
+
+        function updateTotal() {
+            let total = 0;
+            let hasItem = false;
+
+            checkboxes.forEach((checkbox, index) => {
+                const qtyInput = qtyInputs[index];
+                if (checkbox.checked) {
+                    hasItem = true;
+                    const price = Number(checkbox.dataset.price);
+                    const qty = Number(qtyInput.value) || 1;
+                    total += price * qty;
+                }
+            });
+
+            totalPriceSpan.textContent = '¥' + total.toFixed(2);
+            submitBtn.disabled = !hasItem;
+        }
+
+        // 选中/取消菜品时，启用或禁用数量输入框
+        checkboxes.forEach((checkbox, index) => {
+            const qtyInput = qtyInputs[index];
+            checkbox.addEventListener('change', () => {
+                qtyInput.disabled = !checkbox.checked;
+                if (checkbox.checked && (!qtyInput.value || Number(qtyInput.value) < 1)) {
+                    qtyInput.value = 1;
+                }
+                updateTotal();
+            });
+        });
+
+        // 修改数量时重新计算总价
+        qtyInputs.forEach((input) => {
+            input.addEventListener('input', () => {
+                if (Number(input.value) < 1) {
+                    input.value = 1;
+                }
+                updateTotal();
+            });
+        });
+
+        // 提交订单按钮
+        submitBtn.addEventListener('click', () => {
+            let items = [];
+            checkboxes.forEach((checkbox, index) => {
+                if (checkbox.checked) {
+                    const qtyInput = qtyInputs[index];
+                    const name = checkbox.dataset.name;
+                    const price = Number(checkbox.dataset.price);
+                    const qty = Number(qtyInput.value);
+                    items.push(`${name} x ${qty}（¥${(price * qty).toFixed(2)}）`);
+                }
+            });
+
+            const totalText = totalPriceSpan.textContent;
+            if (items.length === 0) return;
+
+            alert('你的订单：\n\n' + items.join('\n') + '\n\n' + '总价：' + totalText + '\n\n（示例页面：订单并不会真的提交到服务器）');
+        });
+    </script>
+</body>
+</html>
