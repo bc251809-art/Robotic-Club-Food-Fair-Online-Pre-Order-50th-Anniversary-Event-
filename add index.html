@@ -197,9 +197,9 @@
         <h2>Menu Posters</h2>
         <div class="poster-grid">
             <!-- 这里的文件名要和你上传的一致 -->
-            <img src="menu-dessert.png" alt="Putra Bites Menu">
-            <img src="menu-stick.png" alt="Stick & Bite Menu">
-            <img src="menu-drink.png" alt="Putra Bites Drinks">
+            <img src="menu-dessert.png.jpg" alt="Putra Bites Menu">
+            <img src="menu-stick.png.jpg" alt="Stick & Bite Menu">
+            <img src="menu-drink.png.jpg" alt="Putra Bites Drinks">
         </div>
         <div class="note">
             上面是你们设计的 Canva 菜单海报，已经展示在网页中。如果图片没有显示，请确认图片文件名和上面的 <code>src="..."</code> 一致。
@@ -461,10 +461,10 @@
             checkboxes.forEach((checkbox, index) => {
                 if (checkbox.checked) {
                     const qtyInput = qtyInputs[index];
-                    const name = checkbox.dataset.name;
+                    const itemName = checkbox.dataset.name;
                     const price = Number(checkbox.dataset.price);
                     const qty = Number(qtyInput.value);
-                    items.push(`${name} x ${qty} (RM ${(price * qty).toFixed(2)})`);
+                    items.push(`${itemName} x ${qty} (RM ${(price * qty).toFixed(2)})`);
                 }
             });
 
