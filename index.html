@@ -178,17 +178,18 @@
             margin-bottom: 4px;
             font-weight: 600;
         }
-
-        /* 顶部 & 底部 logo 样式 */
+        /* 顶部 logo 容器，宽度和页面内容一样 */
         .top-logo {
-            text-align: center;
-            margin-bottom: 12px;
+            max-width: 900px;
+            margin: 0 auto 12px;   /* 居中 + 底部间距 */
         }
 
+       /* 图片拉满容器宽度 */
         .top-logo img {
-            max-width: 280px;
-            width: 80%;
-            height: auto;
+           display: block;
+           width: 100%;
+           max-width: 100%;
+           height: auto;
         }
 
         .footer-logos {
