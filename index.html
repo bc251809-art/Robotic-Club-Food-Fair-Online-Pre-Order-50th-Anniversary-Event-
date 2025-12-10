@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>UPM Robotic Club Food Fair Online Pre-Order</title>
@@ -179,7 +179,7 @@
             font-weight: 600;
         }
 
-        /* 顶部 & 底部 logo 样式 */
+        /* Top & bottom logos */
         .top-logo {
             max-width: 900px;
             margin: 0 auto 12px;
@@ -209,9 +209,9 @@
 </head>
 <body>
 
-    <!-- 顶部 Robotic Club Logo -->
+    <!-- Top Robotic Club Logo -->
     <div class="top-logo">
-        <img src="logo.jpg" alt="Robotic Club Logo">
+        <img src="header-logo.jpg" alt="Robotic Club Logo">
     </div>
 
     <h1>Robotic Club Food Fair</h1>
@@ -227,7 +227,10 @@
             <li><b>Venue:</b> Faculty of Engineering, UPM</li>
             <li><b>Delivery:</b> Free delivery to all Kolej</li>
         </ul>
-        <div class="note">请在活动前一天晚上 10pm 前完成当天的预订。实际安排以 Robotic Club 工作人员通知为准。</div>
+        <div class="note">
+            Please place your order before 10:00pm on the day before delivery.
+            Actual schedule will be confirmed by Robotic Club committee.
+        </div>
     </div>
 
     <div class="section">
@@ -242,12 +245,12 @@
     <div class="section">
         <h2>Online Pre-Order Form</h2>
 
-        <!-- 顾客资料 -->
+        <!-- Customer details -->
         <h3>Customer Details</h3>
         <div class="form-row">
             <div class="form-group">
                 <label for="name">Name</label>
-                <input type="text" id="name" placeholder="e.g. Justin">
+                <input type="text" id="name" placeholder="e.g. Ali Bin Abu">
             </div>
             <div class="form-group">
                 <label for="whatsapp">WhatsApp Number</label>
@@ -257,29 +260,30 @@
 
         <div class="form-row">
             <div class="form-group">
-                <label for="kolej">Kolej / Block</label>
-                <input type="text" id="kolej" placeholder="e.g. Kolej Kedua, Block B">
+                <label for="kolej">Kolej / Block / Room</label>
+                <input type="text" id="kolej" placeholder="e.g. Kolej Kedua, Block B-203">
             </div>
             <div class="form-group">
                 <label for="deliveryDate">Delivery Date</label>
-                <input type="date" id="deliveryDate">
+                <!-- Only 17–20 Dec 2025 -->
+                <input type="date" id="deliveryDate" min="2025-12-17" max="2025-12-20">
             </div>
             <div class="form-group">
                 <label for="timeSlot">Preferred Time Slot</label>
                 <select id="timeSlot">
                     <option value="">Please select</option>
                     <option value="12:00–1:00pm">12:00–1:00pm</option>
-                    <option value="4:00–5:00pm">4:00–5:00pm</option>
+                    <option value="5:00–6:00pm">5:00–6:00pm</option>
                 </select>
             </div>
         </div>
 
-        <!-- 点餐区域 -->
+        <!-- Order items -->
         <h3>Order Items</h3>
 
         <div class="category">Pudding Cup</div>
         <p class="note">
-            Chocolate / Mango / Grape：1 for RM3 ·  3 for RM8
+            Chocolate / Mango / Grape: 1 for RM3 · 3 for RM8
         </p>
         <table class="menu-table">
             <thead>
@@ -298,7 +302,7 @@
                     </label>
                 </td>
                 <td class="price-cell">RM 3.00</td>
-                <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
+                <td><input type="number" class="qty-input item-qty" min="1" value="1"></td>
             </tr>
             <tr>
                 <td class="menu-name">
@@ -308,7 +312,7 @@
                     </label>
                 </td>
                 <td class="price-cell">RM 3.00</td>
-                <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
+                <td><input type="number" class="qty-input item-qty" min="1" value="1"></td>
             </tr>
             <tr>
                 <td class="menu-name">
@@ -318,13 +322,13 @@
                     </label>
                 </td>
                 <td class="price-cell">RM 3.00</td>
-                <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
+                <td><input type="number" class="qty-input item-qty" min="1" value="1"></td>
             </tr>
             </tbody>
         </table>
 
         <div class="category">Coconut Jelly</div>
-        <p class="note">Coconut Jelly：1 for RM5 · 2 for RM8</p>
+        <p class="note">Coconut Jelly: 1 for RM5 · 2 for RM8</p>
         <table class="menu-table">
             <tbody>
             <tr>
@@ -335,14 +339,14 @@
                     </label>
                 </td>
                 <td class="price-cell">RM 5.00</td>
-                <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
+                <td><input type="number" class="qty-input item-qty" min="1" value="1"></td>
             </tr>
             </tbody>
         </table>
 
         <div class="category">Taufufa</div>
         <p class="note">
-            Option 1：Original（RM4） · Option 2：Fruit + 2 toppings（RM6.9） · Option 3：All in（RM9.9）
+            Option 1: Original (RM4) · Option 2: Fruit + 2 toppings (RM6.9) · Option 3: All in (RM9.9)
         </p>
         <table class="menu-table">
             <tbody>
@@ -355,7 +359,7 @@
                     </label>
                 </td>
                 <td class="price-cell">RM 4.00</td>
-                <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
+                <td><input type="number" class="qty-input item-qty" min="1" value="1"></td>
             </tr>
 
             <!-- Fruit + 2 toppings -->
@@ -368,14 +372,14 @@
 
                     <!-- Fruit choose 1 -->
                     <div style="margin-left:20px; margin-top:6px;">
-                        <strong>Fruit (choose 1) :</strong><br>
+                        <strong>Fruit (choose 1):</strong><br>
                         <label><input type="radio" name="taufufa-fruit" value="Watermelon"> Watermelon</label><br>
                         <label><input type="radio" name="taufufa-fruit" value="Mango"> Mango</label>
                     </div>
 
                     <!-- Toppings choose 2 -->
                     <div style="margin-left:20px; margin-top:8px;">
-                        <strong>Toppings (choose 2) :</strong><br>
+                        <strong>Toppings (choose 2):</strong><br>
                         <label><input type="checkbox" class="topping" value="Boba"> Boba</label><br>
                         <label><input type="checkbox" class="topping" value="Grass Jelly"> Grass Jelly</label><br>
                         <label><input type="checkbox" class="topping" value="Popping Boba"> Popping Boba</label><br>
@@ -383,12 +387,13 @@
                     </div>
 
                     <div class="note" style="margin-left:20px; margin-top:5px;">
-                        勾选上方「Taufufa (Fruit + 2 toppings)」后，才可以选择下面的 Fruit 和 Toppings；toppings 最多 2 个，多选会有提示。
+                        Please tick "Taufufa (Fruit + 2 toppings)" first, then choose 1 fruit and 2 toppings.
+                        If you select more than 2 toppings, you will see an alert.
                     </div>
                 </td>
 
                 <td class="price-cell">RM 6.90</td>
-                <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
+                <td><input type="number" class="qty-input item-qty" min="1" value="1"></td>
             </tr>
 
             <!-- All in -->
@@ -398,10 +403,10 @@
                         <input type="checkbox" class="item-checkbox" data-name="Taufufa All In" data-price="9.9">
                         Taufufa All In
                     </label>
-                    <div class="note">所有配料 all in。</div>
+                    <div class="note">All toppings included.</div>
                 </td>
                 <td class="price-cell">RM 9.90</td>
-                <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
+                <td><input type="number" class="qty-input item-qty" min="1" value="1"></td>
             </tr>
             </tbody>
         </table>
@@ -417,7 +422,7 @@
                     </label>
                 </td>
                 <td class="price-cell">RM 3.00</td>
-                <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
+                <td><input type="number" class="qty-input item-qty" min="1" value="1"></td>
             </tr>
             <tr>
                 <td class="menu-name">
@@ -427,7 +432,7 @@
                     </label>
                 </td>
                 <td class="price-cell">RM 5.00</td>
-                <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
+                <td><input type="number" class="qty-input item-qty" min="1" value="1"></td>
             </tr>
             <tr>
                 <td class="menu-name">
@@ -437,7 +442,7 @@
                     </label>
                 </td>
                 <td class="price-cell">RM 5.00</td>
-                <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
+                <td><input type="number" class="qty-input item-qty" min="1" value="1"></td>
             </tr>
             </tbody>
         </table>
@@ -453,7 +458,7 @@
                     </label>
                 </td>
                 <td class="price-cell">RM 7.00</td>
-                <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
+                <td><input type="number" class="qty-input item-qty" min="1" value="1"></td>
             </tr>
             <tr>
                 <td class="menu-name">
@@ -463,15 +468,15 @@
                     </label>
                 </td>
                 <td class="price-cell">RM 7.00</td>
-                <td><input type="number" class="qty-input item-qty" min="1" value="1" disabled></td>
+                <td><input type="number" class="qty-input item-qty" min="1" value="1"></td>
             </tr>
             </tbody>
         </table>
 
         <div class="form-row">
             <div class="form-group" style="flex-basis: 100%;">
-                <label for="remark">Remarks / 备注</label>
-                <textarea id="remark" rows="3" placeholder="例如：Melon Breeze 少冰；Taufufa Fruit 选 Mango，toppings 选 Boba + Oreo；Coconut Jelly 加 Watermelon + Popping Boba"></textarea>
+                <label for="remark">Remarks</label>
+                <textarea id="remark" rows="3" placeholder="Example: Melon Breeze less ice; Taufufa fruit: Mango, toppings: Boba + Oreo; Coconut Jelly add Watermelon + Popping Boba"></textarea>
             </div>
         </div>
 
@@ -479,15 +484,15 @@
             Total: RM <span id="totalPrice">0.00</span>
         </div>
 
-        <button id="submitBtn" class="submit-btn" disabled>Submit Order（示范用）</button>
+        <button id="submitBtn" class="submit-btn" disabled>Submit Order (Demo)</button>
 
         <p class="note">
-            现在点「Submit Order」只是会在网页上弹出你的订单摘要，并不会真正发送。<br>
-            如果你们之后要接 <b>WhatsApp / Google Form / Google Sheet</b>，可以在 JavaScript 里加上相应代码。
+            Clicking "Submit Order" will only show a summary pop-up on this page. It will NOT actually send your order.
+            In future you can connect this page to WhatsApp / Google Form / Google Sheet.
         </p>
     </div>
 
-    <!-- 底部横向 Logo 排列：UPM · Jubli 50 · Robotic Club -->
+    <!-- Bottom logos: UPM · Jubli 50 · Robotic Club -->
     <div class="footer-logos">
         <img src="upm.jpg" alt="UPM Logo">
         <img src="jubli50.jpg" alt="Jubli Emas 50 Logo">
@@ -504,12 +509,11 @@
         const totalPriceSpan = document.getElementById('totalPrice');
         const submitBtn = document.getElementById('submitBtn');
 
-        // Taufufa 相关节点（注意在 computeOrder 里也会用到）
         const taufufaFruit2Checkbox = document.querySelector('.taufufa-fruit2');
         const fruitRadios = document.querySelectorAll('input[name="taufufa-fruit"]');
         const toppingCheckboxes = document.querySelectorAll('.topping');
 
-        // 计算整张订单（含优惠）
+        // Compute order (with promotions)
         function computeOrder() {
             let total = 0;
             let hasItem = false;
@@ -519,10 +523,11 @@
             let coconutQty = 0;
 
             checkboxes.forEach((checkbox, index) => {
-                if (!checkbox.checked) return;
+                if (!checkbox.checked) return;   // only checked items count
 
                 const qtyInput = qtyInputs[index];
-                const qty = Number(qtyInput.value) || 1;
+                let qty = Number(qtyInput.value);
+                if (!qty || qty < 1) qty = 1;
                 const name = checkbox.dataset.name;
                 const group = checkbox.dataset.group || "";
                 const price = Number(checkbox.dataset.price || 0);
@@ -536,7 +541,7 @@
                 }
             });
 
-            // Pudding Cups：1 个 RM3，3 个 RM8
+            // Pudding Cups: 1 for RM3, 3 for RM8
             let dessertLines = [];
             let dessertTotalQty = dessertEntries.reduce((sum, item) => sum + item.qty, 0);
             if (dessertTotalQty > 0) {
@@ -556,11 +561,11 @@
                     .join(", ");
 
                 dessertLines.push(
-                    Pudding Cups (3 for RM8 promo) - Total ${dessertTotalQty} pcs [${detail}] : RM ${dessertTotalPrice.toFixed(2)}
+                    Pudding Cups (3 for RM8 promo) - Total ${dessertTotalQty} cups [${detail}] : RM ${dessertTotalPrice.toFixed(2)}
                 );
             }
 
-            // Coconut Jelly：1 个 RM5，2 个 RM8
+            // Coconut Jelly: 1 for RM5, 2 for RM8
             let coconutLine = "";
             if (coconutQty > 0) {
                 hasItem = true;
@@ -573,10 +578,10 @@
                 const coconutTotalPrice = bundles * bundlePrice + remainder * unitPrice;
 
                 total += coconutTotalPrice;
-                coconutLine = Coconut Jelly (2 for RM8 promo) - ${coconutQty} pcs : RM ${coconutTotalPrice.toFixed(2)};
+                coconutLine = Coconut Jelly (2 for RM8 promo) - ${coconutQty} cups : RM ${coconutTotalPrice.toFixed(2)};
             }
 
-            // 先读出当前选中的水果和 toppings（供 Taufufa 用）
+            // Current fruit & toppings selection for Taufufa option
             const selectedFruitRadio = fruitRadios.length
                 ? Array.from(fruitRadios).find(r => r.checked)
                 : null;
@@ -588,7 +593,7 @@
                     .map(c => c.value)
                 : [];
 
-            // 其他商品
+            // Other normal items
             const otherLines = otherEntries.map(item => {
                 if (!item.price) return ${item.name} x ${item.qty} : RM 0.00;
                 hasItem = true;
@@ -624,43 +629,41 @@
             submitBtn.disabled = !hasItem;
         }
 
-        // 勾选商品时启用 / 禁用数量输入
-        checkboxes.forEach((checkbox, index) => {
-            const qtyInput = qtyInputs[index];
+        // When check/uncheck items, update total
+        checkboxes.forEach(() => {
+            // no need to enable/disable qty now; qty is always editable
+        });
+        checkboxes.forEach((checkbox) => {
             checkbox.addEventListener('change', () => {
-                qtyInput.disabled = !checkbox.checked;
-                if (checkbox.checked && (!qtyInput.value || Number(qtyInput.value) < 1)) {
-                    qtyInput.value = 1;
-                }
                 updateTotal();
             });
         });
 
-        // 数量改变时更新总价（允许先删掉再输入）
+        // Qty changes: allow user to delete "1" and type freely,
+        // but on blur, fix invalid values to 1.
         qtyInputs.forEach((input) => {
             input.addEventListener('input', () => {
                 updateTotal();
             });
             input.addEventListener('blur', () => {
-                const val = Number(input.value);
-                if (!input.value || val < 1) {
+                let val = Number(input.value);
+                if (!val || val < 1) {
                     input.value = 1;
                 }
                 updateTotal();
             });
         });
 
-        // --- Taufufa Fruit + 2 toppings 逻辑 ---
-
+        // ---- Taufufa Fruit + 2 toppings logic ----
         function setTaufufaOptionsEnabled(enabled) {
             fruitRadios.forEach(r => r.disabled = !enabled);
             toppingCheckboxes.forEach(c => c.disabled = !enabled);
         }
 
-        // 初始化：先禁用
+        // Initial: disabled
         setTaufufaOptionsEnabled(false);
 
-        // 勾选 / 取消勾选时启用 / 禁用子选项
+        // Only when this checkbox is ticked, fruit & toppings are enabled
         taufufaFruit2Checkbox.addEventListener('change', () => {
             const active = taufufaFruit2Checkbox.checked;
             setTaufufaOptionsEnabled(active);
@@ -673,18 +676,18 @@
             updateTotal();
         });
 
-        // toppings 最多选 2 个
+        // Toppings: at most 2
         toppingCheckboxes.forEach(box => {
             box.addEventListener('change', () => {
                 const selected = Array.from(toppingCheckboxes).filter(c => c.checked);
                 if (selected.length > 2) {
                     box.checked = false;
-                    alert("You can select only 2 toppings.");
+                    alert("You can select only 2 toppings for Taufufa.");
                 }
             });
         });
 
-        // 提交订单（当前只是弹出信息）
+        // Submit (demo)
         submitBtn.addEventListener('click', () => {
             const { total, hasItem, lines } = computeOrder();
             if (!hasItem) return;
@@ -699,14 +702,14 @@
             let info =
                 Name: ${name || '-'}\n +
                 WhatsApp: ${whatsapp || '-'}\n +
-                Kolej: ${kolej || '-'}\n +
+                Kolej / Block / Room: ${kolej || '-'}\n +
                 Delivery Date: ${deliveryDate || '-'}\n +
                 Time Slot: ${timeSlot || '-'}\n\n +
                 Order:\n +
                 lines.join('\n') +
                 \n\nTotal: RM ${total.toFixed(2)}\n\n +
                 Remarks: ${remark || '-'}\n\n +
-                (This is a demo page – order is not actually submitted yet.);
+                (This is a demo page – the order is not actually submitted.);
 
             alert(info);
         });
