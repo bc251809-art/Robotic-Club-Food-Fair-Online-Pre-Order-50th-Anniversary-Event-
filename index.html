@@ -504,16 +504,51 @@
     </div>
 
     <script>
+        // Main elements
         const checkboxes = document.querySelectorAll('.item-checkbox');
         const qtyInputs = document.querySelectorAll('.item-qty');
         const totalPriceSpan = document.getElementById('totalPrice');
         const submitBtn = document.getElementById('submitBtn');
 
+        // Taufufa sub-options
         const taufufaFruit2Checkbox = document.querySelector('.taufufa-fruit2');
         const fruitRadios = document.querySelectorAll('input[name="taufufa-fruit"]');
         const toppingCheckboxes = document.querySelectorAll('.topping');
 
-        // Compute order (with promotions)
+        // Enable / disable Taufufa fruit & toppings
+        function setTaufufaOptionsEnabled(enabled) {
+            fruitRadios.forEach(r => r.disabled = !enabled);
+            toppingCheckboxes.forEach(c => c.disabled = !enabled);
+        }
+
+        // Initial: disabled
+        if (taufufaFruit2Checkbox) {
+            setTaufufaOptionsEnabled(false);
+
+            taufufaFruit2Checkbox.addEventListener('change', () => {
+                const active = taufufaFruit2Checkbox.checked;
+                setTaufufaOptionsEnabled(active);
+
+                if (!active) {
+                    fruitRadios.forEach(r => r.checked = false);
+                    toppingCheckboxes.forEach(c => c.checked = false);
+                }
+                updateTotal();
+            });
+        }
+
+        // Toppings: max 2
+        toppingCheckboxes.forEach(box => {
+            box.addEventListener('change', () => {
+                const selected = Array.from(toppingCheckboxes).filter(c => c.checked);
+                if (selected.length > 2) {
+                    box.checked = false;
+                    alert('You can select only 2 toppings for Taufufa.');
+                }
+            });
+        });
+
+        // Compute order (with promos)
         function computeOrder() {
             let total = 0;
             let hasItem = false;
@@ -523,27 +558,28 @@
             let coconutQty = 0;
 
             checkboxes.forEach((checkbox, index) => {
-                if (!checkbox.checked) return;   // only checked items count
+                if (!checkbox.checked) return;
 
                 const qtyInput = qtyInputs[index];
                 let qty = Number(qtyInput.value);
                 if (!qty || qty < 1) qty = 1;
+
                 const name = checkbox.dataset.name;
-                const group = checkbox.dataset.group || "";
+                const group = checkbox.dataset.group || '';
                 const price = Number(checkbox.dataset.price || 0);
 
-                if (group === "dessert") {
+                if (group === 'dessert') {
                     dessertEntries.push({ name, qty });
-                } else if (group === "coconut") {
+                } else if (group === 'coconut') {
                     coconutQty += qty;
                 } else {
                     otherEntries.push({ name, qty, price });
                 }
             });
 
-            // Pudding Cups: 1 for RM3, 3 for RM8
-            let dessertLines = [];
-            let dessertTotalQty = dessertEntries.reduce((sum, item) => sum + item.qty, 0);
+            // Pudding promo: 1 for 3, 3 for 8
+            const dessertLines = [];
+            const dessertTotalQty = dessertEntries.reduce((sum, item) => sum + item.qty, 0);
             if (dessertTotalQty > 0) {
                 hasItem = true;
                 const unitPrice = 3;
@@ -558,15 +594,15 @@
 
                 const detail = dessertEntries
                     .map(item => ${item.name} x ${item.qty})
-                    .join(", ");
+                    .join(', ');
 
                 dessertLines.push(
                     Pudding Cups (3 for RM8 promo) - Total ${dessertTotalQty} cups [${detail}] : RM ${dessertTotalPrice.toFixed(2)}
                 );
             }
 
-            // Coconut Jelly: 1 for RM5, 2 for RM8
-            let coconutLine = "";
+            // Coconut promo: 1 for 5, 2 for 8
+            let coconutLine = '';
             if (coconutQty > 0) {
                 hasItem = true;
                 const unitPrice = 5;
@@ -581,11 +617,11 @@
                 coconutLine = Coconut Jelly (2 for RM8 promo) - ${coconutQty} cups : RM ${coconutTotalPrice.toFixed(2)};
             }
 
-            // Current fruit & toppings selection for Taufufa option
+            // Taufufa selections (fruit + toppings)
             const selectedFruitRadio = fruitRadios.length
                 ? Array.from(fruitRadios).find(r => r.checked)
                 : null;
-            const selectedFruit = selectedFruitRadio ? selectedFruitRadio.value : "";
+            const selectedFruit = selectedFruitRadio ? selectedFruitRadio.value : '';
 
             const selectedToppings = toppingCheckboxes.length
                 ? Array.from(toppingCheckboxes)
@@ -593,18 +629,18 @@
                     .map(c => c.value)
                 : [];
 
-            // Other normal items
+            // Other items
             const otherLines = otherEntries.map(item => {
                 if (!item.price) return ${item.name} x ${item.qty} : RM 0.00;
                 hasItem = true;
                 const lineTotal = item.price * item.qty;
 
-                let extra = "";
-                if (item.name === "Taufufa (Fruit + 2 toppings)") {
-                    const fruitText = selectedFruit || "-";
+                let extra = '';
+                if (item.name === 'Taufufa (Fruit + 2 toppings)') {
+                    const fruitText = selectedFruit || '-';
                     const toppingText = selectedToppings.length
-                        ? selectedToppings.join(", ")
-                        : "-";
+                        ? selectedToppings.join(', ')
+                        : '-';
                     extra = ` (Fruit: ${fruitText}; Toppings: ${toppingText})`;
                 }
 
@@ -616,11 +652,7 @@
             if (coconutLine) allLines.push(coconutLine);
             allLines.push(...otherLines);
 
-            return {
-                total,
-                hasItem,
-                lines: allLines
-            };
+            return { total, hasItem, lines: allLines };
         }
 
         function updateTotal() {
@@ -629,61 +661,20 @@
             submitBtn.disabled = !hasItem;
         }
 
-        // When check/uncheck items, update total
-        checkboxes.forEach(() => {
-            // no need to enable/disable qty now; qty is always editable
-        });
-        checkboxes.forEach((checkbox) => {
-            checkbox.addEventListener('change', () => {
-                updateTotal();
-            });
+        // Checkbox changes
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', updateTotal);
         });
 
-        // Qty changes: allow user to delete "1" and type freely,
-        // but on blur, fix invalid values to 1.
-        qtyInputs.forEach((input) => {
-            input.addEventListener('input', () => {
-                updateTotal();
-            });
+        // Qty inputs: free typing, fix invalid on blur
+        qtyInputs.forEach(input => {
+            input.addEventListener('input', updateTotal);
             input.addEventListener('blur', () => {
                 let val = Number(input.value);
                 if (!val || val < 1) {
                     input.value = 1;
                 }
                 updateTotal();
-            });
-        });
-
-        // ---- Taufufa Fruit + 2 toppings logic ----
-        function setTaufufaOptionsEnabled(enabled) {
-            fruitRadios.forEach(r => r.disabled = !enabled);
-            toppingCheckboxes.forEach(c => c.disabled = !enabled);
-        }
-
-        // Initial: disabled
-        setTaufufaOptionsEnabled(false);
-
-        // Only when this checkbox is ticked, fruit & toppings are enabled
-        taufufaFruit2Checkbox.addEventListener('change', () => {
-            const active = taufufaFruit2Checkbox.checked;
-            setTaufufaOptionsEnabled(active);
-
-            if (!active) {
-                fruitRadios.forEach(r => r.checked = false);
-                toppingCheckboxes.forEach(c => c.checked = false);
-            }
-
-            updateTotal();
-        });
-
-        // Toppings: at most 2
-        toppingCheckboxes.forEach(box => {
-            box.addEventListener('change', () => {
-                const selected = Array.from(toppingCheckboxes).filter(c => c.checked);
-                if (selected.length > 2) {
-                    box.checked = false;
-                    alert("You can select only 2 toppings for Taufufa.");
-                }
             });
         });
 
