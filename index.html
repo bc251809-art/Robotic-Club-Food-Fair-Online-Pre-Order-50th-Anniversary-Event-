@@ -178,18 +178,18 @@
             margin-bottom: 4px;
             font-weight: 600;
         }
-        /* 顶部 logo 容器，宽度和页面内容一样 */
+
+        /* 顶部 & 底部 logo 样式 */
         .top-logo {
             max-width: 900px;
-            margin: 0 auto 12px;   /* 居中 + 底部间距 */
+            margin: 0 auto 12px;
         }
 
-       /* 图片拉满容器宽度 */
         .top-logo img {
-           display: block;
-           width: 100%;
-           max-width: 100%;
-           height: auto;
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            height: auto;
         }
 
         .footer-logos {
@@ -211,7 +211,7 @@
 
     <!-- 顶部 Robotic Club Logo -->
     <div class="top-logo">
-        <img src="header-logo.jpg" alt="Robotic Club Logo">
+        <img src="logo.jpg" alt="Robotic Club Logo">
     </div>
 
     <h1>Robotic Club Food Fair</h1>
@@ -246,8 +246,8 @@
         <h3>Customer Details</h3>
         <div class="form-row">
             <div class="form-group">
-                <label for="name">Name / 姓名</label>
-                <input type="text" id="name" placeholder="e.g. Ali Bin Abu">
+                <label for="name">Name</label>
+                <input type="text" id="name" placeholder="e.g. Justin">
             </div>
             <div class="form-group">
                 <label for="whatsapp">WhatsApp Number</label>
@@ -383,7 +383,7 @@
                     </div>
 
                     <div class="note" style="margin-left:20px; margin-top:5px;">
-                        可以直接勾选 1 个水果 + 2 个 toppings，多选会有提示。
+                        勾选上方「Taufufa (Fruit + 2 toppings)」后，才可以选择下面的 Fruit 和 Toppings；toppings 最多 2 个，多选会有提示。
                     </div>
                 </td>
 
@@ -504,6 +504,11 @@
         const totalPriceSpan = document.getElementById('totalPrice');
         const submitBtn = document.getElementById('submitBtn');
 
+        // Taufufa 相关节点（注意在 computeOrder 里也会用到）
+        const taufufaFruit2Checkbox = document.querySelector('.taufufa-fruit2');
+        const fruitRadios = document.querySelectorAll('input[name="taufufa-fruit"]');
+        const toppingCheckboxes = document.querySelectorAll('.topping');
+
         // 计算整张订单（含优惠）
         function computeOrder() {
             let total = 0;
@@ -531,7 +536,7 @@
                 }
             });
 
-            // Dessert Cups：1 个 RM3，3 个 RM8
+            // Pudding Cups：1 个 RM3，3 个 RM8
             let dessertLines = [];
             let dessertTotalQty = dessertEntries.reduce((sum, item) => sum + item.qty, 0);
             if (dessertTotalQty > 0) {
@@ -547,11 +552,11 @@
                 total += dessertTotalPrice;
 
                 const detail = dessertEntries
-                    .map(item => `${item.name} x ${item.qty}`)
+                    .map(item => ${item.name} x ${item.qty})
                     .join(", ");
 
                 dessertLines.push(
-                    `Dessert Cups (3 for RM8 promo) - Total ${dessertTotalQty} pcs [${detail}] : RM ${dessertTotalPrice.toFixed(2)}`
+                    Pudding Cups (3 for RM8 promo) - Total ${dessertTotalQty} pcs [${detail}] : RM ${dessertTotalPrice.toFixed(2)}
                 );
             }
 
@@ -568,16 +573,38 @@
                 const coconutTotalPrice = bundles * bundlePrice + remainder * unitPrice;
 
                 total += coconutTotalPrice;
-                coconutLine = `Coconut Jelly (2 for RM8 promo) - ${coconutQty} pcs : RM ${coconutTotalPrice.toFixed(2)}`;
+                coconutLine = Coconut Jelly (2 for RM8 promo) - ${coconutQty} pcs : RM ${coconutTotalPrice.toFixed(2)};
             }
+
+            // 先读出当前选中的水果和 toppings（供 Taufufa 用）
+            const selectedFruitRadio = fruitRadios.length
+                ? Array.from(fruitRadios).find(r => r.checked)
+                : null;
+            const selectedFruit = selectedFruitRadio ? selectedFruitRadio.value : "";
+
+            const selectedToppings = toppingCheckboxes.length
+                ? Array.from(toppingCheckboxes)
+                    .filter(c => c.checked)
+                    .map(c => c.value)
+                : [];
 
             // 其他商品
             const otherLines = otherEntries.map(item => {
-                if (!item.price) return `${item.name} x ${item.qty} : RM 0.00`;
+                if (!item.price) return ${item.name} x ${item.qty} : RM 0.00;
                 hasItem = true;
                 const lineTotal = item.price * item.qty;
+
+                let extra = "";
+                if (item.name === "Taufufa (Fruit + 2 toppings)") {
+                    const fruitText = selectedFruit || "-";
+                    const toppingText = selectedToppings.length
+                        ? selectedToppings.join(", ")
+                        : "-";
+                    extra = ` (Fruit: ${fruitText}; Toppings: ${toppingText})`;
+                }
+
                 total += lineTotal;
-                return `${item.name} x ${item.qty} : RM ${lineTotal.toFixed(2)}`;
+                return ${item.name}${extra} x ${item.qty} : RM ${lineTotal.toFixed(2)};
             });
 
             const allLines = [...dessertLines];
@@ -597,7 +624,7 @@
             submitBtn.disabled = !hasItem;
         }
 
-        // 勾选商品时启用数量输入
+        // 勾选商品时启用 / 禁用数量输入
         checkboxes.forEach((checkbox, index) => {
             const qtyInput = qtyInputs[index];
             checkbox.addEventListener('change', () => {
@@ -609,21 +636,47 @@
             });
         });
 
-        // 更改数量时更新总价
+        // 数量改变时更新总价（允许先删掉再输入）
         qtyInputs.forEach((input) => {
             input.addEventListener('input', () => {
-                if (Number(input.value) < 1) {
+                updateTotal();
+            });
+            input.addEventListener('blur', () => {
+                const val = Number(input.value);
+                if (!input.value || val < 1) {
                     input.value = 1;
                 }
                 updateTotal();
             });
         });
 
-        // Toppings 最多只能选 2 个
-        const toppingCheckboxes = document.querySelectorAll('.topping');
+        // --- Taufufa Fruit + 2 toppings 逻辑 ---
+
+        function setTaufufaOptionsEnabled(enabled) {
+            fruitRadios.forEach(r => r.disabled = !enabled);
+            toppingCheckboxes.forEach(c => c.disabled = !enabled);
+        }
+
+        // 初始化：先禁用
+        setTaufufaOptionsEnabled(false);
+
+        // 勾选 / 取消勾选时启用 / 禁用子选项
+        taufufaFruit2Checkbox.addEventListener('change', () => {
+            const active = taufufaFruit2Checkbox.checked;
+            setTaufufaOptionsEnabled(active);
+
+            if (!active) {
+                fruitRadios.forEach(r => r.checked = false);
+                toppingCheckboxes.forEach(c => c.checked = false);
+            }
+
+            updateTotal();
+        });
+
+        // toppings 最多选 2 个
         toppingCheckboxes.forEach(box => {
             box.addEventListener('change', () => {
-                const selected = Array.from(toppingCheckboxes).filter(b => b.checked);
+                const selected = Array.from(toppingCheckboxes).filter(c => c.checked);
                 if (selected.length > 2) {
                     box.checked = false;
                     alert("You can select only 2 toppings.");
@@ -644,16 +697,16 @@
             const remark = document.getElementById('remark').value.trim();
 
             let info =
-                `Name: ${name || '-'}\n` +
-                `WhatsApp: ${whatsapp || '-'}\n` +
-                `Kolej: ${kolej || '-'}\n` +
-                `Delivery Date: ${deliveryDate || '-'}\n` +
-                `Time Slot: ${timeSlot || '-'}\n\n` +
-                `Order:\n` +
+                Name: ${name || '-'}\n +
+                WhatsApp: ${whatsapp || '-'}\n +
+                Kolej: ${kolej || '-'}\n +
+                Delivery Date: ${deliveryDate || '-'}\n +
+                Time Slot: ${timeSlot || '-'}\n\n +
+                Order:\n +
                 lines.join('\n') +
-                `\n\nTotal: RM ${total.toFixed(2)}\n\n` +
-                `Remarks: ${remark || '-'}\n\n` +
-                `(This is a demo page – order is not actually submitted yet.)`;
+                \n\nTotal: RM ${total.toFixed(2)}\n\n +
+                Remarks: ${remark || '-'}\n\n +
+                (This is a demo page – order is not actually submitted yet.);
 
             alert(info);
         });
