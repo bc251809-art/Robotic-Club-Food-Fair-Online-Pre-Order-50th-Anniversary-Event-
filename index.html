@@ -93,7 +93,7 @@
 
         .menu-table th { text-align: left; background: #fdf4e5; }
 
-        .menu-name { font-weight: 600; } /* Make all item titles bold */
+        .menu-name { font-weight: 600; } /* Make all Taufufa titles bold */
 
         .price-cell { white-space: nowrap; font-weight: 500; }
 
@@ -117,7 +117,7 @@
             border-radius: 999px;
             font-size: 16px;
             cursor: pointer;
-            background: #25d366; /* WhatsApp 绿一点 */
+            background: #f39c12;
             color: #fff;
         }
 
@@ -180,7 +180,7 @@
         </div>
     </div>
 
-    <!-- Delivery Location Section -->
+    <!-- NEW Delivery Location Section -->
     <div class="section">
         <h2>Delivery Location</h2>
         <div class="poster-grid">
@@ -217,10 +217,9 @@
 
         <div class="form-row">
             <div class="form-group">
-                <label>Kolej / Block</label>
-                <select id="kolej-block">
-                    <option value="">Please select</option>
-                    <option value="K10">K10</option>
+                <label>Kolej / Block </label>
+                <select id="kolej / Block">
+                    <option value="k10">k10</option>
                     <option value="Library">Library</option>
                     <option value="KC">KC</option>
                     <option value="KTDI">KTDI</option>
@@ -230,14 +229,14 @@
                     <option value="K13">K13</option>
                     <option value="K14">K14</option>
                     <option value="FPV">FPV</option>
-                    <option value="K17 (1)">K17 (1)</option>
-                    <option value="K17 (2)">K17 (2)</option>
+                    <option value="k17(1)">k17(1)</option>
+                    <option value="K17(2)">K17(2)</option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label>Delivery Date</label>
-                <select id="delivery-date">
+                <select id="Delivery Date">
                     <option value="">Please select</option>
                     <option value="17/12/25">17/12/25</option>
                     <option value="18/12/25">18/12/25</option>
@@ -415,7 +414,7 @@
 
         <div class="total">Total: RM <span id="totalPrice">0.00</span></div>
 
-        <button id="submitBtn" class="submit-btn" disabled>Submit Order via WhatsApp</button>
+        <button id="submitBtn" class="submit-btn" disabled>Submit Order (Demo)</button>
 
     </div>
 
@@ -424,10 +423,6 @@
         <img src="upm.jpg">
         <img src="jubli50.jpg">
         <img src="robotic-footer.jpg">
-    </div>
-
-    <div class="footer">
-        UPM Robotic Club · Engineering Faculty 50th Anniversary · With Knowledge We Serve
     </div>
 
     <script>
@@ -468,165 +463,73 @@
             });
         });
 
-        // Compute order: total + hasItem + detail lines
+        // Update total
         function computeOrder() {
             let total = 0;
-            let hasItem = false;
+            let has = false;
 
-            let dessertEntries = [];
             let dessertQty = 0;
             let coconutQty = 0;
-            let otherEntries = [];
+
+            let otherLines = [];
 
             checkboxes.forEach((cb, i) => {
                 if (!cb.checked) return;
-
-                hasItem = true;
 
                 const qty = Number(qtyInputs[i].value) || 1;
                 const name = cb.dataset.name;
                 const group = cb.dataset.group || "";
                 const price = Number(cb.dataset.price || 0);
 
+                has = true;
+
                 if (group === "dessert") {
-                    dessertEntries.push({ name, qty });
                     dessertQty += qty;
                     return;
                 }
-
                 if (group === "coconut") {
                     coconutQty += qty;
                     return;
                 }
 
-                otherEntries.push({ name, qty, price });
-            });
-
-            const lines = [];
-
-            // Dessert promo: 1 for 3, 3 for 8
-            if (dessertQty > 0) {
-                const unitPrice = 3;
-                const bundleQty = 3;
-                const bundlePrice = 8;
-
-                const bundles = Math.floor(dessertQty / bundleQty);
-                const remainder = dessertQty % bundleQty;
-                const dessertTotalPrice = bundles * bundlePrice + remainder * unitPrice;
-
-                total += dessertTotalPrice;
-
-                const detail = dessertEntries
-                    .map(item => ${item.name} x ${item.qty})
-                    .join(", ");
-
-                lines.push(
-                    Pudding Cups (3 for RM8 promo) - Total ${dessertQty} cups [${detail}] : RM ${dessertTotalPrice.toFixed(2)}
-                );
-            }
-
-            // Coconut promo: 1 for 5, 2 for 8
-            if (coconutQty > 0) {
-                const unitPrice = 5;
-                const bundleQty = 2;
-                const bundlePrice = 8;
-
-                const bundles = Math.floor(coconutQty / bundleQty);
-                const remainder = coconutQty % bundleQty;
-                const coconutTotalPrice = bundles * bundlePrice + remainder * unitPrice;
-
-                total += coconutTotalPrice;
-                lines.push(
-                    Coconut Jelly (2 for RM8 promo) - ${coconutQty} cups : RM ${coconutTotalPrice.toFixed(2)}
-                );
-            }
-
-            // Taufufa selections (fruit + toppings)
-            const selectedFruitRadio = fruitRadios.length
-                ? Array.from(fruitRadios).find(r => r.checked)
-                : null;
-            const selectedFruit = selectedFruitRadio ? selectedFruitRadio.value : '';
-
-            const selectedToppings = toppingCheckboxes.length
-                ? Array.from(toppingCheckboxes)
-                    .filter(c => c.checked)
-                    .map(c => c.value)
-                : [];
-
-            // Other items
-            otherEntries.forEach(item => {
-                const { name, qty, price } = item;
-                if (!price) {
-                    lines.push(${name} x ${qty} : RM 0.00);
-                    return;
-                }
                 let extra = "";
+
                 if (name === "Taufufa (Fruit + 2 toppings)") {
-                    const fruitText = selectedFruit || "-";
-                    const toppingText = selectedToppings.length
-                        ? selectedToppings.join(", ")
-                        : "-";
-                    extra = ` (Fruit: ${fruitText}; Toppings: ${toppingText})`;
+                    const fruit = Array.from(fruitRadios).find(r => r.checked)?.value || "-";
+                    const tops = Array.from(toppingCheckboxes).filter(t => t.checked).map(t => t.value);
+                    extra = ` (Fruit: ${fruit}, Toppings: ${tops.join(", ") || "-"})`;
                 }
 
-                const lineTotal = price * qty;
-                total += lineTotal;
-                lines.push(${name}${extra} x ${qty} : RM ${lineTotal.toFixed(2)});
+                total += price * qty;
+                otherLines.push(`${name}${extra} x ${qty}`);
             });
 
-            return { total, hasItem, lines };
+            // Dessert promo
+            if (dessertQty > 0) {
+                const sets = Math.floor(dessertQty / 3);
+                const rem = dessertQty % 3;
+                total += sets * 8 + rem * 3;
+            }
+
+            // Coconut promo
+            if (coconutQty > 0) {
+                const sets = Math.floor(coconutQty / 2);
+                const rem = coconutQty % 2;
+                total += sets * 8 + rem * 5;
+            }
+
+            return { total, has };
         }
 
         function updateTotal() {
-            const { total, hasItem } = computeOrder();
+            const { total, has } = computeOrder();
             totalPriceSpan.textContent = total.toFixed(2);
-            submitBtn.disabled = !hasItem;
+            submitBtn.disabled = !has;
         }
 
         checkboxes.forEach(cb => cb.addEventListener("change", updateTotal));
-        qtyInputs.forEach(q => {
-            q.addEventListener("input", updateTotal);
-            q.addEventListener("blur", () => {
-                if (!q.value || Number(q.value) < 1) q.value = 1;
-                updateTotal();
-            });
-        });
+        qtyInputs.forEach(q => q.addEventListener("input", updateTotal));
 
-        // Submit → open WhatsApp with order details
-        submitBtn.addEventListener('click', () => {
-            const { total, hasItem, lines } = computeOrder();
-            if (!hasItem) {
-                alert('Please select at least 1 item before submitting.');
-                return;
-            }
-
-            const name = document.getElementById('name').value.trim();
-            const whatsapp = document.getElementById('whatsapp').value.trim();
-            const kolejBlock = document.getElementById('kolej-block').value;
-            const deliveryDate = document.getElementById('delivery-date').value;
-            const timeSlot = document.getElementById('timeSlot').value;
-            const remark = document.getElementById('remark').value.trim();
-
-            const message =
-                'Robotic Club Food Fair Order\n\n' +
-                Name: ${name || '-'}\n +
-                Customer WhatsApp: ${whatsapp || '-'}\n +
-                Kolej / Block: ${kolejBlock || '-'}\n +
-                Delivery Date: ${deliveryDate || '-'}\n +
-                Time Slot: ${timeSlot || '-'}\n\n +
-                'Order:\n' +
-                (lines.length ? lines.join('\n') : '-') +
-                \n\nTotal: RM ${total.toFixed(2)}\n\n +
-                Remarks: ${remark || '-'}\n\n +
-                '(Sent from online pre-order form)';
-
-            // TODO: 把这个号码改成你们自己的接单 WhatsApp 号码
-            // 例如 +60 12-3456789 => 60123456789
-            const clubPhone = '60176523986';
-
-            const url = https://wa.me/${clubPhone}?text=${encodeURIComponent(message)};
-            window.open(url, '_blank');
-        });
     </script>
 
 </body>
