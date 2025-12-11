@@ -117,7 +117,7 @@
             border-radius: 999px;
             font-size: 16px;
             cursor: pointer;
-            background: #25d366; /* WhatsApp 绿 (按钮颜色保留，不影响逻辑) */
+            background: #25d366; /* 颜色随便用，逻辑不受影响 */
             color: #fff;
         }
 
@@ -151,6 +151,17 @@
         .footer-logos img {
             max-width: 120px;
             height: auto;
+        }
+
+        /* 网站统计简单样式 */
+        .stats-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            font-size: 14px;
+        }
+        .stats-item {
+            flex: 1 1 160px;
         }
     </style>
 </head>
@@ -419,6 +430,22 @@
 
     </div>
 
+    <!-- 网站统计区块（本地统计） -->
+    <div class="section">
+        <h2>Website Statistics (This Browser Only)</h2>
+        <p class="note">
+            数据保存在你浏览器的 localStorage，只统计你在这个设备/浏览器上的下单情况。
+        </p>
+        <div class="stats-row">
+            <div class="stats-item">
+                Total orders (this browser): <strong><span id="statOrders">0</span></strong>
+            </div>
+            <div class="stats-item">
+                Total paid amount (this browser): <strong>RM <span id="statAmount">0.00</span></strong>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer Logos -->
     <div class="footer-logos">
         <img src="upm.jpg">
@@ -439,13 +466,17 @@
         const totalPriceSpan = document.getElementById('totalPrice');
         const submitBtn = document.getElementById('submitBtn');
 
-        // Disable fruit/toppings until Taufufa(Fruit+2) selected
+        const statOrdersSpan = document.getElementById('statOrders');
+        const statAmountSpan = document.getElementById('statAmount');
+
+        // ---------- Taufufa 逻辑：未选中之前禁用 Fruit + toppings ----------
         function enableTaufufaFields(enabled) {
             fruitRadios.forEach(r => r.disabled = !enabled);
             toppingCheckboxes.forEach(t => t.disabled = !enabled);
         }
 
         if (fruit2) {
+            // 初始禁用
             enableTaufufaFields(false);
 
             fruit2.addEventListener('change', () => {
@@ -459,7 +490,7 @@
             });
         }
 
-        // Limit toppings to 2
+        // 限制 toppings 最多 2 个
         toppingCheckboxes.forEach(box => {
             box.addEventListener('change', () => {
                 const selected = Array.from(toppingCheckboxes).filter(b => b.checked);
@@ -470,7 +501,42 @@
             });
         });
 
-        // Compute order: total + hasItem + detail lines
+        // ---------- 网站统计（localStorage） ----------
+        function loadStats() {
+            try {
+                const raw = localStorage.getItem('orderStats');
+                if (!raw) return;
+                const s = JSON.parse(raw);
+                const count = s && s.count ? s.count : 0;
+                const total = s && s.total ? s.total : 0;
+                statOrdersSpan.textContent = count;
+                statAmountSpan.textContent = total.toFixed(2);
+            } catch (e) {
+                console.error('Failed to load stats', e);
+            }
+        }
+
+        function saveStats(orderTotal) {
+            try {
+                const raw = localStorage.getItem('orderStats');
+                let s = { count: 0, total: 0 };
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (parsed) s = parsed;
+                }
+                s.count = (s.count || 0) + 1;
+                s.total = (s.total || 0) + orderTotal;
+                localStorage.setItem('orderStats', JSON.stringify(s));
+                statOrdersSpan.textContent = s.count;
+                statAmountSpan.textContent = s.total.toFixed(2);
+            } catch (e) {
+                console.error('Failed to save stats', e);
+            }
+        }
+
+        loadStats();
+
+        // ---------- 计算订单 ----------
         function computeOrder() {
             let total = 0;
             let hasItem = false;
@@ -480,12 +546,16 @@
             let coconutQty = 0;
             let otherEntries = [];
 
-            checkboxes.forEach((cb, i) => {
+            checkboxes.forEach((cb) => {
                 if (!cb.checked) return;
 
                 hasItem = true;
 
-                const qty = Number(qtyInputs[i].value) || 1;
+                // 更稳的写法：从当前 checkbox 所在行找数量输入框
+                const row = cb.closest('tr');
+                const qtyInput = row ? row.querySelector('.item-qty') : null;
+                const qty = qtyInput ? (Number(qtyInput.value) || 1) : 1;
+
                 const name = cb.dataset.name;
                 const group = cb.dataset.group || "";
                 const price = Number(cb.dataset.price || 0);
@@ -506,7 +576,7 @@
 
             const lines = [];
 
-            // Dessert promo: 1 for 3, 3 for 8
+            // Pudding 促销：1 for 3, 3 for 8
             if (dessertQty > 0) {
                 const unitPrice = 3;
                 const bundleQty = 3;
@@ -527,7 +597,7 @@
                 );
             }
 
-            // Coconut promo: 1 for 5, 2 for 8
+            // Coconut 促销：1 for 5, 2 for 8
             if (coconutQty > 0) {
                 const unitPrice = 5;
                 const bundleQty = 2;
@@ -543,7 +613,7 @@
                 );
             }
 
-            // Taufufa selections (fruit + toppings)
+            // Taufufa 选项（fruit + toppings 信息）
             const selectedFruitRadio = fruitRadios.length
                 ? Array.from(fruitRadios).find(r => r.checked)
                 : null;
@@ -555,7 +625,7 @@
                     .map(c => c.value)
                 : [];
 
-            // Other items
+            // 其他 item（含 taufufa 原味 / all in / sticks / drinks）
             otherEntries.forEach(item => {
                 const { name, qty, price } = item;
                 if (!price) {
@@ -594,7 +664,7 @@
             });
         });
 
-        // Submit → 只打开 TNG QR 页面
+        // ---------- 提交：必填校验 + 确认弹窗 + TNG + 统计 ----------
         submitBtn.addEventListener('click', () => {
             const { total, hasItem, lines } = computeOrder();
             if (!hasItem) {
@@ -628,7 +698,19 @@
                 Remarks: ${remark || '-'}\n\n +
                 '(Sent from online pre-order form)';
 
-            // 只打开 TNG QR 页面，带上 total
+            // 确认订单弹窗
+            const confirmText =
+                message +
+                '\n\nPress OK to proceed to TNG payment, or Cancel to change your order.';
+            const ok = confirm(confirmText);
+            if (!ok) {
+                return; // 用户点取消，不跳转 TNG
+            }
+
+            // 保存本地统计
+            saveStats(total);
+
+            // 打开 TNG QR 页面
             const payUrl = tng-qrcode.html?total=${total.toFixed(2)};
             window.open(payUrl, '_blank');
         });
