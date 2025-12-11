@@ -17,16 +17,9 @@
             text-align: center;
         }
 
-        h1 {
-            margin-top: 12px;
-            margin-bottom: 4px;
-        }
+        h1 { margin-top: 12px; margin-bottom: 4px; }
 
-        .subtitle {
-            text-align: center;
-            font-size: 14px;
-            margin-bottom: 16px;
-        }
+        .subtitle { text-align: center; font-size: 14px; margin-bottom: 16px; }
 
         .event-info {
             background: #fff;
@@ -37,10 +30,7 @@
             font-size: 14px;
         }
 
-        .event-info ul {
-            padding-left: 18px;
-            margin: 4px 0;
-        }
+        .event-info ul { padding-left: 18px; margin: 4px 0; }
 
         .poster-grid {
             display: grid;
@@ -57,9 +47,7 @@
         }
 
         @media (min-width: 768px) {
-            .poster-grid {
-                grid-template-columns: repeat(3, minmax(0,1fr));
-            }
+            .poster-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
         }
 
         .section {
@@ -77,22 +65,11 @@
             margin-bottom: 10px;
         }
 
-        .form-group {
-            flex: 1 1 160px;
-            min-width: 0;
-        }
+        .form-group { flex: 1 1 160px; min-width: 0; }
 
-        label {
-            display: block;
-            font-size: 13px;
-            margin-bottom: 4px;
-        }
+        label { display: block; font-size: 13px; margin-bottom: 4px; }
 
-        input[type="text"],
-        input[type="tel"],
-        input[type="date"],
-        select,
-        textarea {
+        input[type="text"], input[type="tel"], input[type="date"], select, textarea {
             width: 100%;
             padding: 6px 8px;
             border-radius: 6px;
@@ -101,9 +78,7 @@
             box-sizing: border-box;
         }
 
-        textarea {
-            resize: vertical;
-        }
+        textarea { resize: vertical; }
 
         .menu-table {
             width: 100%;
@@ -111,35 +86,20 @@
             font-size: 14px;
         }
 
-        .menu-table th,
-        .menu-table td {
+        .menu-table th, .menu-table td {
             border-bottom: 1px solid #f0e3d0;
             padding: 6px 4px;
         }
 
-        .menu-table th {
-            text-align: left;
-            background: #fdf4e5;
-        }
+        .menu-table th { text-align: left; background: #fdf4e5; }
 
-        .menu-name {
-            font-weight: 500;
-        }
+        .menu-name { font-weight: 600; } /* Make all Taufufa titles bold */
 
-        .price-cell {
-            white-space: nowrap;
-            font-weight: 500;
-        }
+        .price-cell { white-space: nowrap; font-weight: 500; }
 
-        .qty-input {
-            width: 60px;
-        }
+        .qty-input { width: 60px; }
 
-        .note {
-            font-size: 12px;
-            color: #666;
-            margin-top: 4px;
-        }
+        .note { font-size: 12px; color: #666; margin-top: 4px; }
 
         .total {
             text-align: right;
@@ -161,10 +121,7 @@
             color: #fff;
         }
 
-        .submit-btn:disabled {
-            background: #ddd;
-            cursor: not-allowed;
-        }
+        .submit-btn:disabled { background: #ddd; cursor: not-allowed; }
 
         .footer {
             text-align: center;
@@ -173,24 +130,14 @@
             margin-top: 12px;
         }
 
-        .category {
-            margin-top: 10px;
-            margin-bottom: 4px;
-            font-weight: 600;
-        }
+        .category { margin-top: 10px; margin-bottom: 4px; font-weight: 600; }
 
-        /* Top & bottom logos */
         .top-logo {
             max-width: 900px;
             margin: 0 auto 12px;
         }
 
-        .top-logo img {
-            display: block;
-            width: 100%;
-            max-width: 100%;
-            height: auto;
-        }
+        .top-logo img { display: block; width: 100%; height: auto; }
 
         .footer-logos {
             display: flex;
@@ -209,9 +156,9 @@
 </head>
 <body>
 
-    <!-- Top Robotic Club Logo -->
+    <!-- Top Logo -->
     <div class="top-logo">
-        <img src="logo.jpg" alt="Robotic Club Logo">
+        <img src="header-logo.jpg" alt="Robotic Club Logo">
     </div>
 
     <h1>Robotic Club Food Fair</h1>
@@ -229,47 +176,57 @@
         </ul>
         <div class="note">
             Please place your order before 10:00pm on the day before delivery.
-            Actual schedule will be confirmed by Robotic Club committee.
         </div>
     </div>
 
+    <!-- NEW Delivery Location Section -->
+    <div class="section">
+        <h2>Delivery Location</h2>
+        <div class="poster-grid">
+            <img src="location.jpg" alt="Delivery Location">
+        </div>
+    </div>
+
+    <!-- Menu Posters -->
     <div class="section">
         <h2>Menu Posters</h2>
         <div class="poster-grid">
-            <img src="menu-dessert.png.jpg" alt="Putra Bites Menu">
-            <img src="menu-stick.png.jpg" alt="Stick & Bite Menu">
-            <img src="menu-drink.png.jpg" alt="Putra Bites Drinks">
+            <img src="menu-dessert.png.jpg" alt="Dessert Menu">
+            <img src="menu-stick.png.jpg" alt="Stick Menu">
+            <img src="menu-drink.png.jpg" alt="Drinks Menu">
         </div>
     </div>
 
+    <!-- Online Order Form -->
     <div class="section">
         <h2>Online Pre-Order Form</h2>
 
-        <!-- Customer details -->
         <h3>Customer Details</h3>
+
         <div class="form-row">
             <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" id="name" placeholder="e.g. Ali Bin Abu">
+                <label>Name</label>
+                <input id="name" type="text">
             </div>
             <div class="form-group">
-                <label for="whatsapp">WhatsApp Number</label>
-                <input type="tel" id="whatsapp" placeholder="e.g. 012-3456789">
+                <label>WhatsApp Number</label>
+                <input id="whatsapp" type="tel">
             </div>
         </div>
 
         <div class="form-row">
             <div class="form-group">
-                <label for="kolej">Kolej / Block / Room</label>
-                <input type="text" id="kolej" placeholder="e.g. Kolej Kedua, Block B-203">
+                <label>Kolej / Block / Room</label>
+                <input id="kolej" type="text">
             </div>
+
             <div class="form-group">
-                <label for="deliveryDate">Delivery Date</label>
-                <!-- Only 17–20 Dec 2025 -->
+                <label>Delivery Date</label>
                 <input type="date" id="deliveryDate" min="2025-12-17" max="2025-12-20">
             </div>
+
             <div class="form-group">
-                <label for="timeSlot">Preferred Time Slot</label>
+                <label>Preferred Time Slot</label>
                 <select id="timeSlot">
                     <option value="">Please select</option>
                     <option value="12:00–1:00pm">12:00–1:00pm</option>
@@ -278,441 +235,281 @@
             </div>
         </div>
 
-        <!-- Order items -->
+        <!-- Order Items -->
         <h3>Order Items</h3>
 
+        <!-- Pudding -->
         <div class="category">Pudding Cup</div>
-        <p class="note">
-            Chocolate / Mango / Grape: 1 for RM3 · 3 for RM8
-        </p>
+        <p class="note">1 for RM3 · 3 for RM8</p>
+
         <table class="menu-table">
-            <thead>
-            <tr>
-                <th>Item</th>
-                <th>Std Price</th>
-                <th>Qty</th>
-            </tr>
-            </thead>
             <tbody>
-            <tr>
-                <td class="menu-name">
-                    <label>
-                        <input type="checkbox" class="item-checkbox" data-name="Mango Cup" data-group="dessert">
-                        Mango Cup
-                    </label>
-                </td>
-                <td class="price-cell">RM 3.00</td>
-                <td><input type="number" class="qty-input item-qty" min="1" value="1"></td>
-            </tr>
-            <tr>
-                <td class="menu-name">
-                    <label>
-                        <input type="checkbox" class="item-checkbox" data-name="Chocolate Cup" data-group="dessert">
-                        Chocolate Cup
-                    </label>
-                </td>
-                <td class="price-cell">RM 3.00</td>
-                <td><input type="number" class="qty-input item-qty" min="1" value="1"></td>
-            </tr>
-            <tr>
-                <td class="menu-name">
-                    <label>
-                        <input type="checkbox" class="item-checkbox" data-name="Grape Cup" data-group="dessert">
-                        Grape Cup
-                    </label>
-                </td>
-                <td class="price-cell">RM 3.00</td>
-                <td><input type="number" class="qty-input item-qty" min="1" value="1"></td>
-            </tr>
+                <tr>
+                    <td class="menu-name">
+                        <label><input type="checkbox" class="item-checkbox" data-group="dessert" data-name="Mango Cup"> Mango Cup</label>
+                    </td>
+                    <td class="price-cell">RM 3.00</td>
+                    <td><input type="number" class="qty-input item-qty" value="1" min="1"></td>
+                </tr>
+                <tr>
+                    <td class="menu-name">
+                        <label><input type="checkbox" class="item-checkbox" data-group="dessert" data-name="Chocolate Cup"> Chocolate Cup</label>
+                    </td>
+                    <td class="price-cell">RM 3.00</td>
+                    <td><input type="number" class="qty-input item-qty" value="1" min="1"></td>
+                </tr>
+                <tr>
+                    <td class="menu-name">
+                        <label><input type="checkbox" class="item-checkbox" data-group="dessert" data-name="Grape Cup"> Grape Cup</label>
+                    </td>
+                    <td class="price-cell">RM 3.00</td>
+                    <td><input type="number" class="qty-input item-qty" value="1" min="1"></td>
+                </tr>
             </tbody>
         </table>
 
+        <!-- Coconut -->
         <div class="category">Coconut Jelly</div>
-        <p class="note">Coconut Jelly: 1 for RM5 · 2 for RM8</p>
         <table class="menu-table">
             <tbody>
-            <tr>
-                <td class="menu-name">
-                    <label>
-                        <input type="checkbox" class="item-checkbox" data-name="Coconut Jelly" data-group="coconut">
-                        Coconut Jelly
-                    </label>
-                </td>
-                <td class="price-cell">RM 5.00</td>
-                <td><input type="number" class="qty-input item-qty" min="1" value="1"></td>
-            </tr>
+                <tr>
+                    <td class="menu-name">
+                        <label><input type="checkbox" class="item-checkbox" data-group="coconut" data-name="Coconut Jelly"> Coconut Jelly</label>
+                    </td>
+                    <td class="price-cell">RM 5.00</td>
+                    <td><input type="number" class="qty-input item-qty" value="1" min="1"></td>
+                </tr>
             </tbody>
         </table>
 
+        <!-- Taufufa -->
         <div class="category">Tau fu fa</div>
-        <p class="note">
-    Option 1: Original (RM4) · Option 2: Fruit + 2 toppings (RM6.9) · Option 3: All in (RM9.9)
-        </p>
-
-        <style>
-        /* Bold style for the three main Taufufa options */
-        .taufufa-option-label {
-            font-weight: 700;
-        }
-        </style>
+        <p class="note">Original RM4 · Fruit+2 toppings RM6.9 · All in RM9.9</p>
 
         <table class="menu-table">
             <tbody>
 
-            <!-- Original -->
-            <tr>
-                <td class="menu-name">
-                    <label class="taufufa-option-label">
-                        <input type="checkbox" class="item-checkbox" data-name="Taufufa Original" data-price="4">
-                        Taufufa Original
-                    </label>
-                </td>
-                <td class="price-cell">RM 4.00</td>
-            <td><input type="number" class="qty-input item-qty" min="1" value="1"></td>
-            </tr>
+                <!-- Original -->
+                <tr>
+                    <td class="menu-name">
+                        <label><input type="checkbox" class="item-checkbox" data-price="4" data-name="Taufufa Original"> Taufufa Original</label>
+                    </td>
+                    <td class="price-cell">RM 4.00</td>
+                    <td><input type="number" class="qty-input item-qty" value="1" min="1"></td>
+                </tr>
 
-            <!-- Fruit + 2 toppings -->
-            <tr>
-                <td class="menu-name">
-                    <label class="taufufa-option-label">
-                        <input type="checkbox" class="item-checkbox taufufa-fruit2" data-name="Taufufa (Fruit + 2 toppings)" data-price="6.9">
-                        Taufufa (Fruit + 2 toppings)
-                    </label>
+                <!-- Fruit + 2 toppings -->
+                <tr>
+                    <td class="menu-name">
+                        <label>
+                            <input type="checkbox" class="item-checkbox taufufa-fruit2" data-price="6.9" data-name="Taufufa (Fruit + 2 toppings)">
+                            Taufufa (Fruit + 2 toppings)
+                        </label>
 
-                    <!-- Fruit choose 1 -->
-                    <div style="margin-left:20px; margin-top:6px;">
-                        <strong>Fruit (choose 1):</strong><br>
+                        <div style="margin-left:20px; margin-top:6px;">
+                            <strong>Fruit (choose 1):</strong><br>
                             <label><input type="radio" name="taufufa-fruit" value="Watermelon"> Watermelon</label><br>
-                        <label><input type="radio" name="taufufa-fruit" value="Mango"> Mango</label>
-                    </div>
+                            <label><input type="radio" name="taufufa-fruit" value="Mango"> Mango</label>
+                        </div>
 
-                    <!-- Toppings choose 2 -->
-                    <div style="margin-left:20px; margin-top:8px;">
-                        <strong>Toppings (choose 2):</strong><br>
-                        <label><input type="checkbox" class="topping" value="Boba"> Boba</label><br>
-                        <label><input type="checkbox" class="topping" value="Grass Jelly"> Grass Jelly</label><br>
-                        <label><input type="checkbox" class="topping" value="Popping Boba"> Popping Boba</label><br>
-                        <label><input type="checkbox" class="topping" value="Oreo"> Oreo</label>
-                    </div>
+                        <div style="margin-left:20px; margin-top:8px;">
+                            <strong>Toppings (choose 2):</strong><br>
+                            <label><input type="checkbox" class="topping" value="Boba"> Boba</label><br>
+                            <label><input type="checkbox" class="topping" value="Grass Jelly"> Grass Jelly</label><br>
+                            <label><input type="checkbox" class="topping" value="Popping Boba"> Popping Boba</label><br>
+                            <label><input type="checkbox" class="topping" value="Oreo"> Oreo</label>
+                        </div>
 
-                    <div class="note" style="margin-left:20px; margin-top:5px;">
-                        Please tick "Taufufa (Fruit + 2 toppings)" first, then choose 1 fruit and 2 toppings.
-                    </div>
-                </td>
+                        <div class="note" style="margin-left:20px;">
+                            Please select 1 fruit and 2 toppings.
+                        </div>
+                    </td>
 
-                <td class="price-cell">RM 6.90</td>
-                <td><input type="number" class="qty-input item-qty" min="1" value="1"></td>
-            </tr>
+                    <td class="price-cell">RM 6.90</td>
+                    <td><input type="number" class="qty-input item-qty" value="1" min="1"></td>
+                </tr>
 
-            <!-- All in -->
-            <tr>
-                <td class="menu-name">
-                    <label class="taufufa-option-label">
-                        <input type="checkbox" class="item-checkbox" data-name="Taufufa All In" data-price="9.9">
-                        Taufufa All In
-                    </label>
-                    <div class="note">All toppings included.</div>
-                </td>
-                <td class="price-cell">RM 9.90</td>
-                <td><input type="number" class="qty-input item-qty" min="1" value="1"></td>
-            </tr>
+                <!-- All In -->
+                <tr>
+                    <td class="menu-name">
+                        <label><input type="checkbox" class="item-checkbox" data-price="9.9" data-name="Taufufa All In"> Taufufa All In</label>
+                        <div class="note">All toppings included.</div>
+                    </td>
+                    <td class="price-cell">RM 9.90</td>
+                    <td><input type="number" class="qty-input item-qty" value="1" min="1"></td>
+                </tr>
 
             </tbody>
         </table>
 
+        <!-- Sticks -->
         <div class="category">Stick & Bite Menu</div>
         <table class="menu-table">
             <tbody>
-            <tr>
-                <td class="menu-name">
-                    <label>
-                        <input type="checkbox" class="item-checkbox" data-name="Milky Cheese Stick" data-price="3">
-                        Milky Cheese Stick
-                    </label>
-                </td>
-                <td class="price-cell">RM 3.00</td>
-                <td><input type="number" class="qty-input item-qty" min="1" value="1"></td>
-            </tr>
-            <tr>
-                <td class="menu-name">
-                    <label>
-                        <input type="checkbox" class="item-checkbox" data-name="Fruit Stick" data-price="5">
-                        Fruit Stick
-                    </label>
-                </td>
-                <td class="price-cell">RM 3.00</td>
-                <td><input type="number" class="qty-input item-qty" min="1" value="1"></td>
-            </tr>
-            <tr>
-                <td class="menu-name">
-                    <label>
-                        <input type="checkbox" class="item-checkbox" data-name="Spiral Potato" data-price="5">
-                        Spiral Potato
-                    </label>
-                </td>
-                <td class="price-cell">RM 5.00</td>
-                <td><input type="number" class="qty-input item-qty" min="1" value="1"></td>
-            </tr>
+                <tr>
+                    <td class="menu-name"><label><input type="checkbox" class="item-checkbox" data-price="3" data-name="Milky Cheese Stick"> Milky Cheese Stick</label></td>
+                    <td class="price-cell">RM 3.00</td>
+                    <td><input type="number" class="qty-input item-qty" value="1" min="1"></td>
+                </tr>
+
+                <tr>
+                    <td class="menu-name"><label><input type="checkbox" class="item-checkbox" data-price="5" data-name="Fruit Stick"> Fruit Stick</label></td>
+                    <td class="price-cell">RM 5.00</td>
+                    <td><input type="number" class="qty-input item-qty" value="1" min="1"></td>
+                </tr>
+
+                <tr>
+                    <td class="menu-name"><label><input type="checkbox" class="item-checkbox" data-price="5" data-name="Spiral Potato"> Spiral Potato</label></td>
+                    <td class="price-cell">RM 5.00</td>
+                    <td><input type="number" class="qty-input item-qty" value="1" min="1"></td>
+                </tr>
             </tbody>
         </table>
 
+        <!-- Drinks -->
         <div class="category">Putra Bites Drinks</div>
         <table class="menu-table">
             <tbody>
-            <tr>
-                <td class="menu-name">
-                    <label>
-                        <input type="checkbox" class="item-checkbox" data-name="Melon Breeze" data-price="7">
-                        Melon Breeze
-                    </label>
-                </td>
-                <td class="price-cell">RM 7.00</td>
-                <td><input type="number" class="qty-input item-qty" min="1" value="1"></td>
-            </tr>
-            <tr>
-                <td class="menu-name">
-                    <label>
-                        <input type="checkbox" class="item-checkbox" data-name="Twilight Sparkle" data-price="7">
-                        Twilight Sparkle
-                    </label>
-                </td>
-                <td class="price-cell">RM 7.00</td>
-                <td><input type="number" class="qty-input item-qty" min="1" value="1"></td>
-            </tr>
+                <tr>
+                    <td class="menu-name"><label><input type="checkbox" class="item-checkbox" data-price="7" data-name="Melon Breeze"> Melon Breeze</label></td>
+                    <td class="price-cell">RM 7.00</td>
+                    <td><input type="number" class="qty-input item-qty" value="1" min="1"></td>
+                </tr>
+                <tr>
+                    <td class="menu-name"><label><input type="checkbox" class="item-checkbox" data-price="7" data-name="Twilight Sparkle"> Twilight Sparkle</label></td>
+                    <td class="price-cell">RM 7.00</td>
+                    <td><input type="number" class="qty-input item-qty" value="1" min="1"></td>
+                </tr>
             </tbody>
         </table>
 
+        <!-- Remarks -->
         <div class="form-row">
             <div class="form-group" style="flex-basis: 100%;">
-                <label for="remark">Remarks</label>
-                <textarea id="remark" rows="3" placeholder="Example: Melon Breeze less ice; Taufufa fruit: Mango, toppings: Boba + Oreo; Coconut Jelly add Watermelon + Popping Boba"></textarea>
+                <label>Remarks</label>
+                <textarea id="remark" rows="3"></textarea>
             </div>
         </div>
 
-        <div class="total">
-            Total: RM <span id="totalPrice">0.00</span>
-        </div>
+        <div class="total">Total: RM <span id="totalPrice">0.00</span></div>
 
         <button id="submitBtn" class="submit-btn" disabled>Submit Order (Demo)</button>
 
-        <p class="note">
-            Clicking "Submit Order" will only show a summary pop-up on this page. It will NOT actually send your order.
-            In future you can connect this page to WhatsApp / Google Form / Google Sheet.
-        </p>
     </div>
 
-    <!-- Bottom logos: UPM · Jubli 50 · Robotic Club -->
+    <!-- Footer Logos -->
     <div class="footer-logos">
-        <img src="upm.jpg" alt="UPM Logo">
-        <img src="jubli50.jpg" alt="Jubli Emas 50 Logo">
-        <img src="robotic-footer.jpg" alt="Robotic Club Logo">
-    </div>
-
-    <div class="footer">
-        UPM Robotic Club · Engineering Faculty 50th Anniversary · With Knowledge We Serve
+        <img src="upm.jpg">
+        <img src="jubli50.jpg">
+        <img src="robotic-footer.jpg">
     </div>
 
     <script>
-        // Main elements
         const checkboxes = document.querySelectorAll('.item-checkbox');
         const qtyInputs = document.querySelectorAll('.item-qty');
+        const toppingCheckboxes = document.querySelectorAll('.topping');
+        const fruitRadios = document.querySelectorAll('input[name="taufufa-fruit"]');
+        const fruit2 = document.querySelector('.taufufa-fruit2');
         const totalPriceSpan = document.getElementById('totalPrice');
         const submitBtn = document.getElementById('submitBtn');
 
-        // Taufufa sub-options
-        const taufufaFruit2Checkbox = document.querySelector('.taufufa-fruit2');
-        const fruitRadios = document.querySelectorAll('input[name="taufufa-fruit"]');
-        const toppingCheckboxes = document.querySelectorAll('.topping');
-
-        // Enable / disable Taufufa fruit & toppings
-        function setTaufufaOptionsEnabled(enabled) {
+        // Disable fruit/toppings until selected
+        function enableTaufufaFields(enabled) {
             fruitRadios.forEach(r => r.disabled = !enabled);
-            toppingCheckboxes.forEach(c => c.disabled = !enabled);
+            toppingCheckboxes.forEach(t => t.disabled = !enabled);
         }
 
-        // Initial: disabled
-        if (taufufaFruit2Checkbox) {
-            setTaufufaOptionsEnabled(false);
+        enableTaufufaFields(false);
 
-            taufufaFruit2Checkbox.addEventListener('change', () => {
-                const active = taufufaFruit2Checkbox.checked;
-                setTaufufaOptionsEnabled(active);
+        fruit2.addEventListener('change', () => {
+            const on = fruit2.checked;
+            enableTaufufaFields(on);
+            if (!on) {
+                fruitRadios.forEach(r => r.checked = false);
+                toppingCheckboxes.forEach(t => t.checked = false);
+            }
+            updateTotal();
+        });
 
-                if (!active) {
-                    fruitRadios.forEach(r => r.checked = false);
-                    toppingCheckboxes.forEach(c => c.checked = false);
-                }
-                updateTotal();
-            });
-        }
-
-        // Toppings: max 2
+        // Limit toppings to 2
         toppingCheckboxes.forEach(box => {
             box.addEventListener('change', () => {
-                const selected = Array.from(toppingCheckboxes).filter(c => c.checked);
+                const selected = Array.from(toppingCheckboxes).filter(b => b.checked);
                 if (selected.length > 2) {
+                    alert("Only 2 toppings allowed.");
                     box.checked = false;
-                    alert('You can select only 2 toppings for Taufufa.');
                 }
             });
         });
 
-        // Compute order (with promos)
+        // Update total
         function computeOrder() {
             let total = 0;
-            let hasItem = false;
+            let has = false;
 
-            const dessertEntries = [];
-            const otherEntries = [];
+            let dessertQty = 0;
             let coconutQty = 0;
 
-            checkboxes.forEach((checkbox, index) => {
-                if (!checkbox.checked) return;
+            let otherLines = [];
 
-                const qtyInput = qtyInputs[index];
-                let qty = Number(qtyInput.value);
-                if (!qty || qty < 1) qty = 1;
+            checkboxes.forEach((cb, i) => {
+                if (!cb.checked) return;
 
-                const name = checkbox.dataset.name;
-                const group = checkbox.dataset.group || '';
-                const price = Number(checkbox.dataset.price || 0);
+                const qty = Number(qtyInputs[i].value) || 1;
+                const name = cb.dataset.name;
+                const group = cb.dataset.group || "";
+                const price = Number(cb.dataset.price || 0);
 
-                if (group === 'dessert') {
-                    dessertEntries.push({ name, qty });
-                } else if (group === 'coconut') {
+                has = true;
+
+                if (group === "dessert") {
+                    dessertQty += qty;
+                    return;
+                }
+                if (group === "coconut") {
                     coconutQty += qty;
-                } else {
-                    otherEntries.push({ name, qty, price });
+                    return;
                 }
+
+                let extra = "";
+
+                if (name === "Taufufa (Fruit + 2 toppings)") {
+                    const fruit = Array.from(fruitRadios).find(r => r.checked)?.value || "-";
+                    const tops = Array.from(toppingCheckboxes).filter(t => t.checked).map(t => t.value);
+                    extra = ` (Fruit: ${fruit}, Toppings: ${tops.join(", ") || "-"})`;
+                }
+
+                total += price * qty;
+                otherLines.push(`${name}${extra} x ${qty}`);
             });
 
-            // Pudding promo: 1 for 3, 3 for 8
-            const dessertLines = [];
-            const dessertTotalQty = dessertEntries.reduce((sum, item) => sum + item.qty, 0);
-            if (dessertTotalQty > 0) {
-                hasItem = true;
-                const unitPrice = 3;
-                const bundleQty = 3;
-                const bundlePrice = 8;
-
-                const bundles = Math.floor(dessertTotalQty / bundleQty);
-                const remainder = dessertTotalQty % bundleQty;
-                const dessertTotalPrice = bundles * bundlePrice + remainder * unitPrice;
-
-                total += dessertTotalPrice;
-
-                const detail = dessertEntries
-                    .map(item => `${item.name} x ${item.qty}`)
-                    .join(', ');
-
-                dessertLines.push(
-                    `Pudding Cups (3 for RM8 promo) - Total ${dessertTotalQty} cups [${detail}] : RM ${dessertTotalPrice.toFixed(2)}`
-                );
+            // Dessert promo
+            if (dessertQty > 0) {
+                const sets = Math.floor(dessertQty / 3);
+                const rem = dessertQty % 3;
+                total += sets * 8 + rem * 3;
             }
 
-            // Coconut promo: 1 for 5, 2 for 8
-            let coconutLine = '';
+            // Coconut promo
             if (coconutQty > 0) {
-                hasItem = true;
-                const unitPrice = 5;
-                const bundleQty = 2;
-                const bundlePrice = 8;
-
-                const bundles = Math.floor(coconutQty / bundleQty);
-                const remainder = coconutQty % bundleQty;
-                const coconutTotalPrice = bundles * bundlePrice + remainder * unitPrice;
-
-                total += coconutTotalPrice;
-                coconutLine = `Coconut Jelly (2 for RM8 promo) - ${coconutQty} cups : RM ${coconutTotalPrice.toFixed(2)}`;
+                const sets = Math.floor(coconutQty / 2);
+                const rem = coconutQty % 2;
+                total += sets * 8 + rem * 5;
             }
 
-            // Taufufa selections (fruit + toppings)
-            const selectedFruitRadio = fruitRadios.length
-                ? Array.from(fruitRadios).find(r => r.checked)
-                : null;
-            const selectedFruit = selectedFruitRadio ? selectedFruitRadio.value : '';
-
-            const selectedToppings = toppingCheckboxes.length
-                ? Array.from(toppingCheckboxes)
-                    .filter(c => c.checked)
-                    .map(c => c.value)
-                : [];
-
-            // Other items
-            const otherLines = otherEntries.map(item => {
-                if (!item.price) return `${item.name} x ${item.qty} : RM 0.00`;
-                hasItem = true;
-                const lineTotal = item.price * item.qty;
-
-                let extra = '';
-                if (item.name === 'Taufufa (Fruit + 2 toppings)') {
-                    const fruitText = selectedFruit || '-';
-                    const toppingText = selectedToppings.length
-                        ? selectedToppings.join(', ')
-                        : '-';
-                    extra = ` (Fruit: ${fruitText}; Toppings: ${toppingText})`;
-                }
-
-                total += lineTotal;
-                return `${item.name}${extra} x ${item.qty} : RM ${lineTotal.toFixed(2)}`;
-            });
-
-            const allLines = [...dessertLines];
-            if (coconutLine) allLines.push(coconutLine);
-            allLines.push(...otherLines);
-
-            return { total, hasItem, lines: allLines };
+            return { total, has };
         }
 
         function updateTotal() {
-            const { total, hasItem } = computeOrder();
+            const { total, has } = computeOrder();
             totalPriceSpan.textContent = total.toFixed(2);
-            submitBtn.disabled = !hasItem;
+            submitBtn.disabled = !has;
         }
 
-        // Checkbox changes
-        checkboxes.forEach(cb => {
-            cb.addEventListener('change', updateTotal);
-        });
+        checkboxes.forEach(cb => cb.addEventListener("change", updateTotal));
+        qtyInputs.forEach(q => q.addEventListener("input", updateTotal));
 
-        // Qty inputs: free typing, fix invalid on blur
-        qtyInputs.forEach(input => {
-            input.addEventListener('input', updateTotal);
-            input.addEventListener('blur', () => {
-                let val = Number(input.value);
-                if (!val || val < 1) {
-                    input.value = 1;
-                }
-                updateTotal();
-            });
-        });
-
-        // Submit (demo)
-        submitBtn.addEventListener('click', () => {
-            const { total, hasItem, lines } = computeOrder();
-            if (!hasItem) return;
-
-            const name = document.getElementById('name').value.trim();
-            const whatsapp = document.getElementById('whatsapp').value.trim();
-            const kolej = document.getElementById('kolej').value.trim();
-            const deliveryDate = document.getElementById('deliveryDate').value;
-            const timeSlot = document.getElementById('timeSlot').value;
-            const remark = document.getElementById('remark').value.trim();
-
-            let info =
-                `Name: ${name || '-'}\n` +
-                `WhatsApp: ${whatsapp || '-'}\n` +
-                `Kolej / Block / Room: ${kolej || '-'}\n` +
-                `Delivery Date: ${deliveryDate || '-'}\n` +
-                `Time Slot: ${timeSlot || '-'}\n\n` +
-                `Order:\n` +
-                lines.join('\n') +
-                `\n\nTotal: RM ${total.toFixed(2)}\n\n` +
-                `Remarks: ${remark || '-'}\n\n` +
-                `(This is a demo page – the order is not actually submitted.)`;
-
-            alert(info);
-        });
     </script>
+
 </body>
 </html>
