@@ -4,189 +4,471 @@
     <meta charset="UTF-8">
     <title>UPM Robotic Club Food Fair Online Pre-Order</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <style>
-        body { font-family: system-ui, sans-serif; max-width: 900px; margin: 0 auto; padding: 16px; background: #f9f5ef; }
-        h1, h2, h3 { text-align: center; }
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 16px;
+            background: #f9f5ef;
+        }
+
+        h1, h2, h3 {
+            text-align: center;
+        }
+
         h1 { margin-top: 12px; margin-bottom: 4px; }
+
         .subtitle { text-align: center; font-size: 14px; margin-bottom: 16px; }
-        .event-info { background: #fff; border-radius: 12px; padding: 12px 16px; margin-bottom: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); font-size: 14px; }
+
+        .event-info {
+            background: #fff;
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            font-size: 14px;
+        }
+
         .event-info ul { padding-left: 18px; margin: 4px 0; }
-        .poster-grid { display: grid; grid-template-columns: minmax(0,1fr); gap: 12px; margin-bottom: 20px; }
-        .poster-grid img { width: 100%; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-        @media (min-width: 768px){ .poster-grid { grid-template-columns: repeat(3,1fr);} }
-        .section { background:#fff; border-radius:12px; padding:16px; margin-bottom:20px; box-shadow:0 2px 6px rgba(0,0,0,0.04); }
-        .form-row { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:10px; }
-        .form-group { flex:1 1 160px; }
-        label { display:block; font-size:13px; margin-bottom:4px; }
-        input,select,textarea { width:100%; padding:6px 8px; border-radius:6px; border:1px solid #ddd; font-size:14px; }
-        textarea { resize:vertical; }
-        .menu-table { width:100%; border-collapse:collapse; font-size:14px; }
-        .menu-table td { border-bottom:1px solid #f0e3d0; padding:6px 4px; }
-        .menu-name { font-weight:600; }
-        .price-cell { white-space:nowrap; font-weight:500; }
-        .qty-input { width:60px; }
-        .note { font-size:12px; color:#666; margin-top:4px; }
-        .total { text-align:right; font-size:18px; font-weight:600; margin-top:16px; }
-        .submit-btn { width:100%; padding:10px; border:none; border-radius:999px; background:#25d366; color:#fff; font-size:16px; margin-top:14px; }
-        .footer { text-align:center; font-size:11px; color:#777; margin-top:12px; }
+
+        .poster-grid {
+            display: grid;
+            grid-template-columns: minmax(0,1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .poster-grid img {
+            width: 100%;
+            border-radius: 10px;
+            display: block;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        @media (min-width: 768px) {
+            .poster-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
+        }
+
+        .section {
+            background: #fff;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+        }
+
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .form-group { flex: 1 1 160px; min-width: 0; }
+
+        label { display: block; font-size: 13px; margin-bottom: 4px; }
+
+        input[type="text"], input[type="tel"], input[type="date"], select, textarea {
+            width: 100%;
+            padding: 6px 8px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        textarea { resize: vertical; }
+
+        .menu-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .menu-table th, .menu-table td {
+            border-bottom: 1px solid #f0e3d0;
+            padding: 6px 4px;
+        }
+
+        .menu-table th { text-align: left; background: #fdf4e5; }
+
+        .menu-name { font-weight: 600; }
+
+        .price-cell { white-space: nowrap; font-weight: 500; }
+
+        .qty-input { width: 60px; }
+
+        .note { font-size: 12px; color: #666; margin-top: 4px; }
+
+        .total {
+            text-align: right;
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 16px;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 10px 0;
+            margin-top: 14px;
+            border: none;
+            border-radius: 999px;
+            font-size: 16px;
+            cursor: pointer;
+            background: #25d366;
+            color: #fff;
+        }
+
+        .submit-btn:disabled { background: #ddd; cursor: not-allowed; }
+
+        .footer {
+            text-align: center;
+            font-size: 11px;
+            color: #777;
+            margin-top: 12px;
+        }
+
+        .category { margin-top: 10px; margin-bottom: 4px; font-weight: 600; }
+
+        .top-logo {
+            max-width: 900px;
+            margin: 0 auto 12px;
+        }
+
+        .top-logo img { display: block; width: 100%; height: auto; }
+
+        .footer-logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .footer-logos img {
+            max-width: 120px;
+            height: auto;
+        }
+
+        .stats-link {
+            text-align: center;
+            font-size: 13px;
+            margin-top: 10px;
+        }
+
+        .stats-link a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        .stats-link a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
+
 <body>
 
-<h1>Robotic Club Food Fair</h1>
-<div class="subtitle">Online Pre-Order · Free Delivery to All Kolej 🎉</div>
+    <!-- Top Logo -->
+    <div class="top-logo">
+        < img src="logo.jpg" alt="Robotic Club Logo">
+    </div>
 
-<div class="event-info">
-    <strong>Event Details</strong>
-    <ul>
-        <li><b>Date:</b> 17–20 Dec 2025</li>
-        <li><b>Time:</b> 8:00am – 5:00pm</li>
-        <li><b>Venue:</b> Faculty of Engineering, UPM</li>
-        <li><b>Delivery:</b> Free delivery to all Kolej</li>
-    </ul>
-</div>
+    <h1>Robotic Club Food Fair</h1>
+    <div class="subtitle">
+        Online Pre-Order · Engineering Faculty 50th Anniversary · Free Delivery to All Kolej 🎉
+    </div>
 
-<div class="section">
-    <h3>Customer Details</h3>
-    <div class="form-row">
-        <div class="form-group">
-            <label>Name</label>
-            <input id="name" type="text" required>
-        </div>
-        <div class="form-group">
-            <label>WhatsApp Number</label>
-            <input id="whatsapp" type="tel" required>
+    <div class="event-info">
+        <strong>Event Details</strong>
+        <ul>
+            <li><b>Date:</b> 17–20 Dec 2025</li>
+            <li><b>Time:</b> 8:00am – 5:00pm</li>
+            <li><b>Venue:</b> Faculty of Engineering, UPM</li>
+            <li><b>Delivery:</b> Free delivery to all Kolej</li>
+        </ul>
+        <div class="note">
+            Please place your order before 10:00pm on the day before delivery.
+            Actual delivery schedule will be confirmed by the Robotic Club committee.
         </div>
     </div>
 
-    <div class="form-row">
-        <div class="form-group">
-            <label>Kolej / Block</label>
-            <select id="kolej-block">
-                <option value="">Please select</option>
-                <option>K10</option><option>Library</option><option>KC</option>
-                <option>KTDI</option><option>KOSASS</option><option>KPZ</option>
-                <option>K12</option><option>K13</option><option>K14</option>
-                <option>FPV</option><option>K17 (1)</option><option>K17 (2)</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label>Delivery Date</label>
-            <select id="delivery-date">
-                <option value="">Please select</option>
-                <option>17/12/25</option><option>18/12/25</option>
-                <option>19/12/25</option><option>20/12/25</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label>Preferred Time Slot</label>
-            <select id="timeSlot">
-                <option value="">Please select</option>
-                <option>12:00–1:00pm</option><option>5:00–6:00pm</option>
-            </select>
+    <!-- Delivery Location Section -->
+    <div class="section">
+        <h2>Delivery Location</h2>
+        <div class="poster-grid">
+            < img src="location.jpg" alt="Delivery Location">
         </div>
     </div>
-</div>
 
-<div class="section">
-    <h3>Order Items</h3>
+    <!-- Menu Posters -->
+    <div class="section">
+        <h2>Menu Posters</h2>
+        <div class="poster-grid">
+            < img src="menu-dessert.png.jpg" alt="Dessert Menu">
+            < img src="menu-stick.png.jpg" alt="Stick Menu">
+            < img src="menu-drink.png.jpg" alt="Drinks Menu">
+        </div>
+    </div>
+    <div class="section">
+        <h2>Online Pre-Order Form</h2>
 
-    <!-- PUDDING -->
-    <div class="category">Pudding Cup</div>
-    <p class="note">1 for RM3 · 3 for RM8</p>
+        <h3>Customer Details</h3>
 
-    <table class="menu-table">
-        <tbody>
-            <tr><td class="menu-name"><label><input type="checkbox" class="item-checkbox" data-group="dessert" data-name="Mango Cup"> Mango Cup</label></td><td class="price-cell">RM 3.00</td><td><input type="number" class="qty-input item-qty" value="1"></td></tr>
-            <tr><td class="menu-name"><label><input type="checkbox" class="item-checkbox" data-group="dessert" data-name="Chocolate Cup"> Chocolate Cup</label></td><td class="price-cell">RM 3.00</td><td><input type="number" class="qty-input item-qty" value="1"></td></tr>
-            <tr><td class="menu-name"><label><input type="checkbox" class="item-checkbox" data-group="dessert" data-name="Grape Cup"> Grape Cup</label></td><td class="price-cell">RM 3.00</td><td><input type="number" class="qty-input item-qty" value="1"></td></tr>
-        </tbody>
-    </table>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Name</label>
+                <input id="name" type="text" required>
+            </div>
+            <div class="form-group">
+                <label>WhatsApp Number</label>
+                <input id="whatsapp" type="tel" required>
+            </div>
+        </div>
 
-    <!-- COCONUT -->
-    <div class="category">Coconut Jelly</div>
-    <p class="note">1 for RM5 · 2 for RM8</p>
-    <table class="menu-table">
-        <tr><td class="menu-name"><label><input type="checkbox" class="item-checkbox" data-group="coconut" data-name="Coconut Jelly"> Coconut Jelly</label></td><td class="price-cell">RM 5.00</td><td><input class="qty-input item-qty" type="number" value="1"></td></tr>
-    </table>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Kolej / Block</label>
+                <select id="kolej-block" required>
+                    <option value="">Please select</option>
+                    <option value="K10">K10</option>
+                    <option value="Library">Library</option>
+                    <option value="KC">KC</option>
+                    <option value="KTDI">KTDI</option>
+                    <option value="KOSASS">KOSASS</option>
+                    <option value="KPZ">KPZ</option>
+                    <option value="K12">K12</option>
+                    <option value="K13">K13</option>
+                    <option value="K14">K14</option>
+                    <option value="FPV">FPV</option>
+                    <option value="K17 (1)">K17 (1)</option>
+                    <option value="K17 (2)">K17 (2)</option>
+                </select>
+            </div>
 
-    <!-- TAUFUFA -->
-    <div class="category">Tau Fu Fa</div>
-    <p class="note">Original RM4 · Fruit+2 toppings RM6.90 · All-in RM9.90</p>
+            <div class="form-group">
+                <label>Delivery Date</label>
+                <select id="delivery-date" required>
+                    <option value="">Please select</option>
+                    <option value="17/12/25">17/12/25</option>
+                    <option value="18/12/25">18/12/25</option>
+                    <option value="19/12/25">19/12/25</option>
+                    <option value="20/12/25">20/12/25</option>
+                </select>
+            </div>
 
-    <table class="menu-table">
-        <tr>
-            <td class="menu-name"><label><input type="checkbox" class="item-checkbox" data-price="4" data-name="Taufufa Original"> Taufufa Original</label></td>
-            <td class="price-cell">RM 4.00</td>
-            <td><input class="qty-input item-qty" value="1" type="number"></td>
-        </tr>
+            <div class="form-group">
+                <label>Preferred Time Slot</label>
+                <select id="timeSlot" required>
+                    <option value="">Please select</option>
+                    <option value="12:00–1:00pm">12:00–1:00pm</option>
+                    <option value="5:00–6:00pm">5:00–6:00pm</option>
+                </select>
+            </div>
+        </div>
 
-        <tr>
-            <td class="menu-name">
-                <label><input type="checkbox" class="item-checkbox taufufa-fruit2" data-price="6.9" data-name="Taufufa (Fruit + 2 toppings)"> Taufufa (Fruit + 2 toppings)</label>
+        <!-- Order Items -->
+        <h3>Order Items</h3>
 
-                <div style="margin-left:20px;">
-                    <strong>Fruit (choose 1):</strong><br>
-                    <label><input type="radio" name="taufufa-fruit" value="Watermelon"> Watermelon</label><br>
-                    <label><input type="radio" name="taufufa-fruit" value="Mango"> Mango</label>
-                </div>
+        <!-- Pudding -->
+        <div class="category">Pudding Cup</div>
+        <p class="note">1 for RM3 · 3 for RM8 (mix & match allowed)</p >
 
-                <div style="margin-left:20px; margin-top:8px;">
-                    <strong>Toppings (choose 2):</strong><br>
-                    <label><input type="checkbox" class="topping" value="Boba"> Boba</label><br>
-                    <label><input type="checkbox" class="topping" value="Grass Jelly"> Grass Jelly</label><br>
-                    <label><input type="checkbox" class="topping" value="Popping Boba"> Popping Boba</label><br>
-                    <label><input type="checkbox" class="topping" value="Oreo"> Oreo</label>
-                </div>
-            </td>
-            <td class="price-cell">RM 6.90</td>
-            <td><input type="number" value="1" class="qty-input item-qty"></td>
-        </tr>
+        <table class="menu-table">
+            <tbody>
+                <tr>
+                    <td class="menu-name">
+                        <label><input type="checkbox" class="item-checkbox" data-group="dessert" data-name="Mango Cup"> Mango Cup</label>
+                    </td>
+                    <td class="price-cell">RM 3.00</td>
+                    <td><input type="number" class="qty-input item-qty" value="1" min="1"></td>
+                </tr>
+                <tr>
+                    <td class="menu-name">
+                        <label><input type="checkbox" class="item-checkbox" data-group="dessert" data-name="Chocolate Cup"> Chocolate Cup</label>
+                    </td>
+                    <td class="price-cell">RM 3.00</td>
+                    <td><input type="number" class="qty-input item-qty" value="1" min="1"></td>
+                </tr>
+                <tr>
+                    <td class="menu-name">
+                        <label><input type="checkbox" class="item-checkbox" data-group="dessert" data-name="Grape Cup"> Grape Cup</label>
+                    </td>
+                    <td class="price-cell">RM 3.00</td>
+                    <td><input type="number" class="qty-input item-qty" value="1" min="1"></td>
+                </tr>
+            </tbody>
+        </table>
 
-        <tr>
-            <td class="menu-name"><label><input type="checkbox" class="item-checkbox" data-price="9.9" data-name="Taufufa All In"> Taufufa All In</label></td>
-            <td class="price-cell">RM 9.90</td>
-            <td><input value="1" class="qty-input item-qty" type="number"></td>
-        </tr>
-    </table>
+        <!-- Coconut -->
+        <div class="category">Coconut Jelly</div>
+        <p class="note">1 for RM5 · 2 for RM8</p >
+        <table class="menu-table">
+            <tbody>
+                <tr>
+                    <td class="menu-name">
+                        <label><input type="checkbox" class="item-checkbox" data-group="coconut" data-name="Coconut Jelly"> Coconut Jelly</label>
+                    </td>
+                    <td class="price-cell">RM 5.00</td>
+                    <td><input type="number" class="qty-input item-qty" value="1" min="1"></td>
+                </tr>
+            </tbody>
+        </table>
 
-    <!-- Stick & Bite -->
-    <div class="category">Stick & Bite Menu</div>
-    <table class="menu-table">
-        <tr><td class="menu-name"><label><input type="checkbox" class="item-checkbox" data-price="3" data-name="Milky Cheese Stick"> Milky Cheese Stick</label></td><td class="price-cell">RM 3.00</td><td><input value="1" class="qty-input item-qty"></td></tr>
-        <tr><td class="menu-name"><label><input type="checkbox" class="item-checkbox" data-price="3" data-name="Fruit Stick"> Fruit Stick</label></td><td class="price-cell">RM 3.00</td><td><input value="1" class="qty-input item-qty"></td></tr>
-        <tr><td class="menu-name"><label><input type="checkbox" class="item-checkbox" data-price="5" data-name="Spiral Potato"> Spiral Potato</label></td><td class="price-cell">RM 5.00</td><td><input value="1" class="qty-input item-qty"></td></tr>
-    </table>
+        <!-- Tau Fu Fa -->
+        <div class="category">Tau Fu Fa</div>
+        <p class="note">Original RM4 · Fruit+2 toppings RM6.90 · All-in RM9.90</p >
 
-    <!-- Drinks -->
-    <div class="category">Drinks</div>
-    <table class="menu-table">
-        <tr><td class="menu-name"><label><input type="checkbox" class="item-checkbox" data-price="7" data-name="Melon Breeze"> Melon Breeze</label></td><td class="price-cell">RM 7.00</td><td><input class="qty-input item-qty" value="1"></td></tr>
-        <tr><td class="menu-name"><label><input type="checkbox" class="item-checkbox" data-price="7" data-name="Twilight Sparkle"> Twilight Sparkle</label></td><td class="price-cell">RM 7.00</td><td><input class="qty-input item-qty" value="1"></td></tr>
-    </table>
+        <table class="menu-table">
+            <tbody>
 
-    <label>Remarks</label>
-    <textarea id="remark" rows="3"></textarea>
+                <!-- Original -->
+                <tr>
+                    <td class="menu-name">
+                        <label><input type="checkbox" class="item-checkbox" data-price="4" data-name="Taufufa Original"> Taufufa Original</label>
+                    </td>
+                    <td class="price-cell">RM 4.00</td>
+                    <td><input type="number" class="qty-input item-qty" value="1" min="1"></td>
+                </tr>
 
-    <div class="total">Total: RM <span id="totalPrice">0.00</span></div>
+                <!-- Fruit + 2 toppings -->
+                <tr>
+                    <td class="menu-name">
+                        <label>
+                            <input type="checkbox" class="item-checkbox taufufa-fruit2" data-price="6.9" data-name="Taufufa (Fruit + 2 toppings)">
+                            Taufufa (Fruit + 2 toppings)
+                        </label>
 
-    <button id="submitBtn" class="submit-btn" disabled>Submit Order (TNG)</button>
-</div>
+                        <div style="margin-left:20px; margin-top:6px;">
+                            <strong>Fruit (choose 1):</strong><br>
+                            <label><input type="radio" name="taufufa-fruit" value="Watermelon"> Watermelon</label><br>
+                            <label><input type="radio" name="taufufa-fruit" value="Mango"> Mango</label>
+                        </div>
 
-<script>
-// Your Google Apps Script API URL
-const STATS_API = "https://script.google.com/a/macros/student.upm.edu.my/s/AKfycbxu-ol4Os5qrQI3qAi9ykrugjG9qJW9LpIMqd_bwMzYeuK7m8wJFpVKjjtGHsohGGW2/exec";
+                        <div style="margin-left:20px; margin-top:8px;">
+                            <strong>Toppings (choose 2):</strong><br>
+                            <label><input type="checkbox" class="topping" value="Boba"> Boba</label><br>
+                            <label><input type="checkbox" class="topping" value="Grass Jelly"> Grass Jelly</label><br>
+                            <label><input type="checkbox" class="topping" value="Popping Boba"> Popping Boba</label><br>
+                            <label><input type="checkbox" class="topping" value="Oreo"> Oreo</label>
+                        </div>
 
-document.addEventListener("DOMContentLoaded", function(){
-    const checkboxes = document.querySelectorAll(".item-checkbox");
-    const qtyInputs = document.querySelectorAll(".item-qty");
-    const toppingCheckboxes = document.querySelectorAll(".topping");
-    const fruitRadios = document.querySelectorAll("input[name='taufufa-fruit']");
-    const fruit2 = document.querySelector(".taufufa-fruit2");
-    const totalPriceSpan = document.getElementById("totalPrice");
+                        <div class="note" style="margin-left:20px;">
+                            Please select 1 fruit and 2 toppings.
+                        </div>
+                    </td>
 
+                    <td class="price-cell">RM 6.90</td>
+                    <td><input type="number" class="qty-input item-qty" value="1" min="1"></td>
+                </tr>
+
+                <!-- All In -->
+                <tr>
+                    <td class="menu-name">
+                        <label><input type="checkbox" class="item-checkbox" data-price="9.9" data-name="Taufufa All In"> Taufufa All In</label>
+                        <div class="note">Much bigger! All toppings included.</div>
+                    </td>
+                    <td class="price-cell">RM 9.90</td>
+                    <td><input type="number" class="qty-input item-qty" value="1" min="1"></td>
+                </tr>
+
+            </tbody>
+        </table>
+
+        <!-- Sticks -->
+        <div class="category">Stick & Bite Menu</div>
+        <table class="menu-table">
+            <tbody>
+                <tr>
+                    <td class="menu-name"><label><input type="checkbox" class="item-checkbox" data-price="3" data-name="Milky Cheese Stick"> Milky Cheese Stick</label></td>
+                    <td class="price-cell">RM 3.00</td>
+                    <td><input type="number" class="qty-input item-qty" value="1" min="1"></td>
+                </tr>
+
+                <tr>
+                    <td class="menu-name"><label><input type="checkbox" class="item-checkbox" data-price="3" data-name="Fruit Stick"> Fruit Stick</label></td>
+                    <td class="price-cell">RM 3.00</td>
+                    <td><input type="number" class="qty-input item-qty" value="1" min="1"></td>
+                </tr>
+
+                <tr>
+                    <td class="menu-name"><label><input type="checkbox" class="item-checkbox" data-price="5" data-name="Spiral Potato"> Spiral Potato</label></td>
+                    <td class="price-cell">RM 5.00</td>
+                    <td><input type="number" class="qty-input item-qty" value="1" min="1"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Drinks -->
+        <div class="category">Putra Bites Drinks</div>
+        <table class="menu-table">
+            <tbody>
+                <tr>
+                    <td class="menu-name"><label><input type="checkbox" class="item-checkbox" data-price="7" data-name="Melon Breeze"> Melon Breeze</label></td>
+                    <td class="price-cell">RM 7.00</td>
+                    <td><input type="number" class="qty-input item-qty" value="1" min="1"></td>
+                </tr>
+                <tr>
+                    <td class="menu-name"><label><input type="checkbox" class="item-checkbox" data-price="7" data-name="Twilight Sparkle"> Twilight Sparkle</label></td>
+                    <td class="price-cell">RM 7.00</td>
+                    <td><input type="number" class="qty-input item-qty" value="1" min="1"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Remarks -->
+        <div class="form-row">
+            <div class="form-group" style="flex-basis: 100%;">
+                <label>Remarks</label>
+                <textarea id="remark" rows="3"></textarea>
+            </div>
+        </div>
+
+        <div class="total">
+            Total: RM <span id="totalPrice">0.00</span>
+        </div>
+
+        <button id="submitBtn" class="submit-btn" disabled>
+            Submit Order (TNG)
+        </button>
+
+        <div class="stats-link">
+            View website statistics: <a href=" ">Open stats page</a >
+        </div>
+    </div>
+
+    <!-- Footer Logos -->
+    <div class="footer-logos">
+        < img src="upm.jpg" alt="UPM logo">
+        < img src="jubli50.jpg" alt="50th anniversary logo">
+        < img src="robotic-footer.jpg" alt="Robotic Club logo">
+    </div>
+
+    <div class="footer">
+        UPM Robotic Club · Engineering Faculty 50th Anniversary · With Knowledge We Serve
+    </div>
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const checkboxes = document.querySelectorAll('.item-checkbox');
+    const qtyInputs = document.querySelectorAll('.item-qty');
+    const toppingCheckboxes = document.querySelectorAll('.topping');
+    const fruitRadios = document.querySelectorAll('input[name="taufufa-fruit"]');
+    const fruit2 = document.querySelector('.taufufa-fruit2');
+    const totalPriceSpan = document.getElementById('totalPrice');
+    const submitBtn = document.getElementById('submitBtn');
+
+    // 🔥 Your Google Sheet API URL
+    const SHEET_API =
+        "https://script.google.com/a/macros/student.upm.edu.my/s/AKfycbxu-ol4Os5qrQI3qAi9ykrugjG9qJW9LpIMqd_bwMzYeuK7m8wJFpVKjjtGHsohGGW2/exec";
+
+    // ------------------------------
+    // Enable / disable fruit + toppings
+    // ------------------------------
     function enableTaufufaFields(enabled) {
         fruitRadios.forEach(r => r.disabled = !enabled);
         toppingCheckboxes.forEach(t => t.disabled = !enabled);
@@ -195,15 +477,19 @@ document.addEventListener("DOMContentLoaded", function(){
     enableTaufufaFields(false);
 
     fruit2.addEventListener("change", () => {
-        const on = fruit2.checked;
-        enableTaufufaFields(on);
-        if (!on) {
-            fruitRadios.forEach(r => r.checked = false);
-            toppingCheckboxes.forEach(t => t.checked = false);
+        const active = fruit2.checked;
+        enableTaufufaFields(active);
+
+        if (!active) {
+            fruitRadios.forEach(r => (r.checked = false));
+            toppingCheckboxes.forEach(t => (t.checked = false));
         }
         updateTotal();
     });
 
+    // ------------------------------
+    // Limit toppings to 2
+    // ------------------------------
     toppingCheckboxes.forEach(box => {
         box.addEventListener("change", () => {
             const selected = Array.from(toppingCheckboxes).filter(b => b.checked);
@@ -214,6 +500,9 @@ document.addEventListener("DOMContentLoaded", function(){
         });
     });
 
+    // ------------------------------
+    // Compute order and prices
+    // ------------------------------
     function computeOrder() {
         let total = 0;
         let hasItem = false;
@@ -225,7 +514,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
         let lines = [];
 
-        checkboxes.forEach((cb, i) => {
+        checkboxes.forEach(cb => {
             if (!cb.checked) return;
 
             hasItem = true;
@@ -238,7 +527,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
             if (group === "dessert") {
                 dessertQty += qty;
-                dessertList.push(${name} x ${qty});
+                dessertList.push(`${name} x ${qty}`);
             }
             else if (group === "coconut") {
                 coconutQty += qty;
@@ -248,45 +537,59 @@ document.addEventListener("DOMContentLoaded", function(){
 
                 if (name === "Taufufa (Fruit + 2 toppings)") {
                     const fruit = Array.from(fruitRadios).find(r => r.checked)?.value || "-";
-                    const toppings = Array.from(toppingCheckboxes).filter(t => t.checked).map(t => t.value);
+                    const toppings = Array.from(toppingCheckboxes)
+                                            .filter(t => t.checked)
+                                            .map(t => t.value);
                     extra = ` (Fruit: ${fruit}; Toppings: ${toppings.join(", ") || "-"})`;
                 }
 
-                total += price * qty;
-                lines.push(${name}${extra} x ${qty} : RM ${(price * qty).toFixed(2)});
+                const subtotal = qty * price;
+                total += subtotal;
+                lines.push(`${name}${extra} x ${qty} : RM ${subtotal.toFixed(2)}`);
             }
         });
 
+        // Pudding promo
         if (dessertQty > 0) {
             const bundles = Math.floor(dessertQty / 3);
             const remainder = dessertQty % 3;
-            const dessertTotal = bundles * 8 + remainder * 3;
-            total += dessertTotal;
-            lines.push(Pudding Cups - ${dessertQty} cups [${dessertList.join(", ")}] : RM ${dessertTotal.toFixed(2)});
+            const puddingPrice = bundles * 8 + remainder * 3;
+            total += puddingPrice;
+
+            lines.push(
+                `Pudding Cups - ${dessertQty} cups [${dessertList.join(", ")}] : RM ${puddingPrice.toFixed(2)}`
+            );
         }
 
+        // Coconut promo
         if (coconutQty > 0) {
             const bundles = Math.floor(coconutQty / 2);
             const remainder = coconutQty % 2;
-            const coconutTotal = bundles * 8 + remainder * 5;
-            total += coconutTotal;
-            lines.push(Coconut Jelly - ${coconutQty} cups : RM ${coconutTotal.toFixed(2)});
+            const coconutPrice = bundles * 8 + remainder * 5;
+            total += coconutPrice;
+
+            lines.push(`Coconut Jelly - ${coconutQty} cups : RM ${coconutPrice.toFixed(2)}`);
         }
 
         return { total, hasItem, lines };
     }
 
     function updateTotal() {
-        const result = computeOrder();
-        totalPriceSpan.textContent = result.total.toFixed(2);
-        document.getElementById("submitBtn").disabled = !result.hasItem;
+        const r = computeOrder();
+        totalPriceSpan.textContent = r.total.toFixed(2);
+        submitBtn.disabled = !r.hasItem;
     }
 
-    checkboxes.forEach(c => c.addEventListener("change", updateTotal));
+    checkboxes.forEach(cb => cb.addEventListener("change", updateTotal));
     qtyInputs.forEach(q => q.addEventListener("input", updateTotal));
 
-    document.getElementById("submitBtn").addEventListener("click", () => {
-        const result = computeOrder();
+    updateTotal();
+
+    // ------------------------------
+    // Submit Order
+    // ------------------------------
+    submitBtn.addEventListener("click", () => {
+        const r = computeOrder();
 
         const name = document.getElementById("name").value.trim();
         const whatsapp = document.getElementById("whatsapp").value.trim();
@@ -296,25 +599,24 @@ document.addEventListener("DOMContentLoaded", function(){
         const remark = document.getElementById("remark").value.trim();
 
         if (!name || !whatsapp || !kolej || !date || !timeSlot) {
-            alert("Please fill all required fields.");
+            alert("Please fill in all required customer details.");
             return;
         }
 
-        const message = 
-            Order Summary\n\n +
-            Name: ${name}\n +
-            WhatsApp: ${whatsapp}\n +
-            Kolej: ${kolej}\n +
-            Delivery: ${date}\n +
-            Time Slot: ${timeSlot}\n\n +
-            Items:\n${result.lines.join("\n")}\n\n +
-            Total: RM ${result.total.toFixed(2)}\n +
-            Remarks: ${remark || "-"};
+        const confirmMsg =
+            `Robotic Club Food Fair Order\n\n` +
+            `Name: ${name}\nWhatsApp: ${whatsapp}\nKolej: ${kolej}\nDelivery Date: ${date}\nTime Slot: ${timeSlot}\n\n` +
+            `Order:\n${r.lines.join("\n")}\n\n` +
+            `Total: RM ${r.total.toFixed(2)}\n` +
+            `Remarks: ${remark || "-"}\n\n` +
+            `Press OK to proceed to TNG payment.`;
 
-        if (!confirm(message + "\n\nConfirm order?")) return;
+        if (!confirm(confirmMsg)) return;
 
-        // SEND ORDER TO GOOGLE SHEET
-        fetch(STATS_API, {
+        // ------------------------------
+        // 🔥 Send order to Google Sheet
+        // ------------------------------
+        fetch(SHEET_API, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -324,16 +626,16 @@ document.addEventListener("DOMContentLoaded", function(){
                 deliveryDate: date,
                 timeSlot: timeSlot,
                 remark: remark,
-                total: result.total,
-                orderText: result.lines.join("\n")
+                total: r.total,
+                orderText: r.lines.join("\n")
             })
-        });
+        }).catch(err => console.error("Failed to send order:", err));
 
-        // OPEN TNG PAGE
-        window.open("tng-qrcode.html?total=" + result.total.toFixed(2), "_blank");
+        // ------------------------------
+        // Open TNG Payment Page
+        // ------------------------------
+        window.open("tng-qrcode.html?total=" + r.total.toFixed(2), "_blank");
     });
+
 });
 </script>
-
-</body>
-</html>
