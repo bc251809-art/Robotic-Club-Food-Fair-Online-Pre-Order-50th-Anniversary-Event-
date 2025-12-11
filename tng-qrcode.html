@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Touch 'n Go eWallet Payment</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      text-align: center;
+      padding: 20px;
+      background: #f9f5ef;
+    }
+    h2 {
+      margin-bottom: 10px;
+    }
+    .amount {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    img {
+      max-width: 260px;
+      width: 80%;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .note {
+      font-size: 14px;
+      color: #555;
+      margin-top: 16px;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <h2>Touch 'n Go eWallet Payment</h2>
+  <p class="amount">Please pay: <span id="amount">RM 0.00</span></p>
+
+  <!-- 这里放你们的 TNG 收款二维码图片，文件名自定义，这里用 tng-qrcode.jpg -->
+  <img src="tng-qrcode.jpg" alt="TNG QR Code">
+
+  <p class="note">
+    1. Open your Touch 'n Go eWallet app.<br>
+    2. Scan this QR code and pay the exact amount shown above.<br>
+    3. Please send your payment screenshot to our WhatsApp chat for confirmation.
+  </p>
+
+  <script>
+    // 从 URL 读取 ?total=xx 参数
+    const params = new URLSearchParams(location.search);
+    const total = params.get('total') || '0.00';
+    document.getElementById('amount').textContent = 'RM ' + Number(total).toFixed(2);
+  </script>
+</body>
+</html>
