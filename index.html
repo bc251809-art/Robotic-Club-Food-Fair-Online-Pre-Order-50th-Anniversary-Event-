@@ -457,264 +457,335 @@
         UPM Robotic Club · Engineering Faculty 50th Anniversary · With Knowledge We Serve
     </div>
 
-    <script>
-        const checkboxes = document.querySelectorAll('.item-checkbox');
-        const qtyInputs = document.querySelectorAll('.item-qty');
-        const toppingCheckboxes = document.querySelectorAll('.topping');
-        const fruitRadios = document.querySelectorAll('input[name="taufufa-fruit"]');
-        const fruit2 = document.querySelector('.taufufa-fruit2');
-        const totalPriceSpan = document.getElementById('totalPrice');
-        const submitBtn = document.getElementById('submitBtn');
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const checkboxes = document.querySelectorAll('.item-checkbox');
+    const qtyInputs = document.querySelectorAll('.item-qty');
+    const toppingCheckboxes = document.querySelectorAll('.topping');
+    const fruitRadios = document.querySelectorAll('input[name="taufufa-fruit"]');
+    const fruit2 = document.querySelector('.taufufa-fruit2');
+    const totalPriceSpan = document.getElementById('totalPrice');
+    const submitBtn = document.getElementById('submitBtn');
 
-        const statOrdersSpan = document.getElementById('statOrders');
-        const statAmountSpan = document.getElementById('statAmount');
+    // 网站统计元素（可能不存在，所以要判空）
+    const statOrdersSpan = document.getElementById('statOrders');
+    const statAmountSpan = document.getElementById('statAmount');
+    const statsEnabled = statOrdersSpan && statAmountSpan;
 
-        // ---------- Taufufa 逻辑：未选中之前禁用 Fruit + toppings ----------
-        function enableTaufufaFields(enabled) {
-            fruitRadios.forEach(r => r.disabled = !enabled);
-            toppingCheckboxes.forEach(t => t.disabled = !enabled);
-        }
-
-        if (fruit2) {
-            // 初始禁用
-            enableTaufufaFields(false);
-
-            fruit2.addEventListener('change', () => {
-                const on = fruit2.checked;
-                enableTaufufaFields(on);
-                if (!on) {
-                    fruitRadios.forEach(r => r.checked = false);
-                    toppingCheckboxes.forEach(t => t.checked = false);
-                }
-                updateTotal();
-            });
-        }
-
-        // 限制 toppings 最多 2 个
-        toppingCheckboxes.forEach(box => {
-            box.addEventListener('change', () => {
-                const selected = Array.from(toppingCheckboxes).filter(b => b.checked);
-                if (selected.length > 2) {
-                    alert("Only 2 toppings allowed.");
-                    box.checked = false;
-                }
-            });
+    // -------- Taufufa 开关：没勾第二个选项前禁用 fruit / toppings --------
+    function enableTaufufaFields(enabled) {
+        fruitRadios.forEach(function (r) {
+            r.disabled = !enabled;
         });
-
-        // ---------- 网站统计（localStorage） ----------
-        function loadStats() {
-            try {
-                const raw = localStorage.getItem('orderStats');
-                if (!raw) return;
-                const s = JSON.parse(raw);
-                const count = s && s.count ? s.count : 0;
-                const total = s && s.total ? s.total : 0;
-                statOrdersSpan.textContent = count;
-                statAmountSpan.textContent = total.toFixed(2);
-            } catch (e) {
-                console.error('Failed to load stats', e);
-            }
-        }
-
-        function saveStats(orderTotal) {
-            try {
-                const raw = localStorage.getItem('orderStats');
-                let s = { count: 0, total: 0 };
-                if (raw) {
-                    const parsed = JSON.parse(raw);
-                    if (parsed) s = parsed;
-                }
-                s.count = (s.count || 0) + 1;
-                s.total = (s.total || 0) + orderTotal;
-                localStorage.setItem('orderStats', JSON.stringify(s));
-                statOrdersSpan.textContent = s.count;
-                statAmountSpan.textContent = s.total.toFixed(2);
-            } catch (e) {
-                console.error('Failed to save stats', e);
-            }
-        }
-
-        loadStats();
-
-        // ---------- 计算订单 ----------
-        function computeOrder() {
-            let total = 0;
-            let hasItem = false;
-
-            let dessertEntries = [];
-            let dessertQty = 0;
-            let coconutQty = 0;
-            let otherEntries = [];
-
-            checkboxes.forEach((cb) => {
-                if (!cb.checked) return;
-
-                hasItem = true;
-
-                // 更稳的写法：从当前 checkbox 所在行找数量输入框
-                const row = cb.closest('tr');
-                const qtyInput = row ? row.querySelector('.item-qty') : null;
-                const qty = qtyInput ? (Number(qtyInput.value) || 1) : 1;
-
-                const name = cb.dataset.name;
-                const group = cb.dataset.group || "";
-                const price = Number(cb.dataset.price || 0);
-
-                if (group === "dessert") {
-                    dessertEntries.push({ name, qty });
-                    dessertQty += qty;
-                    return;
-                }
-
-                if (group === "coconut") {
-                    coconutQty += qty;
-                    return;
-                }
-
-                otherEntries.push({ name, qty, price });
-            });
-
-            const lines = [];
-
-            // Pudding 促销：1 for 3, 3 for 8
-            if (dessertQty > 0) {
-                const unitPrice = 3;
-                const bundleQty = 3;
-                const bundlePrice = 8;
-
-                const bundles = Math.floor(dessertQty / bundleQty);
-                const remainder = dessertQty % bundleQty;
-                const dessertTotalPrice = bundles * bundlePrice + remainder * unitPrice;
-
-                total += dessertTotalPrice;
-
-                const detail = dessertEntries
-                    .map(item => ${item.name} x ${item.qty})
-                    .join(", ");
-
-                lines.push(
-                    Pudding Cups (3 for RM8 promo) - Total ${dessertQty} cups [${detail}] : RM ${dessertTotalPrice.toFixed(2)}
-                );
-            }
-
-            // Coconut 促销：1 for 5, 2 for 8
-            if (coconutQty > 0) {
-                const unitPrice = 5;
-                const bundleQty = 2;
-                const bundlePrice = 8;
-
-                const bundles = Math.floor(coconutQty / bundleQty);
-                const remainder = coconutQty % bundleQty;
-                const coconutTotalPrice = bundles * bundlePrice + remainder * unitPrice;
-
-                total += coconutTotalPrice;
-                lines.push(
-                    Coconut Jelly (2 for RM8 promo) - ${coconutQty} cups : RM ${coconutTotalPrice.toFixed(2)}
-                );
-            }
-
-            // Taufufa 选项（fruit + toppings 信息）
-            const selectedFruitRadio = fruitRadios.length
-                ? Array.from(fruitRadios).find(r => r.checked)
-                : null;
-            const selectedFruit = selectedFruitRadio ? selectedFruitRadio.value : '';
-
-            const selectedToppings = toppingCheckboxes.length
-                ? Array.from(toppingCheckboxes)
-                    .filter(c => c.checked)
-                    .map(c => c.value)
-                : [];
-
-            // 其他 item（含 taufufa 原味 / all in / sticks / drinks）
-            otherEntries.forEach(item => {
-                const { name, qty, price } = item;
-                if (!price) {
-                    lines.push(${name} x ${qty} : RM 0.00);
-                    return;
-                }
-                let extra = "";
-                if (name === "Taufufa (Fruit + 2 toppings)") {
-                    const fruitText = selectedFruit || "-";
-                    const toppingText = selectedToppings.length
-                        ? selectedToppings.join(", ")
-                        : "-";
-                    extra = ` (Fruit: ${fruitText}; Toppings: ${toppingText})`;
-                }
-
-                const lineTotal = price * qty;
-                total += lineTotal;
-                lines.push(${name}${extra} x ${qty} : RM ${lineTotal.toFixed(2)});
-            });
-
-            return { total, hasItem, lines };
-        }
-
-        function updateTotal() {
-            const { total, hasItem } = computeOrder();
-            totalPriceSpan.textContent = total.toFixed(2);
-            submitBtn.disabled = !hasItem;
-        }
-
-        checkboxes.forEach(cb => cb.addEventListener("change", updateTotal));
-        qtyInputs.forEach(q => {
-            q.addEventListener("input", updateTotal);
-            q.addEventListener("blur", () => {
-                if (!q.value || Number(q.value) < 1) q.value = 1;
-                updateTotal();
-            });
+        toppingCheckboxes.forEach(function (t) {
+            t.disabled = !enabled;
         });
+    }
 
-        // ---------- 提交：必填校验 + 确认弹窗 + TNG + 统计 ----------
-        submitBtn.addEventListener('click', () => {
-            const { total, hasItem, lines } = computeOrder();
-            if (!hasItem) {
-                alert('Please select at least 1 item before submitting.');
+    if (fruit2) {
+        // 初始禁用
+        enableTaufufaFields(false);
+
+        fruit2.addEventListener('change', function () {
+            const on = fruit2.checked;
+            enableTaufufaFields(on);
+            if (!on) {
+                fruitRadios.forEach(function (r) {
+                    r.checked = false;
+                });
+                toppingCheckboxes.forEach(function (t) {
+                    t.checked = false;
+                });
+            }
+            updateTotal();
+        });
+    }
+
+    // -------- toppings 最多 2 个 --------
+    toppingCheckboxes.forEach(function (box) {
+        box.addEventListener('change', function () {
+            const selected = Array.from(toppingCheckboxes).filter(function (b) {
+                return b.checked;
+            });
+            if (selected.length > 2) {
+                alert('Only 2 toppings allowed.');
+                box.checked = false;
+            }
+        });
+    });
+
+    // -------- 网站统计 (localStorage，带容错) --------
+    let stats = { count: 0, total: 0 };
+
+    function loadStats() {
+        if (!statsEnabled) return;
+        try {
+            const raw = localStorage.getItem('orderStats');
+            if (!raw) return;
+            const s = JSON.parse(raw);
+            if (!s) return;
+            stats.count = s.count || 0;
+            stats.total = s.total || 0;
+            statOrdersSpan.textContent = stats.count;
+            statAmountSpan.textContent = stats.total.toFixed(2);
+        } catch (e) {
+            console.error('Failed to load stats', e);
+        }
+    }
+
+    function saveStats(orderTotal) {
+        if (!statsEnabled) return;
+        try {
+            stats.count += 1;
+            stats.total += orderTotal;
+            localStorage.setItem('orderStats', JSON.stringify(stats));
+            statOrdersSpan.textContent = stats.count;
+            statAmountSpan.textContent = stats.total.toFixed(2);
+        } catch (e) {
+            console.error('Failed to save stats', e);
+        }
+    }
+
+    loadStats();
+
+    // -------- 计算订单总价 --------
+    function computeOrder() {
+        let total = 0;
+        let hasItem = false;
+
+        let dessertEntries = [];
+        let dessertQty = 0;
+        let coconutQty = 0;
+        let otherEntries = [];
+
+        checkboxes.forEach(function (cb) {
+            if (!cb.checked) return;
+
+            hasItem = true;
+
+            // 从当前 checkbox 所在行找数量输入框，避免靠索引
+            const row = cb.closest('tr');
+            const qtyInput = row ? row.querySelector('.item-qty') : null;
+            const qty = qtyInput ? (Number(qtyInput.value) || 1) : 1;
+
+            const name = cb.dataset.name;
+            const group = cb.dataset.group || '';
+            const price = Number(cb.dataset.price || 0);
+
+            if (group === 'dessert') {
+                dessertEntries.push({ name: name, qty: qty });
+                dessertQty += qty;
                 return;
             }
 
-            const name = document.getElementById('name').value.trim();
-            const whatsapp = document.getElementById('whatsapp').value.trim();
-            const kolejBlock = document.getElementById('kolej-block').value;
-            const deliveryDate = document.getElementById('delivery-date').value;
-            const timeSlot = document.getElementById('timeSlot').value;
-            const remark = document.getElementById('remark').value.trim();
-
-            // 必填校验
-            if (!name || !whatsapp || !kolejBlock || !deliveryDate || !timeSlot) {
-                alert('Please fill in Name, WhatsApp, Kolej / Block, Delivery Date and Time Slot before submitting.');
+            if (group === 'coconut') {
+                coconutQty += qty;
                 return;
             }
 
-            const message =
-                'Robotic Club Food Fair Order\n\n' +
-                Name: ${name}\n +
-                Customer WhatsApp: ${whatsapp}\n +
-                Kolej / Block: ${kolejBlock}\n +   
-                Delivery Date: ${deliveryDate}\n +
-                Time Slot: ${timeSlot}\n\n +
-                'Order:\n' +
-                (lines.length ? lines.join('\n') : '-') +
-                \n\nTotal: RM ${total.toFixed(2)}\n\n +
-                Remarks: ${remark || '-'}\n\n +
-                '(Sent from online pre-order form)';
+            otherEntries.push({ name: name, qty: qty, price: price });
+        });
 
-            // 确认订单弹窗
-            const confirmText =
-                message +
-                '\n\nPress OK to proceed to TNG payment, or Cancel to change your order.';
-            const ok = confirm(confirmText);
-            if (!ok) {
-                return; // 用户点取消，不跳转 TNG
+        const lines = [];
+
+        // Pudding 促销：1 for 3, 3 for 8
+        if (dessertQty > 0) {
+            const unitPrice = 3;
+            const bundleQty = 3;
+            const bundlePrice = 8;
+
+            const bundles = Math.floor(dessertQty / bundleQty);
+            const remainder = dessertQty % bundleQty;
+            const dessertTotalPrice =
+                bundles * bundlePrice + remainder * unitPrice;
+
+            total += dessertTotalPrice;
+
+            const detail = dessertEntries
+                .map(function (item) {
+                    return item.name + ' x ' + item.qty;
+                })
+                .join(', ');
+
+            lines.push(
+                'Pudding Cups (3 for RM8 promo) - Total ' +
+                    dessertQty +
+                    ' cups [' +
+                    detail +
+                    '] : RM ' +
+                    dessertTotalPrice.toFixed(2)
+            );
+        }
+
+        // Coconut 促销：1 for 5, 2 for 8
+        if (coconutQty > 0) {
+            const unitPrice = 5;
+            const bundleQty = 2;
+            const bundlePrice = 8;
+
+            const bundles = Math.floor(coconutQty / bundleQty);
+            const remainder = coconutQty % bundleQty;
+            const coconutTotalPrice =
+                bundles * bundlePrice + remainder * unitPrice;
+
+            total += coconutTotalPrice;
+            lines.push(
+                'Coconut Jelly (2 for RM8 promo) - ' +
+                    coconutQty +
+                    ' cups : RM ' +
+                    coconutTotalPrice.toFixed(2)
+            );
+        }
+
+        // Taufufa 选项（fruit + toppings 信息）
+        const selectedFruitRadio = fruitRadios.length
+            ? Array.from(fruitRadios).find(function (r) {
+                  return r.checked;
+              })
+            : null;
+        const selectedFruit = selectedFruitRadio ? selectedFruitRadio.value : '';
+
+        const selectedToppings = toppingCheckboxes.length
+            ? Array.from(toppingCheckboxes)
+                  .filter(function (c) {
+                      return c.checked;
+                  })
+                  .map(function (c) {
+                      return c.value;
+                  })
+            : [];
+
+        // 其他 item：Taufufa Original / Fruit+2 / All in / sticks / drinks
+        otherEntries.forEach(function (item) {
+            const name = item.name;
+            const qty = item.qty;
+            const price = item.price;
+
+            if (!price) {
+                lines.push(name + ' x ' + qty + ' : RM 0.00');
+                return;
             }
 
-            // 保存本地统计
-            saveStats(total);
+            let extra = '';
+            if (name === 'Taufufa (Fruit + 2 toppings)') {
+                const fruitText = selectedFruit || '-';
+                const toppingText = selectedToppings.length
+                    ? selectedToppings.join(', ')
+                    : '-';
+                extra =
+                    ' (Fruit: ' +
+                    fruitText +
+                    '; Toppings: ' +
+                    toppingText +
+                    ')';
+            }
 
-            // 打开 TNG QR 页面
-            const payUrl = tng-qrcode.html?total=${total.toFixed(2)};
-            window.open(payUrl, '_blank');
+            const lineTotal = price * qty;
+            total += lineTotal;
+            lines.push(
+                name +
+                    extra +
+                    ' x ' +
+                    qty +
+                    ' : RM ' +
+                    lineTotal.toFixed(2)
+            );
         });
-    </script>
+
+        return { total: total, hasItem: hasItem, lines: lines };
+    }
+
+    function updateTotal() {
+        const result = computeOrder();
+        totalPriceSpan.textContent = result.total.toFixed(2);
+        submitBtn.disabled = !result.hasItem;
+    }
+
+    checkboxes.forEach(function (cb) {
+        cb.addEventListener('change', updateTotal);
+    });
+
+    qtyInputs.forEach(function (q) {
+        q.addEventListener('input', updateTotal);
+        q.addEventListener('blur', function () {
+            if (!q.value || Number(q.value) < 1) q.value = 1;
+            updateTotal();
+        });
+    });
+
+    // 初始算一次（防止后面改成有默认选中项）
+    updateTotal();
+
+    // -------- 提交：必填校验 + 确认弹窗 + TNG + 统计 --------
+    submitBtn.addEventListener('click', function () {
+        const result = computeOrder();
+        const total = result.total;
+        const hasItem = result.hasItem;
+        const lines = result.lines;
+
+        if (!hasItem) {
+            alert('Please select at least 1 item before submitting.');
+            return;
+        }
+
+        const name = document.getElementById('name').value.trim();
+        const whatsapp = document.getElementById('whatsapp').value.trim();
+        const kolejBlock = document.getElementById('kolej-block').value;
+        const deliveryDate = document.getElementById('delivery-date').value;
+        const timeSlot = document.getElementById('timeSlot').value;
+        const remark = document.getElementById('remark').value.trim();
+
+        if (!name || !whatsapp || !kolejBlock || !deliveryDate || !timeSlot) {
+            alert(
+                'Please fill in Name, WhatsApp, Kolej / Block, Delivery Date and Time Slot before submitting.'
+            );
+            return;
+        }
+
+        const message =
+            'Robotic Club Food Fair Order\n\n' +
+            'Name: ' +
+            name +
+            '\n' +
+            'Customer WhatsApp: ' +
+            whatsapp +
+            '\n' +
+            'Kolej / Block: ' +
+            kolejBlock +
+            '\n' +
+            'Delivery Date: ' +
+            deliveryDate +
+            '\n' +
+            'Time Slot: ' +
+            timeSlot +
+            '\n\n' +
+            'Order:\n' +
+            (lines.length ? lines.join('\n') : '-') +
+            '\n\nTotal: RM ' +
+            total.toFixed(2) +
+            '\n\n' +
+            'Remarks: ' +
+            (remark || '-') +
+            '\n\n' +
+            '(Sent from online pre-order form)';
+
+        const confirmText =
+            message +
+            '\n\nPress OK to proceed to TNG payment, or Cancel to change your order.';
+        const ok = confirm(confirmText);
+        if (!ok) {
+            return;
+        }
+
+        // 统计
+        saveStats(total);
+
+        // 打开 TNG 页面
+        const payUrl = 'tng-qrcode.html?total=' + total.toFixed(2);
+        window.open(payUrl, '_blank');
+    });
+});
+</script>
 
 </body>
 </html>
