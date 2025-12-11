@@ -614,23 +614,25 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!confirm(confirmMsg)) return;
 
         // ------------------------------
-        // 🔥 Send order to Google Sheet
-        // ------------------------------
-        fetch(SHEET_API, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                name: name,
-                whatsapp: whatsapp,
-                kolejBlock: kolej,
-                deliveryDate: date,
-                timeSlot: timeSlot,
-                remark: remark,
-                total: r.total,
-                orderText: r.lines.join("\n")
-            })
-        }).catch(err => console.error("Failed to send order:", err));
-
+       // 🔥 Send order to Google Sheet (no-cors, fire-and-forget)
+try {
+    fetch(SHEET_API, {
+        method: "POST",
+        mode: "no-cors", // 避免 CORS 预检，浏览器不会拦截
+        body: JSON.stringify({
+            name: name,
+            whatsapp: whatsapp,
+            kolejBlock: kolej,
+            deliveryDate: date,
+            timeSlot: timeSlot,
+            remark: remark,
+            total: r.total,
+            orderText: r.lines.join("\n")
+        })
+    });
+} catch (err) {
+    console.error("Failed to send order:", err);
+}
         // ------------------------------
         // Open TNG Payment Page
         // ------------------------------
