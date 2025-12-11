@@ -117,7 +117,7 @@
             border-radius: 999px;
             font-size: 16px;
             cursor: pointer;
-            background: #25d366; /* WhatsApp 绿 */
+            background: #25d366; /* WhatsApp 绿 (按钮颜色保留，不影响逻辑) */
             color: #fff;
         }
 
@@ -207,18 +207,18 @@
         <div class="form-row">
             <div class="form-group">
                 <label>Name</label>
-                <input id="name" type="text">
+                <input id="name" type="text" required>
             </div>
             <div class="form-group">
                 <label>WhatsApp Number</label>
-                <input id="whatsapp" type="tel">
+                <input id="whatsapp" type="tel" required>
             </div>
         </div>
 
         <div class="form-row">
             <div class="form-group">
                 <label>Kolej / Block</label>
-                <select id="kolej-block">
+                <select id="kolej-block" required>
                     <option value="">Please select</option>
                     <option value="K10">K10</option>
                     <option value="Library">Library</option>
@@ -237,7 +237,7 @@
 
             <div class="form-group">
                 <label>Delivery Date</label>
-                <select id="delivery-date">
+                <select id="delivery-date" required>
                     <option value="">Please select</option>
                     <option value="17/12/25">17/12/25</option>
                     <option value="18/12/25">18/12/25</option>
@@ -248,7 +248,7 @@
 
             <div class="form-group">
                 <label>Preferred Time Slot</label>
-                <select id="timeSlot">
+                <select id="timeSlot" required>
                     <option value="">Please select</option>
                     <option value="12:00–1:00pm">12:00–1:00pm</option>
                     <option value="5:00–6:00pm">5:00–6:00pm</option>
@@ -375,7 +375,7 @@
                 </tr>
 
                 <tr>
-                    <td class="menu-name"><label><input type="checkbox" class="item-checkbox" data-price="5" data-name="Fruit Stick"> Fruit Stick</label></td>
+                    <td class="menu-name"><label><input type="checkbox" class="item-checkbox" data-price="3" data-name="Fruit Stick"> Fruit Stick</label></td>
                     <td class="price-cell">RM 3.00</td>
                     <td><input type="number" class="qty-input item-qty" value="1" min="1"></td>
                 </tr>
@@ -415,7 +415,7 @@
 
         <div class="total">Total: RM <span id="totalPrice">0.00</span></div>
 
-        <button id="submitBtn" class="submit-btn" disabled>Submit Order (WhatsApp + TNG)</button>
+        <button id="submitBtn" class="submit-btn" disabled>Submit Order (TNG Only)</button>
 
     </div>
 
@@ -519,11 +519,11 @@
                 total += dessertTotalPrice;
 
                 const detail = dessertEntries
-                    .map(item => `${item.name} x ${item.qty}`)
+                    .map(item => ${item.name} x ${item.qty})
                     .join(", ");
 
                 lines.push(
-                    `Pudding Cups (3 for RM8 promo) - Total ${dessertQty} cups [${detail}] : RM ${dessertTotalPrice.toFixed(2)}`
+                    Pudding Cups (3 for RM8 promo) - Total ${dessertQty} cups [${detail}] : RM ${dessertTotalPrice.toFixed(2)}
                 );
             }
 
@@ -539,7 +539,7 @@
 
                 total += coconutTotalPrice;
                 lines.push(
-                    `Coconut Jelly (2 for RM8 promo) - ${coconutQty} cups : RM ${coconutTotalPrice.toFixed(2)}`
+                    Coconut Jelly (2 for RM8 promo) - ${coconutQty} cups : RM ${coconutTotalPrice.toFixed(2)}
                 );
             }
 
@@ -559,7 +559,7 @@
             otherEntries.forEach(item => {
                 const { name, qty, price } = item;
                 if (!price) {
-                    lines.push(`${name} x ${qty} : RM 0.00`);
+                    lines.push(${name} x ${qty} : RM 0.00);
                     return;
                 }
                 let extra = "";
@@ -573,7 +573,7 @@
 
                 const lineTotal = price * qty;
                 total += lineTotal;
-                lines.push(`${name}${extra} x ${qty} : RM ${lineTotal.toFixed(2)}`);
+                lines.push(${name}${extra} x ${qty} : RM ${lineTotal.toFixed(2)});
             });
 
             return { total, hasItem, lines };
@@ -594,7 +594,7 @@
             });
         });
 
-        // Submit → TNG QR page
+        // Submit → 只打开 TNG QR 页面
         submitBtn.addEventListener('click', () => {
             const { total, hasItem, lines } = computeOrder();
             if (!hasItem) {
@@ -609,22 +609,27 @@
             const timeSlot = document.getElementById('timeSlot').value;
             const remark = document.getElementById('remark').value.trim();
 
+            // 必填校验
+            if (!name || !whatsapp || !kolejBlock || !deliveryDate || !timeSlot) {
+                alert('Please fill in Name, WhatsApp, Kolej / Block, Delivery Date and Time Slot before submitting.');
+                return;
+            }
+
             const message =
                 'Robotic Club Food Fair Order\n\n' +
-                `Name: ${name || '-'}\n` +
-                `Customer WhatsApp: ${whatsapp || '-'}\n` +
-                `Kolej / Block: ${kolejBlock || '-'}\n` +   
-                `Delivery Date: ${deliveryDate || '-'}\n` +
-                `Time Slot: ${timeSlot || '-'}\n\n` +
+                Name: ${name}\n +
+                Customer WhatsApp: ${whatsapp}\n +
+                Kolej / Block: ${kolejBlock}\n +   
+                Delivery Date: ${deliveryDate}\n +
+                Time Slot: ${timeSlot}\n\n +
                 'Order:\n' +
                 (lines.length ? lines.join('\n') : '-') +
-                `\n\nTotal: RM ${total.toFixed(2)}\n\n` +
-                `Remarks: ${remark || '-'}\n\n` +
+                \n\nTotal: RM ${total.toFixed(2)}\n\n +
+                Remarks: ${remark || '-'}\n\n +
                 '(Sent from online pre-order form)';
 
-
-            // 打开 TNG QR 页面，带上 total
-            const payUrl = `tng-qrcode.html?total=${total.toFixed(2)}`;
+            // 只打开 TNG QR 页面，带上 total
+            const payUrl = tng-qrcode.html?total=${total.toFixed(2)};
             window.open(payUrl, '_blank');
         });
     </script>
