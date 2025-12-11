@@ -614,26 +614,25 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!confirm(confirmMsg)) return;
 
         // ------------------------------
-     // 🔥 Send order to Google Sheet using form data (e.parameter)
-try {
-    const formData = new URLSearchParams();
-    formData.append("name",        name);
-    formData.append("whatsapp",    whatsapp);
-    formData.append("kolejBlock",  kolej);
-    formData.append("deliveryDate",date);
-    formData.append("timeSlot",    timeSlot);
-    formData.append("remark",      remark);
-    formData.append("total",       r.total.toFixed(2));
-    formData.append("orderText",   r.lines.join("\n"));
+        // 🔥 把订单发送到 Google Sheet（通过表单参数）
+    try {
+        const formData = new URLSearchParams();
+        formData.append("name",        name);
+        formData.append("whatsapp",    whatsapp);
+        formData.append("kolejBlock",  kolej);
+        formData.append("deliveryDate",date);
+        formData.append("timeSlot",    timeSlot);
+        formData.append("remark",      remark);
+        formData.append("total",       r.total.toFixed(2));
+        formData.append("orderText",   r.lines.join("\n"));
 
-    fetch(SHEET_API, {
-        method: "POST",
-        mode: "no-cors",
-        body: formData   // 注意不用再设置 headers，Apps Script 会自动解析到 e.parameter
-    });
-} catch (err) {
-    console.error("Failed to send order:", err);
-}
+        fetch(SHEET_API, {
+            method: "POST",
+            body: formData   // 不设 headers、不设 mode，Apps Script 会自动放到 e.parameter
+        });
+    } catch (err) {
+        console.error("Failed to send order:", err);
+    }
         // ------------------------------
         // Open TNG Payment Page
         // ------------------------------
