@@ -346,26 +346,35 @@
 
         <div class="category">Tau fu fa</div>
         <p class="note">
-            Option 1: Original (RM4) · Option 2: Fruit + 2 toppings (RM6.9) · Option 3: All in (RM9.9)
+    Option 1: Original (RM4) · Option 2: Fruit + 2 toppings (RM6.9) · Option 3: All in (RM9.9)
         </p>
+
+        <style>
+        /* Bold style for the three main Taufufa options */
+        .taufufa-option-label {
+            font-weight: 700;
+        }
+        </style>
+
         <table class="menu-table">
             <tbody>
+
             <!-- Original -->
             <tr>
                 <td class="menu-name">
-                    <label>
+                    <label class="taufufa-option-label">
                         <input type="checkbox" class="item-checkbox" data-name="Taufufa Original" data-price="4">
                         Taufufa Original
                     </label>
                 </td>
                 <td class="price-cell">RM 4.00</td>
-                <td><input type="number" class="qty-input item-qty" min="1" value="1"></td>
+            <td><input type="number" class="qty-input item-qty" min="1" value="1"></td>
             </tr>
 
             <!-- Fruit + 2 toppings -->
             <tr>
                 <td class="menu-name">
-                    <label>
+                    <label class="taufufa-option-label">
                         <input type="checkbox" class="item-checkbox taufufa-fruit2" data-name="Taufufa (Fruit + 2 toppings)" data-price="6.9">
                         Taufufa (Fruit + 2 toppings)
                     </label>
@@ -373,7 +382,7 @@
                     <!-- Fruit choose 1 -->
                     <div style="margin-left:20px; margin-top:6px;">
                         <strong>Fruit (choose 1):</strong><br>
-                        <label><input type="radio" name="taufufa-fruit" value="Watermelon"> Watermelon</label><br>
+                            <label><input type="radio" name="taufufa-fruit" value="Watermelon"> Watermelon</label><br>
                         <label><input type="radio" name="taufufa-fruit" value="Mango"> Mango</label>
                     </div>
 
@@ -398,7 +407,7 @@
             <!-- All in -->
             <tr>
                 <td class="menu-name">
-                    <label>
+                    <label class="taufufa-option-label">
                         <input type="checkbox" class="item-checkbox" data-name="Taufufa All In" data-price="9.9">
                         Taufufa All In
                     </label>
@@ -407,6 +416,7 @@
                 <td class="price-cell">RM 9.90</td>
                 <td><input type="number" class="qty-input item-qty" min="1" value="1"></td>
             </tr>
+
             </tbody>
         </table>
 
