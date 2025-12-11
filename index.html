@@ -613,7 +613,7 @@
                 'Robotic Club Food Fair Order\n\n' +
                 `Name: ${name || '-'}\n` +
                 `Customer WhatsApp: ${whatsapp || '-'}\n` +
-                `Kolej / Block: ${kolegBlock || kolejBlock || '-'}\n` +
+                `Kolej / Block: ${kolejBlock || '-'}\n` +   // ✅ 这里修好了
                 `Delivery Date: ${deliveryDate || '-'}\n` +
                 `Time Slot: ${timeSlot || '-'}\n\n` +
                 'Order:\n' +
@@ -623,7 +623,7 @@
                 '(Sent from online pre-order form)';
 
             // 把这个号码改成你们负责接单的 WhatsApp 号码（例如 +60 12-3456789 => 60123456789）
-            const clubPhone = '60176523986';
+            const clubPhone = '60123456789';
 
             const waUrl = `https://wa.me/${clubPhone}?text=${encodeURIComponent(message)}`;
             window.open(waUrl, '_blank');
@@ -636,4 +636,3 @@
 
 </body>
 </html>
-
