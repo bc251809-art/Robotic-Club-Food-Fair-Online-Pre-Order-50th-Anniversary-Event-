@@ -613,7 +613,7 @@
                 'Robotic Club Food Fair Order\n\n' +
                 `Name: ${name || '-'}\n` +
                 `Customer WhatsApp: ${whatsapp || '-'}\n` +
-                `Kolej / Block: ${kolejBlock || '-'}\n` +   // ✅ 这里修好了
+                `Kolej / Block: ${kolejBlock || '-'}\n` +   
                 `Delivery Date: ${deliveryDate || '-'}\n` +
                 `Time Slot: ${timeSlot || '-'}\n\n` +
                 'Order:\n' +
@@ -622,13 +622,8 @@
                 `Remarks: ${remark || '-'}\n\n` +
                 '(Sent from online pre-order form)';
 
-            // 把这个号码改成你们负责接单的 WhatsApp 号码（例如 +60 12-3456789 => 60123456789）
-            const clubPhone = '60176523986';
 
-            const waUrl = `https://wa.me/${clubPhone}?text=${encodeURIComponent(message)}`;
-            window.open(waUrl, '_blank');
-
-            // 再打开 TNG QR 页面，带上 total
+            // 打开 TNG QR 页面，带上 total
             const payUrl = `tng-qrcode.html?total=${total.toFixed(2)}`;
             window.open(payUrl, '_blank');
         });
