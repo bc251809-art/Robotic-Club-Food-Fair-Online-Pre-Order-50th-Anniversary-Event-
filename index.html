@@ -464,7 +464,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 🔥 Your Google Sheet API URL
     const SHEET_API =
-        "https://script.google.com/macros/s/AKfycbxu-ol4Os5qrQI3qAi9ykrugjG9qJW9LpIMqd_bwMzYeuK7m8wJFpVKjjtGHsohGGW2/exec";
+        "https://script.google.com/macros/s/AKfycbz3FSrwMNP3RoHBmkXwKXB_rVtRIOZBfv6Y20_GRNINXwjBNpP4SIKwtRS0P-ks86TL/exec";
 
     // ------------------------------
     // Enable / disable fruit + toppings
@@ -628,7 +628,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         fetch(SHEET_API, {
             method: "POST",
-            body: formData   // 不设 headers、不设 mode，Apps Script 会自动放到 e.parameter
+            body: formData   
         });
     } catch (err) {
         console.error("Failed to send order:", err);
