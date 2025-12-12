@@ -326,14 +326,42 @@
         <table class="menu-table">
             <tbody>
 
-                <!-- Original -->
-                <tr>
-                    <td class="menu-name">
-                        <label><input type="checkbox" class="item-checkbox" data-price="4" data-name="Taufufa Original"> Taufufa Original</label>
-                    </td>
-                    <td class="price-cell">RM 4.00</td>
-                    <td><input type="number" class="qty-input item-qty" value="1" min="1"></td>
-                </tr>
+               <!-- Original -->
+        <tr>
+          <td class="menu-name">
+            <label>
+              <input id="tofOriginal" type="checkbox" class="item-checkbox" data-price="4" data-name="Taufufa Original">
+              Taufufa Original
+            </label>
+
+            <div style="margin-left:20px; margin-top:8px;">
+              <div class="note">Add-ons (optional). Select Taufufa Original to enable.</div>
+
+              <strong>Toppings (+RM1.00 each)</strong><br>
+              <label><input type="checkbox" class="tof-addon" data-name="Boba" data-price="1"> Boba</label>
+              Qty: <input type="number" class="tof-addon-qty" data-name="Boba" value="1" min="1" style="width:55px;"><br>
+
+              <label><input type="checkbox" class="tof-addon" data-name="Grass Jelly" data-price="1"> Grass Jelly</label>
+              Qty: <input type="number" class="tof-addon-qty" data-name="Grass Jelly" value="1" min="1" style="width:55px;"><br>
+
+              <label><input type="checkbox" class="tof-addon" data-name="Popping Boba" data-price="1"> Popping Boba</label>
+              Qty: <input type="number" class="tof-addon-qty" data-name="Popping Boba" value="1" min="1" style="width:55px;"><br>
+
+              <label><input type="checkbox" class="tof-addon" data-name="Oreo" data-price="1"> Oreo</label>
+              Qty: <input type="number" class="tof-addon-qty" data-name="Oreo" value="1" min="1" style="width:55px;"><br><br>
+
+              <strong>Fruits (+RM1.50 each)</strong><br>
+              <label><input type="checkbox" class="tof-addon" data-name="Watermelon" data-price="1.5"> Watermelon</label>
+              Qty: <input type="number" class="tof-addon-qty" data-name="Watermelon" value="1" min="1" style="width:55px;"><br>
+
+              <label><input type="checkbox" class="tof-addon" data-name="Mango" data-price="1.5"> Mango</label>
+              Qty: <input type="number" class="tof-addon-qty" data-name="Mango" value="1" min="1" style="width:55px;">
+            </div>
+          </td>
+          <td class="price-cell">RM 4.00</td>
+          <td><input type="number" class="qty-input item-qty" value="1" min="1"></td>
+        </tr>
+
 
                 <!-- Fruit + 2 toppings -->
                 <tr>
@@ -461,6 +489,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const fruit2 = document.querySelector('.taufufa-fruit2');
     const totalPriceSpan = document.getElementById('totalPrice');
     const submitBtn = document.getElementById('submitBtn');
+    const tofOriginal = document.getElementById('tofOriginal');
+    const tofAddons = document.querySelectorAll('.tof-addon');
+    const tofAddonQtyInputs = document.querySelectorAll('.tof-addon-qty');
+
+
 
     // 🔥 Your Google Sheet API URL
     const SHEET_API =
@@ -499,6 +532,27 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     });
+    function enableOriginalAddons(enabled) {
+      tofAddons.forEach(a => (a.disabled = !enabled));
+      tofAddonQtyInputs.forEach(q => (q.disabled = !enabled));
+    }
+    enableOriginalAddons(false);
+
+    if (tofOriginal) {
+      tofOriginal.addEventListener('change', () => {
+        const on = tofOriginal.checked;
+        enableOriginalAddons(on);
+        if (!on) {
+          tofAddons.forEach(a => (a.checked = false));
+          tofAddonQtyInputs.forEach(q => (q.value = 1));
+        }
+        updateTotal();
+      });
+    }
+
+    tofAddons.forEach(a => a.addEventListener('change', updateTotal));
+    tofAddonQtyInputs.forEach(q => q.addEventListener('input', updateTotal));
+
 
     // ------------------------------
     // Compute order and prices
@@ -545,9 +599,35 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 const subtotal = qty * price;
                 total += subtotal;
-                lines.push(`${name}${extra} x ${qty} : RM ${subtotal.toFixed(2)}`);
-            }
-        });
+                 if (name === "Taufufa Original") {
+  let addonText = [];
+  let addonTotalPerCup = 0;
+
+  tofAddons.forEach(addon => {
+    if (addon.disabled) return;
+    if (!addon.checked) return;
+
+    const addonName = addon.dataset.name;
+    const addonPrice = Number(addon.dataset.price || 0);
+
+    const qtyEl = document.querySelector(
+      `.tof-addon-qty[data-name="${addonName}"]`
+    );
+    const addonQty = Math.max(1, Number(qtyEl?.value || 1));
+
+    addonTotalPerCup += addonPrice * addonQty;
+    addonText.push(`${addonName} x ${addonQty}`);
+  });
+
+  if (addonText.length) {
+    const addonTotal = addonTotalPerCup * qty;
+    total += addonTotal;
+    extra = ` (Add-ons: ${addonText.join(", ")})`;
+  }
+}
+        lines.push(${name}${extra} x ${qty} : RM ${baseSubtotal.toFixed(2)});
+      });
+
 
         // Pudding promo
         if (dessertQty > 0) {
