@@ -31,23 +31,36 @@
       margin-top: 16px;
       line-height: 1.5;
     }
+    a {
+      color: #0066cc;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
   <h2>Touch 'n Go eWallet Payment</h2>
   <p class="amount">Please pay: <span id="amount">RM 0.00</span></p>
 
-  <!-- 这里放你们的 TNG 收款二维码图片，文件名自定义，这里用 tng-qrcode.jpg -->
   <img src="tng-qrcode.jpg" alt="TNG QR Code">
 
   <p class="note">
-    1. Please send your payment screenshot to https://wa.me/0175205163 for confirmation.<br>
-    2. Please join our Robotic Club Food Fair Delivery Group using the link provided 😊<br>
- https://chat.whatsapp.com/CMaKZC5GtfM90pkYsyB6d0
+    1. Please send your payment screenshot to  
+    <a href="https://wa.me/0175205163" target="_blank">
+      https://wa.me/0175205163
+    </a>
+    for confirmation.<br><br>
+
+    2. Please join our Robotic Club Food Fair Delivery Group: <br>
+    <a href="https://chat.whatsapp.com/CMaKZC5GtfM90pkYsyB6d0" target="_blank">
+      Join Delivery Group
+    </a>
   </p>
 
   <script>
-    // 从 URL 读取 ?total=xx 参数
     const params = new URLSearchParams(location.search);
     const total = params.get('total') || '0.00';
     document.getElementById('amount').textContent = 'RM ' + Number(total).toFixed(2);
