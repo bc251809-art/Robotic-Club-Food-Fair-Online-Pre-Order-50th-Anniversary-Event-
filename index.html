@@ -421,31 +421,32 @@
         const baseSubtotal = price * qty;
         total += baseSubtotal;
 
-        if (name === "Taufufa Original") {
-          let addonText = [];
-          let addonTotalPerCup = 0;
+       if (name === "Taufufa Original") {
+  let addonText = [];
+  let addonTotalPerCup = 0;
 
-          tofAddons.forEach(addon => {
-            if (addon.disabled) return;
-            if (!addon.checked) return;
+  tofAddons.forEach(addon => {
+    if (addon.disabled) return;
+    if (!addon.checked) return;
 
-            const addonName = addon.dataset.name;
-            const addonPrice = Number(addon.dataset.price || 0);
+    const addonName = addon.dataset.name;
+    const addonPrice = Number(addon.dataset.price || 0);
 
-            const qtyEl = document.querySelector(.tof-addon-qty[data-name="${addonName}"]);
-            const addonQty = Math.max(1, Number(qtyEl?.value || 1));
+    const qtyEl = document.querySelector(
+      `.tof-addon-qty[data-name="${addonName}"]`
+    );
+    const addonQty = Math.max(1, Number(qtyEl?.value || 1));
 
-            addonTotalPerCup += addonPrice * addonQty;
-            addonText.push(${addonName} x ${addonQty});
-          });
+    addonTotalPerCup += addonPrice * addonQty;
+    addonText.push(`${addonName} x ${addonQty}`);
+  });
 
-          if (addonText.length) {
-            const addonTotal = addonTotalPerCup * qty;
-            total += addonTotal;
-            extra = ` (Add-ons: ${addonText.join(", ")} | +RM ${addonTotal.toFixed(2)})`;
-          }
-        }
-
+  if (addonText.length) {
+    const addonTotal = addonTotalPerCup * qty;
+    total += addonTotal;
+    extra = ` (Add-ons: ${addonText.join(", ")})`;
+  }
+}
         lines.push(${name}${extra} x ${qty} : RM ${baseSubtotal.toFixed(2)});
       });
 
