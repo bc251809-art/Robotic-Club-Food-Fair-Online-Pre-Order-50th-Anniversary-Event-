@@ -326,57 +326,85 @@
         <table class="menu-table">
             <tbody>
 
-               <!-- Original -->
-        <tr>
-          <td class="menu-name">
-            <label>
-              <input id="tofOriginal" type="checkbox" class="item-checkbox" data-price="4" data-name="Taufufa Original">
-              Taufufa Original
-            </label>
+               <!-- ================= Taufufa Original ================= -->
+<tr>
+  <td class="menu-name">
+    <label>
+      <input
+        id="tofOriginal"
+        type="checkbox"
+        class="item-checkbox"
+        data-price="4"
+        data-name="Taufufa Original"
+      >
+      Taufufa Original
+    </label>
 
-            <div style="margin-left:20px; margin-top:8px;">
-              <div class="note">Add-ons (optional). Select Taufufa Original to enable.</div>
+    <div style="margin-left:20px; margin-top:8px;">
+      <div class="note">
+        Add-ons (optional). Select Taufufa Original to enable.
+      </div>
 
-<h4>Toppings (+RM1.00 each)</h4>
+      <!-- ---------- Toppings ---------- -->
+      <strong>Toppings (+RM1.00 each)</strong><br>
 
-<div class="addon-row">
-  <label><input type="checkbox" id="boba" class="topping"> Boba</label>
-  <div class="qty-box">Qty: <input type="number" id="bobaQty" value="1" min="1"></div>
-</div>
+      <label>
+        <input type="checkbox" class="tof-addon" data-name="Boba" data-price="1" disabled>
+        Boba
+      </label>
+      Qty:
+      <input type="number" class="tof-addon-qty" data-name="Boba" value="1" min="1" style="width:55px;" disabled>
+      <br>
 
-<div class="addon-row">
-  <label><input type="checkbox" id="grassjelly" class="topping"> Grass Jelly</label>
-  <div class="qty-box">Qty: <input type="number" id="grassjellyQty" value="1" min="1"></div>
-</div>
+      <label>
+        <input type="checkbox" class="tof-addon" data-name="Grass Jelly" data-price="1" disabled>
+        Grass Jelly
+      </label>
+      Qty:
+      <input type="number" class="tof-addon-qty" data-name="Grass Jelly" value="1" min="1" style="width:55px;" disabled>
+      <br>
 
-<div class="addon-row">
-  <label><input type="checkbox" id="poppingboba" class="topping"> Popping Boba</label>
-  <div class="qty-box">Qty: <input type="number" id="poppingbobaQty" value="1" min="1"></div>
-</div>
+      <label>
+        <input type="checkbox" class="tof-addon" data-name="Popping Boba" data-price="1" disabled>
+        Popping Boba
+      </label>
+      Qty:
+      <input type="number" class="tof-addon-qty" data-name="Popping Boba" value="1" min="1" style="width:55px;" disabled>
+      <br>
 
-<div class="addon-row">
-  <label><input type="checkbox" id="oreo" class="topping"> Oreo</label>
-  <div class="qty-box">Qty: <input type="number" id="oreoQty" value="1" min="1"></div>
-</div>
+      <label>
+        <input type="checkbox" class="tof-addon" data-name="Oreo" data-price="1" disabled>
+        Oreo
+      </label>
+      Qty:
+      <input type="number" class="tof-addon-qty" data-name="Oreo" value="1" min="1" style="width:55px;" disabled>
+      <br><br>
 
+      <!-- ---------- Fruits ---------- -->
+      <strong>Fruits (+RM1.50 each)</strong><br>
 
-<h4>Fruits (+RM1.50 each)</h4>
+      <label>
+        <input type="checkbox" class="tof-addon" data-name="Watermelon" data-price="1.5" disabled>
+        Watermelon
+      </label>
+      Qty:
+      <input type="number" class="tof-addon-qty" data-name="Watermelon" value="1" min="1" style="width:55px;" disabled>
+      <br>
 
-<div class="addon-row">
-  <label><input type="checkbox" id="watermelon" class="fruit"> Watermelon</label>
-  <div class="qty-box">Qty: <input type="number" id="watermelonQty" value="1" min="1"></div>
-</div>
+      <label>
+        <input type="checkbox" class="tof-addon" data-name="Mango" data-price="1.5" disabled>
+        Mango
+      </label>
+      Qty:
+      <input type="number" class="tof-addon-qty" data-name="Mango" value="1" min="1" style="width:55px;" disabled>
+    </div>
+  </td>
 
-<div class="addon-row">
-  <label><input type="checkbox" id="mangoFruit" class="fruit"> Mango</label>
-  <div class="qty-box">Qty: <input type="number" id="mangoFruitQty" value="1" min="1"></div>
-</div>
-
-          </td>
-          <td class="price-cell">RM 4.00</td>
-          <td><input type="number" class="qty-input item-qty" value="1" min="1"></td>
-        </tr>
-
+  <td class="price-cell">RM 4.00</td>
+  <td>
+    <input type="number" class="qty-input item-qty" value="1" min="1">
+  </td>
+</tr>
 
                 <!-- Fruit + 2 toppings -->
                 <tr>
