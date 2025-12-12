@@ -484,53 +484,71 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const checkboxes = document.querySelectorAll('.item-checkbox');
     const qtyInputs = document.querySelectorAll('.item-qty');
-    const toppingCheckboxes = document.querySelectorAll('.topping');
-    const fruitRadios = document.querySelectorAll('input[name="taufufa-fruit"]');
-    const fruit2 = document.querySelector('.taufufa-fruit2');
-    const totalPriceSpan = document.getElementById('totalPrice');
-    const submitBtn = document.getElementById('submitBtn');
 
+    // Fruit + 2 toppings (RM 6.90)
+    const fruit2 = document.querySelector('.taufufa-fruit2');
+    const fruitRadios = document.querySelectorAll('input[name="taufufa-fruit"]');
+    const toppingCheckboxes = document.querySelectorAll('.topping');
+
+    // Original Taufufa (RM 4 + add-ons)
     const tofOriginal = document.getElementById('tofOriginal');
     const tofAddons = document.querySelectorAll('.tof-addon');
     const tofAddonQtyInputs = document.querySelectorAll('.tof-addon-qty');
 
-    // Disable Fruit + toppings (Fruit+2) initially
+    const totalPriceSpan = document.getElementById('totalPrice');
+    const submitBtn = document.getElementById('submitBtn');
+
+    // Google Sheet URL
+    const SHEET_API = "https://script.google.com/macros/s/AKfycbz3FSrwMNP3RoHBmkXwKXB_rVtRIOZBfv6Y20_GRNINXwjBNpP4SIKwtRS0P-ks86TL/exec";
+
+
+    /* ============================================================
+       Enable / Disable Fruit + 2 Toppings section
+    ============================================================ */
     function enableFruit2Fields(enabled) {
         fruitRadios.forEach(r => r.disabled = !enabled);
         toppingCheckboxes.forEach(t => t.disabled = !enabled);
+
         if (!enabled) {
             fruitRadios.forEach(r => r.checked = false);
             toppingCheckboxes.forEach(t => t.checked = false);
         }
     }
+
     enableFruit2Fields(false);
 
-    // Disable Original add-ons initially
-    function enableOriginalAddons(enabled) {
-        tofAddons.forEach(a => a.disabled = !enabled);
-        tofAddonQtyInputs.forEach(q => q.disabled = !enabled);
-        if (!enabled) {
-            tofAddons.forEach(a => a.checked = false);
-            tofAddonQtyInputs.forEach(q => q.value = 1);
-        }
-    }
-    enableOriginalAddons(false);
-
-    // Enable Fruit + 2 toppings section when selected
     fruit2.addEventListener("change", () => {
         enableFruit2Fields(fruit2.checked);
         updateTotal();
     });
 
-    // Enable Original add-ons
+
+    /* ============================================================
+       Enable / Disable Taufufa Original Addons
+    ============================================================ */
+    function enableOriginalAddons(enabled) {
+        tofAddons.forEach(a => a.disabled = !enabled);
+        tofAddonQtyInputs.forEach(q => q.disabled = !enabled);
+
+        if (!enabled) {
+            tofAddons.forEach(a => a.checked = false);
+            tofAddonQtyInputs.forEach(q => q.value = 1);
+        }
+    }
+
+    enableOriginalAddons(false);
+
     if (tofOriginal) {
-        tofOriginal.addEventListener('change', () => {
+        tofOriginal.addEventListener("change", () => {
             enableOriginalAddons(tofOriginal.checked);
             updateTotal();
         });
     }
 
-    // Limit toppings to 2
+
+    /* ============================================================
+       Limit Fruit + 2 toppings to max 2 toppings
+    ============================================================ */
     toppingCheckboxes.forEach(box => {
         box.addEventListener("change", () => {
             const selected = Array.from(toppingCheckboxes).filter(b => b.checked);
@@ -542,15 +560,21 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Compute order
+
+
+    /* ============================================================
+       Compute Order Total
+    ============================================================ */
     function computeOrder() {
         let total = 0;
         let hasItem = false;
-        let lines = [];
 
         let dessertQty = 0;
         let dessertList = [];
+
         let coconutQty = 0;
+
+        let lines = [];
 
         checkboxes.forEach(cb => {
             if (!cb.checked) return;
@@ -562,63 +586,82 @@ document.addEventListener('DOMContentLoaded', function () {
             const name = cb.dataset.name;
             const group = cb.dataset.group;
             const price = Number(cb.dataset.price || 0);
+            let extra = "";
+            let subtotal = qty * price;
 
-            // --- Pudding ---
+
+            /* --------------------------
+               Pudding Cup (special promo)
+            -------------------------- */
             if (group === "dessert") {
                 dessertQty += qty;
                 dessertList.push(`${name} x ${qty}`);
                 return;
             }
 
-            // --- Coconut ---
+
+            /* --------------------------
+               Coconut Jelly (special promo)
+            -------------------------- */
             if (group === "coconut") {
                 coconutQty += qty;
                 return;
             }
 
-            let extra = "";
-            let subtotal = qty * price;
 
-            // Taufufa Fruit + 2 toppings
+            /* --------------------------
+               Taufufa Fruit + 2 toppings
+            -------------------------- */
             if (name === "Taufufa (Fruit + 2 toppings)") {
                 const fruit = Array.from(fruitRadios).find(r => r.checked)?.value || "-";
+
                 const toppings = Array.from(toppingCheckboxes)
-                                            .filter(t => t.checked)
-                                            .map(t => t.value);
+                    .filter(t => t.checked)
+                    .map(t => t.value);
+
                 extra = ` (Fruit: ${fruit}; Toppings: ${toppings.join(", ")})`;
             }
 
-            // Taufufa Original + add-ons
+
+            /* --------------------------
+               Taufufa Original + add-ons
+            -------------------------- */
             if (name === "Taufufa Original") {
-                let addonLines = [];
+                let addonText = [];
                 let addonTotalPerCup = 0;
 
                 tofAddons.forEach(addon => {
                     if (!addon.checked) return;
+
                     const addonName = addon.dataset.name;
                     const addonPrice = Number(addon.dataset.price);
 
                     const qtyInput = document.querySelector(
                         `.tof-addon-qty[data-name="${addonName}"]`
                     );
+
                     const addonQty = Number(qtyInput.value);
 
-                    addonLines.push(`${addonName} x ${addonQty}`);
+                    addonText.push(`${addonName} x ${addonQty}`);
                     addonTotalPerCup += addonPrice * addonQty;
                 });
 
-                if (addonLines.length > 0) {
+                if (addonText.length > 0) {
                     const addonTotal = addonTotalPerCup * qty;
                     subtotal += addonTotal;
-                    extra = ` (Add-ons: ${addonLines.join(", ")})`;
+                    extra = ` (Add-ons: ${addonText.join(", ")})`;
                 }
             }
+
 
             total += subtotal;
             lines.push(`${name}${extra} x ${qty} : RM ${subtotal.toFixed(2)}`);
         });
 
-        // Pudding promo: 3 for 8
+
+        /* --------------------------
+           Apply Pudding Promo (3 for RM8)
+        -------------------------- */
         if (dessertQty > 0) {
             const bundles = Math.floor(dessertQty / 3);
             const remainder = dessertQty % 3;
@@ -628,7 +671,10 @@ document.addEventListener('DOMContentLoaded', function () {
             lines.push(`Pudding Cups - ${dessertQty} cups [${dessertList.join(", ")}] : RM ${puddingPrice.toFixed(2)}`);
         }
 
-        // Coconut promo: 2 for 8
+
+        /* --------------------------
+           Apply Coconut Promo (2 for RM8)
+        -------------------------- */
         if (coconutQty > 0) {
             const bundles = Math.floor(coconutQty / 2);
             const remainder = coconutQty % 2;
@@ -641,7 +687,11 @@ document.addEventListener('DOMContentLoaded', function () {
         return { total, hasItem, lines };
     }
 
-    // Update total
+
+
+    /* ============================================================
+       Update Total (and enable submit)
+    ============================================================ */
     function updateTotal() {
         const r = computeOrder();
         totalPriceSpan.textContent = r.total.toFixed(2);
@@ -655,6 +705,65 @@ document.addEventListener('DOMContentLoaded', function () {
 
     updateTotal();
 
+
+
+    /* ============================================================
+       Submit Order
+    ============================================================ */
+    submitBtn.addEventListener("click", async () => {
+
+        const r = computeOrder();
+
+        const name = document.getElementById("name").value.trim();
+        const whatsapp = document.getElementById("whatsapp").value.trim();
+        const kolej = document.getElementById("kolej-block").value.trim();
+        const date = document.getElementById("delivery-date").value.trim();
+        const timeSlot = document.getElementById("timeSlot").value.trim();
+        const remark = document.getElementById("remark").value.trim();
+
+        if (!name || !whatsapp || !kolej || !date || !timeSlot) {
+            alert("Please fill in all required customer details.");
+            return;
+        }
+
+        const confirmMsg =
+            `Robotic Club Food Fair Order\n\n` +
+            `Name: ${name}\nWhatsApp: ${whatsapp}\nKolej: ${kolej}\nDelivery Date: ${date}\nTime Slot: ${timeSlot}\n\n` +
+            `Order:\n${r.lines.join("\n")}\n\n` +
+            `Total: RM ${r.total.toFixed(2)}\n` +
+            `Remarks: ${remark || "-"}\n\n` +
+            `Press OK to proceed to TNG payment.`;
+
+        if (!confirm(confirmMsg)) return;
+
+
+        // Send to Google Sheet
+        try {
+            const formData = new URLSearchParams();
+            formData.append("name", name);
+            formData.append("whatsapp", whatsapp);
+            formData.append("kolejBlock", kolej);
+            formData.append("deliveryDate", date);
+            formData.append("timeSlot", timeSlot);
+            formData.append("remark", remark);
+            formData.append("total", r.total.toFixed(2));
+            formData.append("orderText", r.lines.join("\n"));
+
+            await fetch(SHEET_API, {
+                method: "POST",
+                body: formData
+            });
+
+            console.log("Order sent to Google Sheet.");
+        } catch (err) {
+            console.error("FAILED sending order:", err);
+            alert("Order could not be saved, but you can still proceed with payment.");
+        }
+
+
+        // Go to TNG QR page
+        window.open("tng-qrcode.html?total=" + r.total.toFixed(2), "_blank");
+    });
+
 });
 </script>
-
