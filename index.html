@@ -521,24 +521,37 @@ document.addEventListener('DOMContentLoaded', function () {
         updateTotal();
     });
         // ==============================
+            // ==============================
 // Taufufa Original Add-ons enable / disable
 // ==============================
+
+const tofOriginal = document.getElementById("tofOriginal"); // 你 HTML 里给 Original 的 id
+const tofAddons = document.querySelectorAll(".tof-addon");
+const tofAddonQtyInputs = document.querySelectorAll(".tof-addon-qty");
+
 function enableOriginalAddons(enabled) {
-    tofAddons.forEach(a => a.disabled = !enabled);
-    tofAddonQty.forEach(q => q.disabled = !enabled);
+  tofAddons.forEach(a => (a.disabled = !enabled));
+  tofAddonQtyInputs.forEach(q => (q.disabled = !enabled));
 }
 
 enableOriginalAddons(false);
 
 if (tofOriginal) {
-    tofOriginal.addEventListener("change", () => {
-        const on = tofOriginal.checked;
-        enableOriginalAddons(on);
+  tofOriginal.addEventListener("change", () => {
+    const on = tofOriginal.checked;
+    enableOriginalAddons(on);
 
-        if (!on) {
-            tofAddons.forEach(a => a.checked = false);
-            tofAddonQty.forEach(q => q.value = 1);
-        }
+    if (!on) { // ✅ 这里一定是 !on
+      tofAddons.forEach(a => (a.checked = false));
+      tofAddonQtyInputs.forEach(q => (q.value = 1));
+    }
+    updateTotal();
+  });
+}
+
+// add-ons change should refresh total
+tofAddons.forEach(a => a.addEventListener("change", updateTotal));
+tofAddonQtyInputs.forEach(q => q.addEventListener("input", updateTotal));
         updateTotal();
     });
 }
