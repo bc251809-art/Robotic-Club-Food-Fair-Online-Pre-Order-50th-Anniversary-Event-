@@ -484,39 +484,38 @@
     </div>
     <script>
 document.addEventListener('DOMContentLoaded', function () {
-
-  // ===== Elements =====
+  // ====== Basic selectors ======
   const checkboxes = document.querySelectorAll('.item-checkbox');
   const qtyInputs = document.querySelectorAll('.item-qty');
 
-  const toppingCheckboxes = document.querySelectorAll('.topping'); // for Fruit+2
+  const toppingCheckboxes = document.querySelectorAll('.topping');
   const fruitRadios = document.querySelectorAll('input[name="taufufa-fruit"]');
   const fruit2 = document.querySelector('.taufufa-fruit2');
 
   const totalPriceSpan = document.getElementById('totalPrice');
   const submitBtn = document.getElementById('submitBtn');
 
-  // Original + add-ons
+  // Taufufa Original + add-ons
   const tofOriginal = document.getElementById('tofOriginal');
-  const tofAddons = document.querySelectorAll('.tof-addon'); // checkboxes
-  const tofAddonQtyInputs = document.querySelectorAll('.tof-addon-qty'); // qty inputs
+  const tofAddons = document.querySelectorAll('.tof-addon');
+  const tofAddonQtyInputs = document.querySelectorAll('.tof-addon-qty');
 
   // 🔥 Your Google Sheet API URL
   const SHEET_API =
     "https://script.google.com/macros/s/AKfycbz3FSrwMNP3RoHBmkXwKXB_rVtRIOZBfv6Y20_GRNINXwjBNpP4SIKwtRS0P-ks86TL/exec";
 
-  // =========================================================
-  // 1) Fruit+2 enable/disable
-  // =========================================================
+  // ------------------------------
+  // Enable / disable Fruit+2 toppings fields
+  // ------------------------------
   function enableTaufufaFields(enabled) {
-    fruitRadios.forEach(r => r.disabled = !enabled);
-    toppingCheckboxes.forEach(t => t.disabled = !enabled);
+    fruitRadios.forEach(r => (r.disabled = !enabled));
+    toppingCheckboxes.forEach(t => (t.disabled = !enabled));
   }
 
   enableTaufufaFields(false);
 
   if (fruit2) {
-    fruit2.addEventListener("change", () => {
+    fruit2.addEventListener('change', () => {
       const active = fruit2.checked;
       enableTaufufaFields(active);
 
@@ -528,9 +527,9 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // toppings limit to 2 (Fruit+2)
+  // Limit toppings to 2 (for Fruit+2 toppings)
   toppingCheckboxes.forEach(box => {
-    box.addEventListener("change", () => {
+    box.addEventListener('change', () => {
       const selected = Array.from(toppingCheckboxes).filter(b => b.checked);
       if (selected.length > 2) {
         alert("Only 2 toppings allowed.");
@@ -540,11 +539,9 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  fruitRadios.forEach(r => r.addEventListener("change", updateTotal));
-
-  // =========================================================
-  // 2) Original add-ons enable/disable
-  // =========================================================
+  // ------------------------------
+  // Enable / disable Original add-ons
+  // ------------------------------
   function enableOriginalAddons(enabled) {
     tofAddons.forEach(a => (a.disabled = !enabled));
     tofAddonQtyInputs.forEach(q => (q.disabled = !enabled));
@@ -553,7 +550,7 @@ document.addEventListener('DOMContentLoaded', function () {
   enableOriginalAddons(false);
 
   if (tofOriginal) {
-    tofOriginal.addEventListener("change", () => {
+    tofOriginal.addEventListener('change', () => {
       const on = tofOriginal.checked;
       enableOriginalAddons(on);
 
@@ -565,21 +562,23 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  tofAddons.forEach(a => a.addEventListener("change", updateTotal));
-  tofAddonQtyInputs.forEach(q => q.addEventListener("input", updateTotal));
+  // If change add-ons / qty => refresh total
+  tofAddons.forEach(a => a.addEventListener('change', updateTotal));
+  tofAddonQtyInputs.forEach(q => q.addEventListener('input', updateTotal));
 
-  // =========================================================
-  // 3) Compute order
-  // =========================================================
+  // ------------------------------
+  // Compute order and prices
+  // ------------------------------
   function computeOrder() {
     let total = 0;
     let hasItem = false;
-    let lines = [];
 
     let dessertQty = 0;
     let dessertList = [];
 
     let coconutQty = 0;
+
+    let lines = [];
 
     checkboxes.forEach(cb => {
       if (!cb.checked) return;
@@ -588,27 +587,28 @@ document.addEventListener('DOMContentLoaded', function () {
 
       const row = cb.closest("tr");
       const qtyInput = row ? row.querySelector(".item-qty") : null;
-      const qty = Number(qtyInput?.value || 1);
+      const qty = Math.max(1, Number(qtyInput?.value || 1));
 
       const name = cb.dataset.name || "";
       const group = cb.dataset.group || "";
       const price = Number(cb.dataset.price || 0);
 
-      // promo groups
+      // ---- Promo groups ----
       if (group === "dessert") {
         dessertQty += qty;
         dessertList.push(${name} x ${qty});
         return;
       }
+
       if (group === "coconut") {
         coconutQty += qty;
         return;
       }
 
-      // normal items
+      // ---- Normal items ----
       let extra = "";
 
-      // Fruit+2 detail
+      // Fruit+2 toppings info
       if (name === "Taufufa (Fruit + 2 toppings)") {
         const fruit = Array.from(fruitRadios).find(r => r.checked)?.value || "-";
         const toppings = Array.from(toppingCheckboxes)
@@ -618,48 +618,52 @@ document.addEventListener('DOMContentLoaded', function () {
         extra = ` (Fruit: ${fruit}; Toppings: ${toppings.join(", ") || "-"})`;
       }
 
-      // Original add-ons
+      // Base price
+      const baseSubtotal = price * qty;
+      total += baseSubtotal;
+
+      // ---- Taufufa Original add-ons (per cup) ----
       if (name === "Taufufa Original") {
         let addonText = [];
         let addonTotalPerCup = 0;
 
         tofAddons.forEach(addon => {
+          if (addon.disabled) return;     // not enabled
           if (!addon.checked) return;
 
-          const addonName = addon.dataset.name;     // e.g. "Boba"
-          const addonPrice = Number(addon.dataset.price || 0); // 1 or 1.5
+          const addonName = addon.dataset.name;
+          const addonPrice = Number(addon.dataset.price || 0);
 
           const qtyEl = document.querySelector(.tof-addon-qty[data-name="${addonName}"]);
-          const addonQty = Number(qtyEl?.value || 1);
+          const addonQty = Math.max(1, Number(qtyEl?.value || 1));
 
           addonTotalPerCup += addonPrice * addonQty;
           addonText.push(${addonName} x ${addonQty});
         });
 
         if (addonText.length) {
-          extra = ` (Add-ons: ${addonText.join(", ")})`;
+          const addonTotal = addonTotalPerCup * qty; // multiply by number of Original cups
+          total += addonTotal;
+          extra = ` (Add-ons: ${addonText.join(", ")} | +RM ${addonTotal.toFixed(2)})`;
         }
-
-        // add-ons cost depends on how many cups of Original
-        total += addonTotalPerCup * qty;
       }
 
-      const subtotal = qty * price;
-      total += subtotal;
-      lines.push(${name}${extra} x ${qty} : RM ${subtotal.toFixed(2)});
+      lines.push(${name}${extra} x ${qty} : RM ${baseSubtotal.toFixed(2)});
     });
 
-    // Pudding promo: 3 for RM8 else RM3
+    // ---- Pudding promo (3 for 8, else 3 each) ----
     if (dessertQty > 0) {
       const bundles = Math.floor(dessertQty / 3);
       const remainder = dessertQty % 3;
       const puddingPrice = bundles * 8 + remainder * 3;
       total += puddingPrice;
 
-      lines.push(Pudding Cups - ${dessertQty} cups [${dessertList.join(", ")}] : RM ${puddingPrice.toFixed(2)});
+      lines.push(
+        Pudding Cups - ${dessertQty} cups [${dessertList.join(", ")}] : RM ${puddingPrice.toFixed(2)}
+      );
     }
 
-    // Coconut promo: 2 for RM8 else RM5
+    // ---- Coconut promo (2 for 8, else 5 each) ----
     if (coconutQty > 0) {
       const bundles = Math.floor(coconutQty / 2);
       const remainder = coconutQty % 2;
@@ -673,21 +677,34 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function updateTotal() {
-    const r = computeOrder();
-    totalPriceSpan.textContent = r.total.toFixed(2);
-    submitBtn.disabled = !r.hasItem;
+    // 防止任何小错误导致整个页面死掉
+    try {
+      const r = computeOrder();
+      totalPriceSpan.textContent = r.total.toFixed(2);
+      submitBtn.disabled = !r.hasItem;
+    } catch (e) {
+      console.error("updateTotal failed:", e);
+      totalPriceSpan.textContent = "0.00";
+      submitBtn.disabled = true;
+    }
   }
 
+  // bind events
   checkboxes.forEach(cb => cb.addEventListener("change", updateTotal));
   qtyInputs.forEach(q => q.addEventListener("input", updateTotal));
 
   updateTotal();
 
-  // =========================================================
-  // 4) Submit
-  // =========================================================
+  // ------------------------------
+  // Submit Order
+  // ------------------------------
   submitBtn.addEventListener("click", () => {
     const r = computeOrder();
+
+    if (!r.hasItem) {
+      alert("Please select at least 1 item.");
+      return;
+    }
 
     const name = document.getElementById("name").value.trim();
     const whatsapp = document.getElementById("whatsapp").value.trim();
@@ -701,16 +718,6 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
-    // extra validation for Fruit+2
-    if (fruit2 && fruit2.checked) {
-      const fruitChosen = Array.from(fruitRadios).some(r => r.checked);
-      const toppingsChosen = Array.from(toppingCheckboxes).filter(t => t.checked).length;
-      if (!fruitChosen || toppingsChosen !== 2) {
-        alert("For Taufufa (Fruit + 2 toppings), please choose 1 fruit and exactly 2 toppings.");
-        return;
-      }
-    }
-
     const confirmMsg =
       Robotic Club Food Fair Order\n\n +
       Name: ${name}\nWhatsApp: ${whatsapp}\nKolej: ${kolej}\nDelivery Date: ${date}\nTime Slot: ${timeSlot}\n\n +
@@ -721,7 +728,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (!confirm(confirmMsg)) return;
 
-    // send to Google Sheet
+    // Send to Google Sheet
     try {
       const formData = new URLSearchParams();
       formData.append("name", name);
@@ -738,9 +745,8 @@ document.addEventListener('DOMContentLoaded', function () {
       console.error("Failed to send order:", err);
     }
 
-    // open TNG payment page
+    // Open TNG page
     window.open("tng-qrcode.html?total=" + r.total.toFixed(2), "_blank");
   });
-
 });
 </script>
